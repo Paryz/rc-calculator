@@ -1,4 +1,4 @@
-module Asset exposing (Image, error, src)
+module Asset exposing (Image, error, image, src)
 
 {-| Assets, such as images, videos, and audio. (We only have images for now.)
 

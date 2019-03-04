@@ -35,23 +35,23 @@ view : Page -> { title : String, content : Html msg } -> Document msg
 view page { title, content } =
     { title = title ++ " - rc-calculator"
     , body =
-        [ viewHeader
-        , content
-        , viewFooter
+        [ div [ class "main" ]
+            [ viewHeader
+            , content
+            , viewFooter
+            ]
         ]
     }
 
 
 viewHeader : Html msg
 viewHeader =
-    Grid.container []
-        [ Grid.row []
-            [ Grid.col [ Col.middleXs ]
-                [ ul [ class "list-inline" ]
-                    [ li [ class "list-inline-item" ] [ a [ href "/" ] [ text "Home" ] ]
-                    , li [ class "list-inline-item" ] [ text "About Us" ]
-                    , li [ class "list-inline-item" ] [ text "Link" ]
-                    ]
+    Grid.row []
+        [ Grid.col [ Col.middleXs ]
+            [ ul [ class "list-inline" ]
+                [ li [ class "list-inline-item" ] [ a [ href "/" ] [ text "Home" ] ]
+                , li [ class "list-inline-item" ] [ text "About Us" ]
+                , li [ class "list-inline-item" ] [ text "Link" ]
                 ]
             ]
         ]

@@ -3,3 +3,107 @@
 
 // Bootstrap 4.1
 @import "~bootstrap/scss/bootstrap";
+
+@font-face {
+  font-family: "Averta Standard Regular";
+  font-style: normal;
+  font-weight: normal;
+  src:
+    local("Averta Standard Regular"),
+    url("AvertaStandard-Regular.woff") format("woff");
+}
+
+body {
+  margin: 0;
+  text-align: center;
+  color: #293c4b;
+}
+
+.main {
+  background-color: #ffd8be;
+  height: 100vh;
+}
+
+.container {
+  position: relative;
+  height: 100%;
+}
+
+.card {
+  width: 20vw;
+  height: 20vw;
+  position: relative;
+  background-color: #fed;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.card::after {
+  content: "";
+  border-radius: 5px;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.card:hover {
+  -webkit-transform: scale(1.1, 1.1);
+  transform: scale(1.1, 1.1);
+  margin-bottom: 1.5rem;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.rc-element-image-wrapper {
+  display: grid;
+  align-items: center;
+}
+
+.rc-beam-image {
+  width: 50%;
+  height: auto;
+}
+
+.rc-column-image {
+  width: 75%;
+  height: auto;
+}
+
+.align-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.align-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rc-element-label {
+  margin-top: 1rem;
+}
+
+.coming-soon {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+a {
+  color: inherit;
+}

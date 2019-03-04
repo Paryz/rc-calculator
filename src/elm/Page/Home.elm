@@ -1,5 +1,6 @@
 module Page.Home exposing (Model, Msg, init, subscriptions, toSession, view)
 
+import Asset
 import Bootstrap.Card as Card
 import Bootstrap.Card.Block as Block
 import Bootstrap.Grid as Grid
@@ -62,8 +63,8 @@ view model =
                     [ p [] [ text "Choose element that you want to calculate below" ] ]
                 ]
             , Grid.row []
-                [ renderImage "align-right" "/rc-beam" "rc-beam.svg" "rc-beam-image" "RC Beam"
-                , renderImage "align-left" "/rc-column" "rc-column.svg" "rc-column-image" "RC Column"
+                [ renderImage "align-right" "/rc-beam" "assets/images/rc-beam.svg" "rc-beam-image" "RC Beam"
+                , renderImage "align-left" "/rc-column" "assets/images/rc-column.svg" "rc-column-image" "RC Column"
                 ]
             ]
     }
