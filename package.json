@@ -1,0 +1,61 @@
+{
+  "name": "elm-webpack-4-starter",
+  "version": "0.0.1",
+  "description": "Elm starter template with webpack 4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/romariolopezc/elm-webpack-4-starter"
+  },
+  "contributors": [
+    "Romario Lopez <romariolopezc@gmail.com>",
+    "Geoffrey Roguelon <geoffrey.roguelon@gmail.com>"
+  ],
+  "scripts": {
+    "webpack": "webpack",
+    "webpack-dev-server": "webpack-dev-server",
+    "prod": "npm run webpack -- --env.mode production",
+    "prod:analyze": "npm run prod -- --env.presets analyze",
+    "prod:compress": "npm run prod -- --env.presets compress",
+    "dev": "webpack-dashboard --title 'Elm Dev Server' -- npm run webpack-dev-server -- --env.mode development",
+    "elm-analyse": "elm-analyse -s -o",
+    "preprod": "rimraf dist",
+    "lint": "stylelint src/assets/styles"
+  },
+  "license": "MIT",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "devDependencies": {
+    "autoprefixer": "^9.4.5",
+    "bootstrap": "^4.3.1",
+    "compression-webpack-plugin": "^2.0.0",
+    "copy-webpack-plugin": "^4.6.0",
+    "css-loader": "^2.1.0",
+    "elm-analyse": "^0.16.1",
+    "elm-hot-webpack-loader": "^1.0.2",
+    "elm-webpack-loader": "^5.0.0",
+    "html-webpack-plugin": "^3.0.6",
+    "imagemin-webpack-plugin": "^2.4.0",
+    "jquery": "^3.3.1",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "popper.js": "^1.14.6",
+    "postcss-loader": "^3.0.0",
+    "purgecss-webpack-plugin": "^1.4.0",
+    "rimraf": "^2.6.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "stylelint": "^9.7.1",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-webpack-plugin": "^0.10.4",
+    "terser-webpack-plugin": "^1.2.1",
+    "webpack": "^4.24.0",
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.2.1",
+    "webpack-dashboard": "^2.0.0",
+    "webpack-dev-server": "^3.1.14",
+    "webpack-merge": "^4.2.1"
+  }
+}
