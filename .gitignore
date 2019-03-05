@@ -1,6 +1,8 @@
+.*/
 node_modules
 package-lock.json
 .DS_Store
 elm-stuff
 *.log
 dist
+.firebaserc
