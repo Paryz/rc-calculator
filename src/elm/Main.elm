@@ -5,10 +5,10 @@ import Browser.Navigation as Nav
 import Html exposing (..)
 import Json.Decode exposing (Value)
 import Page
-import Page.About as About
 import Page.Blank as Blank
 import Page.Home as Home
 import Page.NotFound as NotFound
+import Page.RcBeam as RcBeam
 import Route exposing (Route)
 import Session exposing (Session)
 import Url exposing (Url)
@@ -27,7 +27,7 @@ type Model
     = Redirect Session
     | NotFound Session
     | Home Home.Model
-    | About About.Model
+    | RcBeam RcBeam.Model
 
 
 init : Value -> Url -> Nav.Key -> ( Model, Cmd Msg )
@@ -59,11 +59,11 @@ view model =
         NotFound _ ->
             viewPage Page.Other (\_ -> Ignored) NotFound.view
 
-        Home home ->
-            viewPage Page.Home GotHomeMsg (Home.view home)
+        Home homeModel ->
+            viewPage Page.Home GotHomeMsg (Home.view homeModel)
 
-        About about ->
-            viewPage Page.RcBeam GotAboutMsg (About.view about)
+        RcBeam rcBeamModel ->
+            viewPage Page.RcBeam GotRcBeamMsg (RcBeam.view rcBeamModel)
 
 
 
@@ -76,7 +76,7 @@ type Msg
     | ChangedUrl Url
     | ClickedLink Browser.UrlRequest
     | GotHomeMsg Home.Msg
-    | GotAboutMsg About.Msg
+    | GotRcBeamMsg RcBeam.Msg
 
 
 toSession : Model -> Session
@@ -88,11 +88,11 @@ toSession page =
         NotFound session ->
             session
 
-        Home home ->
-            Home.toSession home
+        Home homePage ->
+            Home.toSession homePage
 
-        About about ->
-            About.toSession about
+        RcBeam rcBeamPage ->
+            RcBeam.toSession rcBeamPage
 
 
 changeRouteTo : Maybe Route -> Model -> ( Model, Cmd Msg )
@@ -112,9 +112,9 @@ changeRouteTo maybeRoute model =
             Home.init session
                 |> updateWith Home GotHomeMsg model
 
-        Just Route.About ->
-            About.init session
-                |> updateWith About GotAboutMsg model
+        Just Route.RcBeam ->
+            RcBeam.init session
+                |> updateWith RcBeam GotRcBeamMsg model
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -154,9 +154,9 @@ update msg model =
         ( ChangedRoute route, _ ) ->
             changeRouteTo route model
 
-        ( GotAboutMsg subMsg, About about ) ->
-            About.update subMsg about
-                |> updateWith About GotAboutMsg model
+        ( GotRcBeamMsg subMsg, RcBeam rcBeamModel ) ->
+            RcBeam.update subMsg rcBeamModel
+                |> updateWith RcBeam GotRcBeamMsg model
 
         ( _, _ ) ->
             -- Disregard messages that arrived for the wrong page.
@@ -183,11 +183,11 @@ subscriptions model =
         Redirect _ ->
             Sub.none
 
-        Home home ->
-            Sub.map GotHomeMsg (Home.subscriptions home)
+        Home homeModel ->
+            Sub.map GotHomeMsg (Home.subscriptions homeModel)
 
-        About about ->
-            Sub.map GotAboutMsg (About.subscriptions about)
+        RcBeam rcBeamModel ->
+            Sub.map GotRcBeamMsg (RcBeam.subscriptions rcBeamModel)
 
 
 

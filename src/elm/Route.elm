@@ -14,7 +14,7 @@ import Url.Parser as Parser exposing (Parser, oneOf, s)
 type Route
     = Home
     | Root
-    | About
+    | RcBeam
 
 
 
@@ -26,7 +26,7 @@ parser : Parser (Route -> a) a
 parser =
     oneOf
         [ Parser.map Home Parser.top
-        , Parser.map About (s "about")
+        , Parser.map RcBeam (s "rc-beam")
 
         --    When needing parameters on the form base/item/3
         --    , Parser.map Item (s "item" </> string)
@@ -68,8 +68,8 @@ routeToString page =
                 Root ->
                     []
 
-                About ->
-                    [ "about" ]
+                RcBeam ->
+                    [ "rc-beam" ]
 
         --    When needing parameters on the form base/item/3
         --                    Item id ->

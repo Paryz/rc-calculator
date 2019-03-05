@@ -1,4 +1,4 @@
-module Page.About exposing (Model, Msg, init, subscriptions, toSession, update, view)
+module Page.RcBeam exposing (Model, Msg, init, subscriptions, toSession, update, view)
 
 import Html exposing (Html, div, h2, text)
 import Html.Attributes exposing (class)
