@@ -9,6 +9,7 @@ import Page.Blank as Blank
 import Page.Home as Home
 import Page.NotFound as NotFound
 import Page.RcBeam as RcBeam
+import Page.RcColumn as RcColumn
 import Route exposing (Route)
 import Session exposing (Session)
 import Url exposing (Url)
@@ -28,6 +29,7 @@ type Model
     | NotFound Session
     | Home Home.Model
     | RcBeam RcBeam.Model
+    | RcColumn RcColumn.Model
 
 
 init : Value -> Url -> Nav.Key -> ( Model, Cmd Msg )
@@ -65,6 +67,9 @@ view model =
         RcBeam rcBeamModel ->
             viewPage Page.RcBeam GotRcBeamMsg (RcBeam.view rcBeamModel)
 
+        RcColumn rcColumnModel ->
+            viewPage Page.RcColumn GotRcColumnMsg (RcColumn.view rcColumnModel)
+
 
 
 -- UPDATE
@@ -77,6 +82,7 @@ type Msg
     | ClickedLink Browser.UrlRequest
     | GotHomeMsg Home.Msg
     | GotRcBeamMsg RcBeam.Msg
+    | GotRcColumnMsg RcColumn.Msg
 
 
 toSession : Model -> Session
@@ -93,6 +99,9 @@ toSession page =
 
         RcBeam rcBeamPage ->
             RcBeam.toSession rcBeamPage
+
+        RcColumn rcColumnPage ->
+            RcColumn.toSession rcColumnPage
 
 
 changeRouteTo : Maybe Route -> Model -> ( Model, Cmd Msg )
@@ -115,6 +124,10 @@ changeRouteTo maybeRoute model =
         Just Route.RcBeam ->
             RcBeam.init session
                 |> updateWith RcBeam GotRcBeamMsg model
+
+        Just Route.RcColumn ->
+            RcColumn.init session
+                |> updateWith RcColumn GotRcColumnMsg model
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -158,6 +171,10 @@ update msg model =
             RcBeam.update subMsg rcBeamModel
                 |> updateWith RcBeam GotRcBeamMsg model
 
+        ( GotRcColumnMsg subMsg, RcColumn rcColumnModel ) ->
+            RcColumn.update subMsg rcColumnModel
+                |> updateWith RcColumn GotRcColumnMsg model
+
         ( _, _ ) ->
             -- Disregard messages that arrived for the wrong page.
             ( model, Cmd.none )
@@ -188,6 +205,9 @@ subscriptions model =
 
         RcBeam rcBeamModel ->
             Sub.map GotRcBeamMsg (RcBeam.subscriptions rcBeamModel)
+
+        RcColumn rcColumnModel ->
+            Sub.map GotRcColumnMsg (RcColumn.subscriptions rcColumnModel)
 
 
 

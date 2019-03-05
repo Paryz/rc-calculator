@@ -15,6 +15,7 @@ type Route
     = Home
     | Root
     | RcBeam
+    | RcColumn
 
 
 
@@ -27,6 +28,7 @@ parser =
     oneOf
         [ Parser.map Home Parser.top
         , Parser.map RcBeam (s "rc-beam")
+        , Parser.map RcColumn (s "rc-column")
 
         --    When needing parameters on the form base/item/3
         --    , Parser.map Item (s "item" </> string)
@@ -70,6 +72,9 @@ routeToString page =
 
                 RcBeam ->
                     [ "rc-beam" ]
+
+                RcColumn ->
+                    [ "rc-column" ]
 
         --    When needing parameters on the form base/item/3
         --                    Item id ->

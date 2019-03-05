@@ -1,4 +1,4 @@
-module Page.RcBeam exposing (Model, Msg, init, subscriptions, toSession, update, view)
+module Page.RcColumn exposing (Model, Msg, init, subscriptions, toSession, update, view)
 
 import Html exposing (Html, div, h2, text)
 import Html.Attributes exposing (class)
@@ -19,8 +19,8 @@ type alias Model =
 init : Session -> ( Model, Cmd Msg )
 init session =
     ( { session = session
-      , pageTitle = "Rc Beam"
-      , pageBody = "This is the rc-beam page"
+      , pageTitle = "Rc Column"
+      , pageBody = "This is the rc-column page"
       }
     , Cmd.none
     )

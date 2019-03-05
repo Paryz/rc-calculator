@@ -8,6 +8,7 @@ import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
 import Html exposing (Html, a, br, div, h1, h3, img, p, text)
 import Html.Attributes exposing (class, href, src)
+import Route
 import Session exposing (Session)
 
 
@@ -63,17 +64,17 @@ view model =
                     [ p [] [ text "Choose element that you want to calculate below" ] ]
                 ]
             , Grid.row []
-                [ renderImage "align-right" "/rc-beam" "assets/images/rc-beam.svg" "rc-beam-image" "RC Beam"
-                , renderImage "align-left" "/rc-column" "assets/images/rc-column.svg" "rc-column-image" "RC Column"
+                [ renderImage "align-right" Route.RcBeam "assets/images/rc-beam.svg" "rc-beam-image" "RC Beam"
+                , renderImage "align-left" Route.RcColumn "assets/images/rc-column.svg" "rc-column-image" "RC Column"
                 ]
             ]
     }
 
 
-renderImage : String -> String -> String -> String -> String -> Grid.Column msg
+renderImage : String -> Route.Route -> String -> String -> String -> Grid.Column msg
 renderImage alignDirection route imageUrl imageClass label =
     Grid.col [ Col.xs6, Col.attrs [ class alignDirection ] ]
-        [ a [ href route, class "card-wrapper" ]
+        [ a [ Route.href route, class "card-wrapper" ]
             [ Card.config []
                 |> Card.block [ Block.attrs [ class "rc-element-image-wrapper" ] ]
                     [ Block.text [] [ img [ src imageUrl, class imageClass ] [] ] ]
