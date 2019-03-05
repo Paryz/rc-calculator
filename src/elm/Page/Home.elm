@@ -75,7 +75,7 @@ renderImage : String -> Route.Route -> String -> String -> String -> Grid.Column
 renderImage alignDirection route imageUrl imageClass label =
     Grid.col [ Col.xs6, Col.attrs [ class alignDirection ] ]
         [ a [ Route.href route, class "card-wrapper" ]
-            [ Card.config []
+            [ Card.config [ Card.attrs [ class "card-element" ] ]
                 |> Card.block [ Block.attrs [ class "rc-element-image-wrapper" ] ]
                     [ Block.text [] [ img [ src imageUrl, class imageClass ] [] ] ]
                 |> Card.view
