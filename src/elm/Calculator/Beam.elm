@@ -1,4 +1,4 @@
-module Calculator.Beam exposing (fCd, fCtm, fYd)
+module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, minReinforcement)
 
 
 fYd : Float -> Float -> Float
@@ -25,3 +25,13 @@ fCtm fCk =
                 logBase e
         in
         2.12 * ln (1 + (fCm / 10))
+
+
+effectiveHeight : Float -> Float -> Float -> Float -> Float
+effectiveHeight height cover linkDiameter diameter =
+    height - cover - linkDiameter - (diameter / 2)
+
+
+minReinforcement : Float -> Float -> Float -> Float -> Float
+minReinforcement fCk fYk width effectiveHeightValue =
+    max (0.26 * (fCtm fCk / fYk) * width * effectiveHeightValue) (0.0013 * width * effectiveHeightValue)
