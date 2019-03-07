@@ -52,9 +52,12 @@ suite =
                     let
                         effectiveHeight =
                             Calculator.effectiveHeight 600.0 30.0 10.0 20.0
+
+                        fCtm =
+                            Calculator.fCtm 30.0
                     in
                     effectiveHeight
-                        |> Calculator.minReinforcement 30.0 500.0 400.0
+                        |> Calculator.minReinforcement fCtm 500.0 400.0
                         |> Expect.within (Absolute 0.001) 331.355
             ]
         ]
