@@ -1,4 +1,4 @@
-module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, minReinforcement)
+module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, minReinforcement, sC)
 
 import Calculator.Types exposing (..)
 
@@ -37,3 +37,8 @@ effectiveHeight height cover linkDiameter diameter =
 minReinforcement : Fctm -> Fyk -> Width -> EffectiveHeight -> MinReinforcement
 minReinforcement fCtmValue fYk width effectiveHeightValue =
     max (0.26 * (fCtmValue / fYk) * width * effectiveHeightValue) (0.0013 * width * effectiveHeightValue)
+
+
+sC : BendingMoment -> Alpha -> Fcd -> Width -> EffectiveHeight -> Sc
+sC bendingMoment alpha fcdValue width effectiveHeightValue =
+    bendingMoment / (alpha * fcdValue * width * effectiveHeightValue ^ 2)
