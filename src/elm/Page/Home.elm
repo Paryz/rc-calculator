@@ -19,7 +19,6 @@ import Session exposing (Session)
 type alias Model =
     { session : Session
     , pageTitle : String
-    , pageBody : String
     }
 
 
@@ -27,7 +26,6 @@ init : Session -> ( Model, Cmd Msg )
 init session =
     ( { session = session
       , pageTitle = "Home"
-      , pageBody = "This is the home page"
       }
     , Cmd.none
     )

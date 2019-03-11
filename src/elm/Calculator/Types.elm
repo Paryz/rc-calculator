@@ -1,4 +1,4 @@
-module Calculator.Types exposing (Alpha, AlphaCC, BendingMoment, Cover, EffectiveHeight, Fcd, Fck, Fctm, Fyd, Fyk, GammaC, GammaS, Height, LinkDiameter, MainBarDiameter, MinReinforcement, Sc, Width)
+module Calculator.Types exposing (Alpha, AlphaCC, BendingMoment, Cover, EffectiveHeight, Fcd, Fck, Fctm, Fyd, Fyk, GammaC, GammaS, Height, KsiEffective, KsiEffectiveLim, LinkDiameter, MainBarDiameter, MinReinforcement, Sc, Width)
 
 
 type alias Fyk =
@@ -70,4 +70,12 @@ type alias Alpha =
 
 
 type alias Sc =
+    Float
+
+
+type alias KsiEffective =
+    Float
+
+
+type alias KsiEffectiveLim =
     Float

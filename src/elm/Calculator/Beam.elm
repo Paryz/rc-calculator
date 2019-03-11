@@ -1,4 +1,4 @@
-module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, minReinforcement, sC)
+module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, ksiEffective, minReinforcement, sC)
 
 import Calculator.Types exposing (..)
 
@@ -42,3 +42,13 @@ minReinforcement fCtmValue fYk width effectiveHeightValue =
 sC : BendingMoment -> Alpha -> Fcd -> Width -> EffectiveHeight -> Sc
 sC bendingMoment alpha fcdValue width effectiveHeightValue =
     bendingMoment / (alpha * fcdValue * width * effectiveHeightValue ^ 2)
+
+
+ksiEffective : Sc -> KsiEffective
+ksiEffective sCValue =
+    1 - sqrt (1 - (2 * sCValue))
+
+
+ksiEffectiveLim : Fyd -> KsiEffectiveLim
+ksiEffectiveLim fYdValue =
+    0.8 * (0.0035 / (0.0035 + (fYdValue / 210)))

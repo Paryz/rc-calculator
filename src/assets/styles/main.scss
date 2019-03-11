@@ -33,6 +33,8 @@ body {
 .card-element {
   width: 20vw;
   height: 20vw;
+  max-width: 300px;
+  max-height: 300px;
   position: relative;
   background-color: #fed;
   border-radius: 5px;

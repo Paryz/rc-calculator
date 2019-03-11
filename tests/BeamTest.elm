@@ -10,7 +10,6 @@ suite : Test
 suite =
     describe "The Calculator module"
         [ describe "fYd"
-            -- Nest as many descriptions as you like.
             [ test "returns correct value" <|
                 \_ ->
                     gammaS
@@ -18,7 +17,6 @@ suite =
                         |> Expect.within (Absolute 0.01) 434.78
             ]
         , describe "fCd"
-            -- Nest as many descriptions as you like.
             [ test "returns correct value" <|
                 \_ ->
                     gammaC
@@ -26,7 +24,6 @@ suite =
                         |> Expect.within (Absolute 1) 17
             ]
         , describe "fCtm"
-            -- Nest as many descriptions as you like.
             [ test "returns correct value for fCk lower then 50" <|
                 \_ ->
                     fck
@@ -39,7 +36,6 @@ suite =
                         |> Expect.within (Absolute 0.001) 4.214
             ]
         , describe "effectiveHeight"
-            -- Nest as many descriptions as you like.
             [ test "returns correct value" <|
                 \_ ->
                     mainBarDiameter
@@ -47,7 +43,6 @@ suite =
                         |> Expect.within (Absolute 1) 550
             ]
         , describe "minReinforcement"
-            -- Nest as many descriptions as you like.
             [ test "returns correct value" <|
                 \_ ->
                     let
@@ -62,7 +57,6 @@ suite =
                         |> Expect.within (Absolute 0.001) 331.355
             ]
         , describe "sC"
-            -- Nest as many descriptions as you like.
             [ test "returns correct value" <|
                 \_ ->
                     let
@@ -74,6 +68,23 @@ suite =
                     in
                     effectiveHeight
                         |> Calculator.sC bendingMoment alpha fCd width
+                        |> Expect.within (Absolute 0.01) 9.72e-8
+            ]
+        , describe "ksiEffective"
+            [ test " returns correct value" <|
+                \_ ->
+                    let
+                        effectiveHeight =
+                            Calculator.effectiveHeight height cover linkDiameter mainBarDiameter
+
+                        fCd =
+                            Calculator.fCd alphaCC fck gammaC
+
+                        sC =
+                            Calculator.sC bendingMoment alpha fCd width effectiveHeight
+                    in
+                    sC
+                        |> Calculator.ksiEffective
                         |> Expect.within (Absolute 0.01) 9.72e-8
             ]
         ]
