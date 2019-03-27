@@ -1,4 +1,4 @@
-module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, ksiEffective, minReinforcement, sC)
+module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, ksiEffective, ksiEffectiveLim, minReinforcement, reqReinforcement, sC)
 
 import Calculator.Types exposing (..)
 
@@ -41,7 +41,7 @@ minReinforcement fCtmValue fYk width effectiveHeightValue =
 
 sC : BendingMoment -> Alpha -> Fcd -> Width -> EffectiveHeight -> Sc
 sC bendingMoment alpha fcdValue width effectiveHeightValue =
-    bendingMoment / (alpha * fcdValue * width * effectiveHeightValue ^ 2)
+    (bendingMoment * 1.0e6) / (alpha * fcdValue * width * effectiveHeightValue ^ 2)
 
 
 ksiEffective : Sc -> KsiEffective
@@ -51,4 +51,42 @@ ksiEffective sCValue =
 
 ksiEffectiveLim : Fyd -> KsiEffectiveLim
 ksiEffectiveLim fYdValue =
-    0.8 * (0.0035 / (0.0035 + (fYdValue / 210)))
+    0.8 * (0.0035 / (0.0035 + (fYdValue / 200000)))
+
+
+reqReinforcement : KsiEffective -> KsiEffectiveLim -> Alpha -> Fcd -> Width -> EffectiveHeight -> Fyd -> BendingMoment -> Cover -> ReqReinforcement
+reqReinforcement ksiEffectiveValue ksiEffectiveLimValue alpha fCdValue width effectiveHeightValue fYdValue bendingMomentValue cover =
+    let
+        bottomReinforcementWithoutKsi =
+            (alpha * fCdValue * width * effectiveHeightValue) / fYdValue
+    in
+    if ksiEffectiveValue <= ksiEffectiveLimValue then
+        -- single reinforced section
+        let
+            bottomReinforcement =
+                bottomReinforcementWithoutKsi * ksiEffectiveValue
+        in
+        ( 0, round bottomReinforcement )
+
+    else
+        -- doubly reinforced section
+        let
+            bottomReinforcementPrime =
+                bottomReinforcementWithoutKsi * ksiEffectiveLimValue
+
+            partialEquationForMomentPrime =
+                effectiveHeightValue - 0.5 * (ksiEffectiveLimValue * effectiveHeightValue)
+
+            bendingMomentPrime =
+                0.000001 * (alpha * fCdValue * width * ksiEffectiveLimValue * effectiveHeightValue * partialEquationForMomentPrime)
+
+            bendingMomentDelta =
+                1000000 * (bendingMomentValue - bendingMomentPrime)
+
+            topReinforcement =
+                bendingMomentDelta / (fYdValue * (effectiveHeightValue - cover))
+
+            bottomReinforcement =
+                bottomReinforcementPrime + topReinforcement
+        in
+        ( round topReinforcement, round bottomReinforcement )

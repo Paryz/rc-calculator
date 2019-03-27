@@ -1,4 +1,4 @@
-module BeamMock exposing (alpha, alphaCC, bendingMoment, cover, fck, fyk, gammaC, gammaS, height, linkDiameter, mainBarDiameter, width)
+module BeamMock exposing (alpha, alphaCC, bendingMoment, bigBendingMoment, cover, fck, fyk, gammaC, gammaS, height, linkDiameter, mainBarDiameter, topCover, width)
 
 
 height =
@@ -11,6 +11,10 @@ width =
 
 cover =
     30.0
+
+
+topCover =
+    50.0
 
 
 fck =
@@ -47,3 +51,7 @@ alpha =
 
 bendingMoment =
     200.0
+
+
+bigBendingMoment =
+    1000.0
