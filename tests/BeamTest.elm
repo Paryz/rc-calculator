@@ -148,4 +148,11 @@ suite =
                         |> Calculator.reqReinforcement ksiEffective ksiEffectiveLim Mock.alpha fCd Mock.width effectiveHeight fYd Mock.bigBendingMoment
                         |> Expect.equal ( 1083, 5328 )
             ]
+        , describe "maximumReinforcement"
+            [ test "calculate correct value" <|
+                \_ ->
+                    Mock.width
+                        |> Calculator.maximumReinforcement Mock.height
+                        |> Expect.within (Absolute 0.001) 9600
+            ]
         ]

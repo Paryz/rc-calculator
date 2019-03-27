@@ -1,4 +1,4 @@
-module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, ksiEffective, ksiEffectiveLim, minReinforcement, reqReinforcement, sC)
+module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, ksiEffective, ksiEffectiveLim, maximumReinforcement, minReinforcement, reqReinforcement, sC)
 
 import Calculator.Types exposing (..)
 
@@ -90,3 +90,8 @@ reqReinforcement ksiEffectiveValue ksiEffectiveLimValue alpha fCdValue width eff
                 bottomReinforcementPrime + topReinforcement
         in
         ( round topReinforcement, round bottomReinforcement )
+
+
+maximumReinforcement : Height -> Width -> MaximumReinforcement
+maximumReinforcement height width =
+    0.04 * height * width
