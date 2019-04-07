@@ -1,8 +1,8 @@
-module Calculator.Classes exposing (concreteClasses, steelClasses)
+module Calculator.Classes exposing (concrete, steel)
 
 
-concreteClasses : List ( Int, Int )
-concreteClasses =
+concrete : List ( Int, Int )
+concrete =
     [ ( 12, 15 )
     , ( 16, 20 )
     , ( 20, 25 )
@@ -19,8 +19,8 @@ concreteClasses =
     ]
 
 
-steelClasses : List Int
-steelClasses =
+steel : List Int
+steel =
     [ 400
     , 490
     , 500
