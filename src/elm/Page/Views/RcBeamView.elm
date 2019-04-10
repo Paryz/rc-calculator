@@ -57,7 +57,11 @@ view model =
                 ( top, bottom ) =
                     model.reinforcement
             in
-            "Top Reinforcement = " ++ String.fromInt top ++ ", Bottom Reinforcement = " ++ String.fromInt bottom
+            if top < 0 || bottom < 0 then
+                "Please provide bigger section"
+
+            else
+                "Top Reinforcement = " ++ String.fromInt top ++ ", Bottom Reinforcement = " ++ String.fromInt bottom
     in
     { title = model.pageTitle
     , content =
