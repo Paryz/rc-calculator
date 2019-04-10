@@ -10,6 +10,7 @@ import Page.Home as Home
 import Page.NotFound as NotFound
 import Page.RcBeam as RcBeam
 import Page.RcColumn as RcColumn
+import Page.Views.RcBeamView as RcBeamView
 import Route exposing (Route)
 import Session exposing (Session)
 import Url exposing (Url)
@@ -65,7 +66,7 @@ view model =
             viewPage Page.Home GotHomeMsg (Home.view homeModel)
 
         RcBeam rcBeamModel ->
-            viewPage Page.RcBeam GotRcBeamMsg (RcBeam.view rcBeamModel)
+            viewPage Page.RcBeam GotRcBeamMsg (RcBeamView.view rcBeamModel)
 
         RcColumn rcColumnModel ->
             viewPage Page.RcColumn GotRcColumnMsg (RcColumn.view rcColumnModel)
