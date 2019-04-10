@@ -1,7 +1,8 @@
-module Page.RcBeam exposing (Model, Msg(..), init, subscriptions, toSession, update)
+module Page.RcBeam exposing (Field(..), Model, Msg(..), init, subscriptions, toSession, update)
 
 import Calculator.Beam as Beam
 import Calculator.Types as Types
+import Page.Translators.RcBeamTranslator as RcBeamTranslator exposing (Beam, StringedBeam)
 import Session exposing (Session)
 
 
@@ -9,32 +10,28 @@ import Session exposing (Session)
 -- MODEL
 
 
-type alias Beam =
-    { height : String
-    , width : String
-    , cover : String
-    , topCover : String
-    , concreteClass : String
-    , steelClass : String
-    , concreteFactor : String
-    , steelFactor : String
-    , linkDiameter : String
-    , mainBarDiameter : String
-    , bendingMoment : String
-    , reinforcementRequired : ( Int, Int )
-    }
-
-
 type alias Model =
     { session : Session
     , pageTitle : String
     , pageBody : String
-    , beam : Beam
+    , beam : StringedBeam
+    , reinforcement : ( Int, Int )
     }
 
 
+type Field
+    = Height
+    | Width
+    | Cover
+    | BendingMoment
+    | ConcreteClass
+    | SteelClass
+    | ConcreteFactor
+    | SteelFactor
+
+
 type Msg
-    = UpdateHeight String
+    = Update Field String
 
 
 init : Session -> ( Model, Cmd Msg )
@@ -52,13 +49,13 @@ init session =
             , linkDiameter = "10.0"
             , mainBarDiameter = "20.0"
             , bendingMoment = "200.0"
-            , reinforcementRequired = ( 0, 0 )
             }
     in
     ( { session = session
       , pageTitle = "Rc Beam"
       , pageBody = "This is the rc-beam page"
-      , beam = { beam | reinforcementRequired = calculateReinforcement beam }
+      , beam = beam
+      , reinforcement = calculateReinforcement beam
       }
     , Cmd.none
     )
@@ -75,73 +72,63 @@ update msg model =
             model.beam
     in
     case msg of
-        UpdateHeight newHeight ->
+        Update field newValue ->
             let
                 updatedBeam =
-                    { beam | height = newHeight }
+                    case field of
+                        Height ->
+                            { beam | height = newValue }
+
+                        Width ->
+                            { beam | width = newValue }
+
+                        Cover ->
+                            { beam | cover = newValue }
+
+                        BendingMoment ->
+                            { beam | bendingMoment = newValue }
+
+                        ConcreteClass ->
+                            { beam | concreteClass = newValue }
+
+                        SteelClass ->
+                            { beam | steelClass = newValue }
+
+                        ConcreteFactor ->
+                            { beam | concreteFactor = newValue }
+
+                        SteelFactor ->
+                            { beam | steelFactor = newValue }
 
                 reqReinforcement =
                     calculateReinforcement updatedBeam
-
-                newBeam =
-                    { updatedBeam | reinforcementRequired = reqReinforcement }
             in
-            ( { model | beam = newBeam }, Cmd.none )
+            ( { model | beam = updatedBeam, reinforcement = reqReinforcement }, Cmd.none )
 
 
-calculateReinforcement : Beam -> Types.ReqReinforcement
-calculateReinforcement beam =
+calculateReinforcement : StringedBeam -> Types.ReqReinforcement
+calculateReinforcement stringedBeam =
     let
-        height =
-            maybeStringToFloat beam.height
-
-        width =
-            maybeStringToFloat beam.width
-
-        cover =
-            maybeStringToFloat beam.cover
-
-        topCover =
-            maybeStringToFloat beam.topCover
-
-        linkDiameter =
-            maybeStringToFloat beam.linkDiameter
-
-        mainBarDiameter =
-            maybeStringToFloat beam.mainBarDiameter
-
-        steelClass =
-            maybeStringToFloat beam.steelClass
-
-        steelFactor =
-            maybeStringToFloat beam.steelFactor
-
-        concreteClass =
-            maybeStringToFloat beam.concreteClass
-
-        concreteFactor =
-            maybeStringToFloat beam.concreteFactor
-
-        bendingMoment =
-            maybeStringToFloat beam.bendingMoment
+        beam =
+            RcBeamTranslator.translate stringedBeam
 
         fyd =
-            Beam.fYd steelClass steelFactor
+            Beam.fYd beam.steelClass beam.steelFactor
 
         fcd =
-            Beam.fCd 0.85 concreteClass concreteFactor
+            Beam.fCd 0.85 beam.concreteClass beam.concreteFactor
 
         fctm =
-            Beam.fCtm concreteFactor
+            Beam.fCtm beam.concreteFactor
 
         effectiveHeight =
-            Beam.effectiveHeight height cover linkDiameter mainBarDiameter
+            Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
 
         minReinforcement =
-            Beam.minReinforcement fctm steelClass width effectiveHeight
+            Beam.minReinforcement fctm beam.steelClass beam.width effectiveHeight
 
         sc =
-            Beam.sC bendingMoment 1.0 fcd width effectiveHeight
+            Beam.sC beam.bendingMoment 1.0 fcd beam.width effectiveHeight
 
         ksiEffective =
             Beam.ksiEffective sc
@@ -149,12 +136,7 @@ calculateReinforcement beam =
         ksiEffectiveLim =
             Beam.ksiEffectiveLim fyd
     in
-    Beam.reqReinforcement ksiEffective ksiEffectiveLim 1.0 fcd width effectiveHeight fyd bendingMoment topCover
-
-
-maybeStringToFloat : String -> Float
-maybeStringToFloat string =
-    Maybe.withDefault 0 (String.toFloat string)
+    Beam.reqReinforcement ksiEffective ksiEffectiveLim 1.0 fcd beam.width effectiveHeight fyd beam.bendingMoment beam.topCover
 
 
 

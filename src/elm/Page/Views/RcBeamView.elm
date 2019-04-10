@@ -11,7 +11,7 @@ import Calculator.Factors as Factors
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
-import Page.RcBeam exposing (Model, Msg(..))
+import Page.RcBeam exposing (Field(..), Model, Msg(..))
 
 
 view : Model -> { title : String, content : Html Msg }
@@ -22,22 +22,40 @@ view model =
 
         concreteClassesToSelect =
             List.map
-                (\( cube, cylinder ) -> Select.item [ value (String.fromInt cube) ] [ text (String.fromInt cube ++ "/" ++ String.fromInt cylinder) ])
+                (\( cube, cylinder ) ->
+                    if cube == 30 then
+                        Select.item [ value (String.fromInt cube), selected True ]
+                            [ text (String.fromInt cube ++ "/" ++ String.fromInt cylinder) ]
+
+                    else
+                        Select.item [ value (String.fromInt cube) ]
+                            [ text (String.fromInt cube ++ "/" ++ String.fromInt cylinder) ]
+                )
                 Classes.concrete
 
         steelClassesToSelect =
-            mapItemFromNumber Classes.steel String.fromInt
+            List.map
+                (\steelClass ->
+                    if steelClass == 500 then
+                        Select.item [ value (String.fromInt steelClass), selected True ]
+                            [ text (String.fromInt steelClass) ]
+
+                    else
+                        Select.item [ value (String.fromInt steelClass) ]
+                            [ text (String.fromInt steelClass) ]
+                )
+                Classes.steel
 
         concreteFactorsToSelect =
-            mapItemFromNumber Factors.concrete String.fromFloat
+            mapItemFromFloat Factors.concrete
 
         steelFactorsToSelect =
-            mapItemFromNumber Factors.steel String.fromFloat
+            mapItemFromFloat Factors.steel
 
         reinforcementRequiredToString =
             let
                 ( top, bottom ) =
-                    model.beam.reinforcementRequired
+                    model.reinforcement
             in
             "Top Reinforcement = " ++ String.fromInt top ++ ", Bottom Reinforcement = " ++ String.fromInt bottom
     in
@@ -52,16 +70,18 @@ view model =
                                 [ Form.label [ for "height" ] [ text "height - h (mm)" ]
                                 , Input.text
                                     [ Input.id "width"
-                                    , Input.onInput (\height -> UpdateHeight height)
+                                    , Input.onInput (\height -> Update Height height)
                                     , Input.value model.beam.height
+                                    , Input.attrs [ type_ "number" ]
                                     ]
                                 ]
                             , Form.col [ Col.xs4 ]
                                 [ Form.label [ for "width" ] [ text "width - b (mm)" ]
                                 , Input.text
                                     [ Input.id "width"
-                                    , Input.onInput (\width -> UpdateHeight width)
+                                    , Input.onInput (\width -> Update Width width)
                                     , Input.value model.beam.width
+                                    , Input.attrs [ type_ "number" ]
                                     ]
                                 ]
                             , Form.col [ Col.xs4 ]
@@ -70,7 +90,12 @@ view model =
                                     , sub [] [ text "nom" ]
                                     , text " (mm)"
                                     ]
-                                , Input.text [ Input.id "width" ]
+                                , Input.text
+                                    [ Input.id "cover"
+                                    , Input.onInput (\cover -> Update Cover cover)
+                                    , Input.value model.beam.cover
+                                    , Input.attrs [ type_ "number" ]
+                                    ]
                                 ]
                             ]
                         , Form.row []
@@ -79,13 +104,17 @@ view model =
                                     [ text "concrete class (MPa)" ]
                                 , Select.select
                                     [ Select.id "concrete-class"
+                                    , Select.onChange (\concreteClass -> Update ConcreteClass concreteClass)
                                     ]
                                     concreteClassesToSelect
                                 ]
                             , Form.col [ Col.xs3 ]
                                 [ Form.label [ for "steel-class" ]
                                     [ text "steel class (MPa)" ]
-                                , Select.select [ Select.id "steel-class" ]
+                                , Select.select
+                                    [ Select.id "steel-class"
+                                    , Select.onChange (\steelClass -> Update SteelClass steelClass)
+                                    ]
                                     steelClassesToSelect
                                 ]
                             , Form.col [ Col.xs3 ]
@@ -94,7 +123,10 @@ view model =
                                     , text gamma
                                     , sub [] [ text "c" ]
                                     ]
-                                , Select.select [ Select.id "gammaC" ]
+                                , Select.select
+                                    [ Select.id "gammaC"
+                                    , Select.onChange (\concreteFactor -> Update ConcreteFactor concreteFactor)
+                                    ]
                                     concreteFactorsToSelect
                                 ]
                             , Form.col [ Col.xs3 ]
@@ -103,7 +135,10 @@ view model =
                                     , text gamma
                                     , sub [] [ text "s" ]
                                     ]
-                                , Select.select [ Select.id "gammaS" ]
+                                , Select.select
+                                    [ Select.id "gammaS"
+                                    , Select.onChange (\steelFactor -> Update SteelFactor steelFactor)
+                                    ]
                                     steelFactorsToSelect
                                 ]
                             ]
@@ -113,7 +148,12 @@ view model =
                                     [ text "bending moment - M"
                                     , sub [] [ text "ed" ]
                                     ]
-                                , Input.text [ Input.id "bending-moment" ]
+                                , Input.text
+                                    [ Input.id "bending-moment"
+                                    , Input.onInput (\bendingMoment -> Update BendingMoment bendingMoment)
+                                    , Input.value model.beam.bendingMoment
+                                    , Input.attrs [ type_ "number" ]
+                                    ]
                                 ]
                             ]
                         , Form.row []
@@ -135,8 +175,8 @@ view model =
     }
 
 
-mapItemFromNumber : List number -> (number -> String) -> List (Select.Item msg)
-mapItemFromNumber collection function =
+mapItemFromFloat : List Float -> List (Select.Item msg)
+mapItemFromFloat collection =
     List.map
-        (\item -> Select.item [ value (function item) ] [ text (function item) ])
+        (\item -> Select.item [ value (String.fromFloat item) ] [ text (String.fromFloat item) ])
         collection
