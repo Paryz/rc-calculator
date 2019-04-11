@@ -15,7 +15,8 @@ type alias Model =
     , pageTitle : String
     , pageBody : String
     , beam : StringedBeam
-    , reinforcement : ( Int, Int )
+    , reinforcement : Types.ReqReinforcement
+    , maximumReinforcement : Types.MaximumReinforcement
     }
 
 
@@ -56,6 +57,7 @@ init session =
       , pageBody = "This is the rc-beam page"
       , beam = beam
       , reinforcement = calculateReinforcement beam
+      , maximumReinforcement = 9600.0
       }
     , Cmd.none
     )
@@ -102,8 +104,11 @@ update msg model =
 
                 reqReinforcement =
                     calculateReinforcement updatedBeam
+
+                maximumReinforcement =
+                    calculateMaximumReinforcement updatedBeam
             in
-            ( { model | beam = updatedBeam, reinforcement = reqReinforcement }, Cmd.none )
+            ( { model | beam = updatedBeam, reinforcement = reqReinforcement, maximumReinforcement = maximumReinforcement }, Cmd.none )
 
 
 calculateReinforcement : StringedBeam -> Types.ReqReinforcement
@@ -137,6 +142,18 @@ calculateReinforcement stringedBeam =
             Beam.ksiEffectiveLim fyd
     in
     Beam.reqReinforcement ksiEffective ksiEffectiveLim 1.0 fcd beam.width effectiveHeight fyd beam.bendingMoment beam.topCover
+
+
+calculateMaximumReinforcement : StringedBeam -> Types.MaximumReinforcement
+calculateMaximumReinforcement stringedBeam =
+    let
+        height =
+            stringedBeam.height |> String.toFloat |> Maybe.withDefault 0
+
+        width =
+            stringedBeam.width |> String.toFloat |> Maybe.withDefault 0
+    in
+    Beam.maximumReinforcement height width
 
 
 

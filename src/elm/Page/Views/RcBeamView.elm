@@ -56,8 +56,11 @@ view model =
             let
                 ( top, bottom ) =
                     model.reinforcement
+
+                maximumReinforcement =
+                    model.maximumReinforcement
             in
-            if top < 0 || bottom < 0 then
+            if top < 0 || bottom < 0 || maximumReinforcement < Basics.toFloat (bottom + top) then
                 "Please provide bigger section"
 
             else
