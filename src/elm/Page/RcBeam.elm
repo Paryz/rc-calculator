@@ -29,6 +29,8 @@ type Field
     | SteelClass
     | ConcreteFactor
     | SteelFactor
+    | LinBarDiameter
+    | MainBarDiameter
 
 
 type Msg
@@ -101,6 +103,12 @@ update msg model =
 
                         SteelFactor ->
                             { beam | steelFactor = newValue }
+
+                        MainBarDiameter ->
+                            { beam | mainBarDiameter = newValue }
+
+                        LinBarDiameter ->
+                            { beam | linkDiameter = newValue }
 
                 reqReinforcement =
                     calculateReinforcement updatedBeam

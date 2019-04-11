@@ -7,6 +7,7 @@ import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
 import Calculator.Classes as Classes
+import Calculator.Diameters as Diameters
 import Calculator.Factors as Factors
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -34,17 +35,13 @@ view model =
                 Classes.concrete
 
         steelClassesToSelect =
-            List.map
-                (\steelClass ->
-                    if steelClass == 500 then
-                        Select.item [ value (String.fromInt steelClass), selected True ]
-                            [ text (String.fromInt steelClass) ]
+            mapItemFromFloatWithDefault Classes.steel 500
 
-                    else
-                        Select.item [ value (String.fromInt steelClass) ]
-                            [ text (String.fromInt steelClass) ]
-                )
-                Classes.steel
+        linBarDiametersToSelect =
+            mapItemFromFloatWithDefault Diameters.barDiameters 10
+
+        mainBarDiametersToSelect =
+            mapItemFromFloatWithDefault Diameters.barDiameters 20
 
         concreteFactorsToSelect =
             mapItemFromFloat Factors.concrete
@@ -103,6 +100,26 @@ view model =
                                     , Input.value model.beam.cover
                                     , Input.attrs [ type_ "number" ]
                                     ]
+                                ]
+                            ]
+                        , Form.row []
+                            [ Form.col [ Col.xs3 ]
+                                [ Form.label [ for "link-bar-diameter" ]
+                                    [ text "link bar diameter (mm)" ]
+                                , Select.select
+                                    [ Select.id "link-bar-diameter"
+                                    , Select.onChange (\diameter -> Update LinBarDiameter diameter)
+                                    ]
+                                    linBarDiametersToSelect
+                                ]
+                            , Form.col [ Col.xs3 ]
+                                [ Form.label [ for "main-bar-diameter" ]
+                                    [ text "main bar diameter (mm)" ]
+                                , Select.select
+                                    [ Select.id "main-bar-diameter"
+                                    , Select.onChange (\diameter -> Update MainBarDiameter diameter)
+                                    ]
+                                    mainBarDiametersToSelect
                                 ]
                             ]
                         , Form.row []
@@ -186,4 +203,19 @@ mapItemFromFloat : List Float -> List (Select.Item msg)
 mapItemFromFloat collection =
     List.map
         (\item -> Select.item [ value (String.fromFloat item) ] [ text (String.fromFloat item) ])
+        collection
+
+
+mapItemFromFloatWithDefault : List Int -> Int -> List (Select.Item msg)
+mapItemFromFloatWithDefault collection itemValue =
+    List.map
+        (\item ->
+            if item == itemValue then
+                Select.item [ value (String.fromInt item), selected True ]
+                    [ text (String.fromInt item) ]
+
+            else
+                Select.item [ value (String.fromInt item) ]
+                    [ text (String.fromInt item) ]
+        )
         collection
