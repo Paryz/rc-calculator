@@ -33,51 +33,17 @@ type alias Beam =
 
 translate : StringedBeam -> Beam
 translate stringedBeam =
-    let
-        height =
-            maybeStringToFloat stringedBeam.height
-
-        width =
-            maybeStringToFloat stringedBeam.width
-
-        cover =
-            maybeStringToFloat stringedBeam.cover
-
-        topCover =
-            maybeStringToFloat stringedBeam.topCover
-
-        linkDiameter =
-            maybeStringToFloat stringedBeam.linkDiameter
-
-        mainBarDiameter =
-            maybeStringToFloat stringedBeam.mainBarDiameter
-
-        steelClass =
-            maybeStringToFloat stringedBeam.steelClass
-
-        steelFactor =
-            maybeStringToFloat stringedBeam.steelFactor
-
-        concreteClass =
-            maybeStringToFloat stringedBeam.concreteClass
-
-        concreteFactor =
-            maybeStringToFloat stringedBeam.concreteFactor
-
-        bendingMoment =
-            maybeStringToFloat stringedBeam.bendingMoment
-    in
-    { height = height
-    , width = width
-    , cover = cover
-    , topCover = topCover
-    , linkDiameter = linkDiameter
-    , mainBarDiameter = mainBarDiameter
-    , steelClass = steelClass
-    , steelFactor = steelFactor
-    , concreteClass = concreteClass
-    , concreteFactor = concreteFactor
-    , bendingMoment = bendingMoment
+    { height = maybeStringToFloat stringedBeam.height
+    , width = maybeStringToFloat stringedBeam.width
+    , cover = maybeStringToFloat stringedBeam.cover
+    , topCover = maybeStringToFloat stringedBeam.topCover
+    , linkDiameter = maybeStringToFloat stringedBeam.linkDiameter
+    , mainBarDiameter = maybeStringToFloat stringedBeam.mainBarDiameter
+    , steelClass = maybeStringToFloat stringedBeam.steelClass
+    , steelFactor = maybeStringToFloat stringedBeam.steelFactor
+    , concreteClass = maybeStringToFloat stringedBeam.concreteClass
+    , concreteFactor = maybeStringToFloat stringedBeam.concreteFactor
+    , bendingMoment = maybeStringToFloat stringedBeam.bendingMoment
     }
 
 

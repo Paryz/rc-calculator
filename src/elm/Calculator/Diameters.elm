@@ -1,4 +1,4 @@
-module Calculator.Diameters exposing (barDiameters, listOfBarSection)
+module Calculator.Diameters exposing (BarSectionsList, barDiameters, listOfBarSection)
 
 
 barDiameters : List Int
