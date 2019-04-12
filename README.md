@@ -1,3 +1,1 @@
-# This project is created to fuck companies who sell rc calculators
-
-# Block Diagrams
+# This project is created to see if structural engineering can be open source
