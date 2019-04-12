@@ -199,7 +199,10 @@ view model =
                 , Grid.col [ Col.middleXs, Col.xs4 ]
                     [ h1 [] [ text "test" ] ]
                 ]
-            , barSectionTable Diameters.listOfBarSection totalReqReinforcement
+            , Grid.row [ Row.centerMd ]
+                [ Grid.col [ Col.middleXs, Col.xs8 ]
+                    [ barSectionTable Diameters.listOfBarSection totalReqReinforcement ]
+                ]
             ]
     }
 
@@ -237,22 +240,13 @@ barSectionTable barSectionList reqReinforcement =
             , Table.th [] [ text "4" ]
             , Table.th [] [ text "5" ]
             , Table.th [] [ text "6" ]
-            , Table.th [] [ text "7" ]
-            , Table.th [] [ text "8" ]
-            , Table.th [] [ text "9" ]
-            , Table.th [] [ text "10" ]
             ]
         , Table.tbody []
-            [ tableRow .m6 Diameters.listOfBarSection "M6" reqReinforcement
-            , tableRow .m8 Diameters.listOfBarSection "M8" reqReinforcement
-            , tableRow .m10 Diameters.listOfBarSection "M10" reqReinforcement
-            , tableRow .m12 Diameters.listOfBarSection "M12" reqReinforcement
+            [ tableRow .m12 Diameters.listOfBarSection "M12" reqReinforcement
             , tableRow .m16 Diameters.listOfBarSection "M16" reqReinforcement
             , tableRow .m20 Diameters.listOfBarSection "M20" reqReinforcement
             , tableRow .m25 Diameters.listOfBarSection "M25" reqReinforcement
             , tableRow .m32 Diameters.listOfBarSection "M32" reqReinforcement
-            , tableRow .m40 Diameters.listOfBarSection "M40" reqReinforcement
-            , tableRow .m50 Diameters.listOfBarSection "M50" reqReinforcement
             ]
         )
 
@@ -260,6 +254,9 @@ barSectionTable barSectionList reqReinforcement =
 tableRow : (BarSectionsList -> List Float) -> BarSectionsList -> String -> Float -> Table.Row msg
 tableRow function listOfSections bar reqReinforcement =
     let
+        firstSixElementsOfList =
+            List.take 6 (function listOfSections)
+
         mappedCells =
             List.map
                 (\section ->
@@ -273,7 +270,7 @@ tableRow function listOfSections bar reqReinforcement =
                     in
                     Table.td [ color ] [ text (String.fromFloat section) ]
                 )
-                (function listOfSections)
+                firstSixElementsOfList
 
         row =
             [ Table.td [] [ text bar ] ] ++ mappedCells
