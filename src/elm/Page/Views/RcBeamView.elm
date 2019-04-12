@@ -6,8 +6,9 @@ import Bootstrap.Form.Select as Select
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
+import Bootstrap.Table as Table
 import Calculator.Classes as Classes
-import Calculator.Diameters as Diameters
+import Calculator.Diameters as Diameters exposing (BarSectionsList)
 import Calculator.Factors as Factors
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -49,15 +50,18 @@ view model =
         steelFactorsToSelect =
             mapItemFromFloat Factors.steel
 
+        ( top, bottom ) =
+            model.reinforcement
+
+        totalReqReinforcement =
+            Basics.toFloat (bottom + top)
+
         reinforcementRequiredToString =
             let
-                ( top, bottom ) =
-                    model.reinforcement
-
                 maximumReinforcement =
                     model.maximumReinforcement
             in
-            if top < 0 || bottom < 0 || maximumReinforcement < Basics.toFloat (bottom + top) then
+            if top < 0 || bottom < 0 || maximumReinforcement < totalReqReinforcement then
                 "Please provide bigger section"
 
             else
@@ -195,6 +199,7 @@ view model =
                 , Grid.col [ Col.middleXs, Col.xs4 ]
                     [ h1 [] [ text "test" ] ]
                 ]
+            , barSectionTable Diameters.listOfBarSection totalReqReinforcement
             ]
     }
 
@@ -219,3 +224,58 @@ mapItemFromFloatWithDefault collection itemValue =
                     [ text (String.fromInt item) ]
         )
         collection
+
+
+barSectionTable : BarSectionsList -> Float -> Html msg
+barSectionTable barSectionList reqReinforcement =
+    Table.simpleTable
+        ( Table.simpleThead
+            [ Table.th [] [ text "Diameter" ]
+            , Table.th [] [ text "1" ]
+            , Table.th [] [ text "2" ]
+            , Table.th [] [ text "3" ]
+            , Table.th [] [ text "4" ]
+            , Table.th [] [ text "5" ]
+            , Table.th [] [ text "6" ]
+            , Table.th [] [ text "7" ]
+            , Table.th [] [ text "8" ]
+            , Table.th [] [ text "9" ]
+            , Table.th [] [ text "10" ]
+            ]
+        , Table.tbody []
+            [ tableRow .m6 Diameters.listOfBarSection "M6" reqReinforcement
+            , tableRow .m8 Diameters.listOfBarSection "M8" reqReinforcement
+            , tableRow .m10 Diameters.listOfBarSection "M10" reqReinforcement
+            , tableRow .m12 Diameters.listOfBarSection "M12" reqReinforcement
+            , tableRow .m16 Diameters.listOfBarSection "M16" reqReinforcement
+            , tableRow .m20 Diameters.listOfBarSection "M20" reqReinforcement
+            , tableRow .m25 Diameters.listOfBarSection "M25" reqReinforcement
+            , tableRow .m32 Diameters.listOfBarSection "M32" reqReinforcement
+            , tableRow .m40 Diameters.listOfBarSection "M40" reqReinforcement
+            , tableRow .m50 Diameters.listOfBarSection "M50" reqReinforcement
+            ]
+        )
+
+
+tableRow : (BarSectionsList -> List Float) -> BarSectionsList -> String -> Float -> Table.Row msg
+tableRow function listOfSections bar reqReinforcement =
+    let
+        mappedCells =
+            List.map
+                (\section ->
+                    let
+                        color =
+                            if section > reqReinforcement then
+                                Table.cellSuccess
+
+                            else
+                                Table.cellDanger
+                    in
+                    Table.td [ color ] [ text (String.fromFloat section) ]
+                )
+                (function listOfSections)
+
+        row =
+            [ Table.td [] [ text bar ] ] ++ mappedCells
+    in
+    Table.tr [] row
