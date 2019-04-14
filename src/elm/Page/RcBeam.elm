@@ -117,8 +117,11 @@ update msg model =
 
                 maximumReinforcement =
                     calculateMaximumReinforcement updatedBeam
+
+                minimumReinforcement =
+                    calculateMinimumReinforcement updatedBeam
             in
-            ( { model | beam = updatedBeam, reinforcement = reqReinforcement, maximumReinforcement = maximumReinforcement }, Cmd.none )
+            ( { model | beam = updatedBeam, reinforcement = reqReinforcement, maximumReinforcement = maximumReinforcement, minimumReinforcement = minimumReinforcement }, Cmd.none )
 
 
 calculateReinforcement : StringedBeam -> Types.ReqReinforcement
@@ -157,13 +160,25 @@ calculateReinforcement stringedBeam =
 calculateMaximumReinforcement : StringedBeam -> Types.MaximumReinforcement
 calculateMaximumReinforcement stringedBeam =
     let
-        height =
-            stringedBeam.height |> String.toFloat |> Maybe.withDefault 0
-
-        width =
-            stringedBeam.width |> String.toFloat |> Maybe.withDefault 0
+        beam =
+            RcBeamTranslator.translate stringedBeam
     in
-    Beam.maximumReinforcement height width
+    Beam.maximumReinforcement beam.height beam.width
+
+
+calculateMinimumReinforcement : StringedBeam -> Types.MinReinforcement
+calculateMinimumReinforcement stringedBeam =
+    let
+        beam =
+            RcBeamTranslator.translate stringedBeam
+
+        effectiveHeight =
+            Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
+
+        fctm =
+            Beam.fCtm beam.concreteClass
+    in
+    Beam.minReinforcement fctm beam.steelClass beam.width effectiveHeight
 
 
 

@@ -116,7 +116,7 @@ view model =
                                     ]
                                 , Input.text
                                     [ Input.id "bending-moment"
-                                    , Input.onInput (\bendingMoment -> Update BendingMoment bendingMoment)
+                                    , Input.onInput (\moment -> Update BendingMoment moment)
                                     , Input.value model.beam.bendingMoment
                                     , Input.attrs [ type_ "number" ]
                                     ]
@@ -203,11 +203,7 @@ view model =
                     ]
                 ]
             , Grid.row [ Row.centerMd ]
-                [ Grid.col [ Col.xs6 ]
-                    [ barSectionTable Diameters.listOfBarSection top ]
-                , Grid.col [ Col.xs6 ]
-                    [ barSectionTable Diameters.listOfBarSection bottom ]
-                ]
+                (renderTables top bottom)
             ]
     }
 
@@ -232,6 +228,24 @@ mapItemFromFloatWithDefault collection itemValue =
                     [ text (String.fromInt item) ]
         )
         collection
+
+
+renderTables : Int -> Int -> List (Grid.Column msg)
+renderTables top bottom =
+    if top > 0 && bottom > 0 then
+        [ Grid.col [ Col.xs6 ]
+            [ barSectionTable Diameters.listOfBarSection top ]
+        , Grid.col [ Col.xs6 ]
+            [ barSectionTable Diameters.listOfBarSection bottom ]
+        ]
+
+    else if top == 0 && bottom > 0 then
+        [ Grid.col [ Col.xs8 ]
+            [ barSectionTable Diameters.listOfBarSection bottom ]
+        ]
+
+    else
+        [ Grid.col [ Col.xs12 ] [ text "Geometry you provided has errors" ] ]
 
 
 barSectionTable : BarSectionsList -> Int -> Html msg
