@@ -16,6 +16,7 @@ type alias Model =
     , pageBody : String
     , beam : StringedBeam
     , reinforcement : Types.ReqReinforcement
+    , minimumReinforcement : Types.MinReinforcement
     , maximumReinforcement : Types.MaximumReinforcement
     }
 
@@ -59,6 +60,7 @@ init session =
       , pageBody = "This is the rc-beam page"
       , beam = beam
       , reinforcement = calculateReinforcement beam
+      , minimumReinforcement = 331.355
       , maximumReinforcement = 9600.0
       }
     , Cmd.none
@@ -132,7 +134,7 @@ calculateReinforcement stringedBeam =
             Beam.fCd 0.85 beam.concreteClass beam.concreteFactor
 
         fctm =
-            Beam.fCtm beam.concreteFactor
+            Beam.fCtm beam.concreteClass
 
         effectiveHeight =
             Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
@@ -149,7 +151,7 @@ calculateReinforcement stringedBeam =
         ksiEffectiveLim =
             Beam.ksiEffectiveLim fyd
     in
-    Beam.reqReinforcement ksiEffective ksiEffectiveLim 1.0 fcd beam.width effectiveHeight fyd beam.bendingMoment beam.topCover
+    Beam.reqReinforcement ksiEffective ksiEffectiveLim 1.0 fcd beam.width effectiveHeight fyd beam.bendingMoment beam.topCover minReinforcement
 
 
 calculateMaximumReinforcement : StringedBeam -> Types.MaximumReinforcement

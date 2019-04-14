@@ -73,10 +73,10 @@ view model =
     , content =
         Grid.container []
             [ Grid.row []
-                [ Grid.col [ Col.middleXs, Col.xs8 ]
+                [ Grid.col [ Col.middleXs, Col.xs6 ]
                     [ Form.form []
                         [ Form.row []
-                            [ Form.col [ Col.xs4 ]
+                            [ Form.col [ Col.xs6 ]
                                 [ Form.label [ for "height" ] [ text "height - h (mm)" ]
                                 , Input.text
                                     [ Input.id "width"
@@ -85,7 +85,7 @@ view model =
                                     , Input.attrs [ type_ "number" ]
                                     ]
                                 ]
-                            , Form.col [ Col.xs4 ]
+                            , Form.col [ Col.xs6 ]
                                 [ Form.label [ for "width" ] [ text "width - b (mm)" ]
                                 , Input.text
                                     [ Input.id "width"
@@ -94,7 +94,9 @@ view model =
                                     , Input.attrs [ type_ "number" ]
                                     ]
                                 ]
-                            , Form.col [ Col.xs4 ]
+                            ]
+                        , Form.row []
+                            [ Form.col [ Col.xs6 ]
                                 [ Form.label [ for "cover" ]
                                     [ text "cover - c"
                                     , sub [] [ text "nom" ]
@@ -107,73 +109,7 @@ view model =
                                     , Input.attrs [ type_ "number" ]
                                     ]
                                 ]
-                            ]
-                        , Form.row []
-                            [ Form.col [ Col.xs3 ]
-                                [ Form.label [ for "link-bar-diameter" ]
-                                    [ text "link bar diameter (mm)" ]
-                                , Select.select
-                                    [ Select.id "link-bar-diameter"
-                                    , Select.onChange (\diameter -> Update LinBarDiameter diameter)
-                                    ]
-                                    linBarDiametersToSelect
-                                ]
-                            , Form.col [ Col.xs3 ]
-                                [ Form.label [ for "main-bar-diameter" ]
-                                    [ text "main bar diameter (mm)" ]
-                                , Select.select
-                                    [ Select.id "main-bar-diameter"
-                                    , Select.onChange (\diameter -> Update MainBarDiameter diameter)
-                                    ]
-                                    mainBarDiametersToSelect
-                                ]
-                            ]
-                        , Form.row []
-                            [ Form.col [ Col.md6, Col.xl3 ]
-                                [ Form.label [ for "concrete-class" ]
-                                    [ text "concrete class (MPa)" ]
-                                , Select.select
-                                    [ Select.id "concrete-class"
-                                    , Select.onChange (\concreteClass -> Update ConcreteClass concreteClass)
-                                    ]
-                                    concreteClassesToSelect
-                                ]
-                            , Form.col [ Col.md6, Col.xl3 ]
-                                [ Form.label [ for "steel-class" ]
-                                    [ text "steel class (MPa)" ]
-                                , Select.select
-                                    [ Select.id "steel-class"
-                                    , Select.onChange (\steelClass -> Update SteelClass steelClass)
-                                    ]
-                                    steelClassesToSelect
-                                ]
-                            , Form.col [ Col.md6, Col.xl3 ]
-                                [ Form.label [ for "gammaC" ]
-                                    [ text "concrete - "
-                                    , text gamma
-                                    , sub [] [ text "c" ]
-                                    ]
-                                , Select.select
-                                    [ Select.id "gammaC"
-                                    , Select.onChange (\concreteFactor -> Update ConcreteFactor concreteFactor)
-                                    ]
-                                    concreteFactorsToSelect
-                                ]
-                            , Form.col [ Col.md6, Col.xl3 ]
-                                [ Form.label [ for "gammaS" ]
-                                    [ text "steel - "
-                                    , text gamma
-                                    , sub [] [ text "s" ]
-                                    ]
-                                , Select.select
-                                    [ Select.id "gammaS"
-                                    , Select.onChange (\steelFactor -> Update SteelFactor steelFactor)
-                                    ]
-                                    steelFactorsToSelect
-                                ]
-                            ]
-                        , Form.row []
-                            [ Form.col [ Col.xs4 ]
+                            , Form.col [ Col.xs6 ]
                                 [ Form.label [ for "bending-moment" ]
                                     [ text "bending moment - M"
                                     , sub [] [ text "ed" ]
@@ -187,22 +123,83 @@ view model =
                                 ]
                             ]
                         , Form.row []
-                            [ Form.col [ Col.xs12 ]
-                                [ Form.label [ for "result" ] [ text "result - (mm)" ]
-                                , Input.text
-                                    [ Input.id "result"
-                                    , Input.disabled True
-                                    , Input.value reinforcementRequiredToString
+                            [ Form.col [ Col.xs6 ]
+                                [ Form.label [ for "link-bar-diameter" ]
+                                    [ text "link bar diameter (mm)" ]
+                                , Select.select
+                                    [ Select.id "link-bar-diameter"
+                                    , Select.onChange (\diameter -> Update LinBarDiameter diameter)
                                     ]
+                                    linBarDiametersToSelect
+                                ]
+                            , Form.col [ Col.xs6 ]
+                                [ Form.label [ for "main-bar-diameter" ]
+                                    [ text "main bar diameter (mm)" ]
+                                , Select.select
+                                    [ Select.id "main-bar-diameter"
+                                    , Select.onChange (\diameter -> Update MainBarDiameter diameter)
+                                    ]
+                                    mainBarDiametersToSelect
+                                ]
+                            ]
+                        , Form.row []
+                            [ Form.col [ Col.xs6 ]
+                                [ Form.label [ for "concrete-class" ]
+                                    [ text "concrete class (MPa)" ]
+                                , Select.select
+                                    [ Select.id "concrete-class"
+                                    , Select.onChange (\concreteClass -> Update ConcreteClass concreteClass)
+                                    ]
+                                    concreteClassesToSelect
+                                ]
+                            , Form.col [ Col.xs6 ]
+                                [ Form.label [ for "steel-class" ]
+                                    [ text "steel class (MPa)" ]
+                                , Select.select
+                                    [ Select.id "steel-class"
+                                    , Select.onChange (\steelClass -> Update SteelClass steelClass)
+                                    ]
+                                    steelClassesToSelect
+                                ]
+                            ]
+                        , Form.row []
+                            [ Form.col [ Col.xs6 ]
+                                [ Form.label [ for "gammaC" ]
+                                    [ text "concrete - "
+                                    , text gamma
+                                    , sub [] [ text "c" ]
+                                    ]
+                                , Select.select
+                                    [ Select.id "gammaC"
+                                    , Select.onChange (\concreteFactor -> Update ConcreteFactor concreteFactor)
+                                    ]
+                                    concreteFactorsToSelect
+                                ]
+                            , Form.col [ Col.xs6 ]
+                                [ Form.label [ for "gammaS" ]
+                                    [ text "steel - "
+                                    , text gamma
+                                    , sub [] [ text "s" ]
+                                    ]
+                                , Select.select
+                                    [ Select.id "gammaS"
+                                    , Select.onChange (\steelFactor -> Update SteelFactor steelFactor)
+                                    ]
+                                    steelFactorsToSelect
                                 ]
                             ]
                         ]
                     ]
-                , Grid.col [ Col.middleXs, Col.xs4 ]
+                , Grid.col [ Col.middleXs, Col.xs6 ]
                     [ Card.config [ Card.attrs [ class "card-side-element" ] ]
                         |> Card.block [ Block.attrs [ class "rc-element-image-wrapper" ] ]
                             [ Block.text [] [ img [ src "assets/images/rc-beam.svg" ] [] ] ]
                         |> Card.view
+                    ]
+                ]
+            , Grid.row [ Row.centerMd ]
+                [ Grid.col [ Col.xs12 ]
+                    [ div [] [ text reinforcementRequiredToString ]
                     ]
                 ]
             , Grid.row [ Row.centerMd ]

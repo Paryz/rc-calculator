@@ -54,8 +54,8 @@ ksiEffectiveLim fYdValue =
     0.8 * (0.0035 / (0.0035 + (fYdValue / 200000)))
 
 
-reqReinforcement : KsiEffective -> KsiEffectiveLim -> Alpha -> Fcd -> Width -> EffectiveHeight -> Fyd -> BendingMoment -> Cover -> ReqReinforcement
-reqReinforcement ksiEffectiveValue ksiEffectiveLimValue alpha fCdValue width effectiveHeightValue fYdValue bendingMomentValue topCover =
+reqReinforcement : KsiEffective -> KsiEffectiveLim -> Alpha -> Fcd -> Width -> EffectiveHeight -> Fyd -> BendingMoment -> Cover -> MinReinforcement -> ReqReinforcement
+reqReinforcement ksiEffectiveValue ksiEffectiveLimValue alpha fCdValue width effectiveHeightValue fYdValue bendingMomentValue topCover minReinforcementValue =
     let
         bottomReinforcementWithoutKsi =
             (alpha * fCdValue * width * effectiveHeightValue) / fYdValue
@@ -64,7 +64,7 @@ reqReinforcement ksiEffectiveValue ksiEffectiveLimValue alpha fCdValue width eff
         -- single reinforced section
         let
             bottomReinforcement =
-                bottomReinforcementWithoutKsi * ksiEffectiveValue
+                Basics.max (bottomReinforcementWithoutKsi * ksiEffectiveValue) minReinforcementValue
         in
         ( 0, round bottomReinforcement )
 
@@ -84,10 +84,10 @@ reqReinforcement ksiEffectiveValue ksiEffectiveLimValue alpha fCdValue width eff
                 1000000 * (bendingMomentValue - bendingMomentPrime)
 
             topReinforcement =
-                bendingMomentDelta / (fYdValue * (effectiveHeightValue - topCover))
+                Basics.max (bendingMomentDelta / (fYdValue * (effectiveHeightValue - topCover))) minReinforcementValue
 
             bottomReinforcement =
-                bottomReinforcementPrime + topReinforcement
+                Basics.max (bottomReinforcementPrime + topReinforcement) minReinforcementValue
         in
         ( round topReinforcement, round bottomReinforcement )
 

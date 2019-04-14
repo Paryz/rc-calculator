@@ -108,11 +108,17 @@ suite =
                         fYd =
                             Calculator.fYd Mock.fyk Mock.gammaS
 
+                        fCtm =
+                            Calculator.fCtm Mock.fck
+
                         ksiEffectiveLim =
                             Calculator.ksiEffectiveLim fYd
 
                         effectiveHeight =
                             Calculator.effectiveHeight Mock.height Mock.cover Mock.linkDiameter Mock.mainBarDiameter
+
+                        minReinforcement =
+                            Calculator.minReinforcement fCtm Mock.fyk Mock.width effectiveHeight
 
                         sC =
                             Calculator.sC Mock.bendingMoment Mock.alpha fCd Mock.width effectiveHeight
@@ -120,8 +126,8 @@ suite =
                         ksiEffective =
                             Calculator.ksiEffective sC
                     in
-                    Mock.cover
-                        |> Calculator.reqReinforcement ksiEffective ksiEffectiveLim Mock.alpha fCd Mock.width effectiveHeight fYd Mock.bendingMoment
+                    minReinforcement
+                        |> Calculator.reqReinforcement ksiEffective ksiEffectiveLim Mock.alpha fCd Mock.width effectiveHeight fYd Mock.bendingMoment Mock.topCover
                         |> Expect.equal ( 0, 882 )
             , test "doubly reinforced section" <|
                 \_ ->
@@ -132,11 +138,17 @@ suite =
                         fYd =
                             Calculator.fYd Mock.fyk Mock.gammaS
 
+                        fCtm =
+                            Calculator.fCtm Mock.fck
+
                         ksiEffectiveLim =
                             Calculator.ksiEffectiveLim fYd
 
                         effectiveHeight =
                             Calculator.effectiveHeight Mock.height Mock.cover Mock.linkDiameter Mock.mainBarDiameter
+
+                        minReinforcement =
+                            Calculator.minReinforcement fCtm Mock.fyk Mock.width effectiveHeight
 
                         sC =
                             Calculator.sC Mock.bigBendingMoment Mock.alpha fCd Mock.width effectiveHeight
@@ -144,8 +156,8 @@ suite =
                         ksiEffective =
                             Calculator.ksiEffective sC
                     in
-                    Mock.topCover
-                        |> Calculator.reqReinforcement ksiEffective ksiEffectiveLim Mock.alpha fCd Mock.width effectiveHeight fYd Mock.bigBendingMoment
+                    minReinforcement
+                        |> Calculator.reqReinforcement ksiEffective ksiEffectiveLim Mock.alpha fCd Mock.width effectiveHeight fYd Mock.bigBendingMoment Mock.topCover
                         |> Expect.equal ( 1083, 5328 )
             ]
         , describe "maximumReinforcement"
