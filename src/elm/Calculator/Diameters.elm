@@ -17,16 +17,16 @@ barDiameters =
 
 
 type alias BarSectionsList =
-    { m6 : List Float
-    , m8 : List Float
-    , m10 : List Float
-    , m12 : List Float
-    , m16 : List Float
-    , m20 : List Float
-    , m25 : List Float
-    , m32 : List Float
-    , m40 : List Float
-    , m50 : List Float
+    { m6 : List Int
+    , m8 : List Int
+    , m10 : List Int
+    , m12 : List Int
+    , m16 : List Int
+    , m20 : List Int
+    , m25 : List Int
+    , m32 : List Int
+    , m40 : List Int
+    , m50 : List Int
     }
 
 

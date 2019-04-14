@@ -29,6 +29,10 @@ body {
   height: 100%;
 }
 
+.card-side-element {
+  background-color: #fed;
+}
+
 .card-element {
   width: 20vw;
   height: 20vw;
@@ -109,4 +113,20 @@ h1 {
 
 a {
   color: inherit;
+}
+
+table {
+  thead {
+    th {
+      border-top: none !important;
+      border-bottom: none !important;
+    }
+  }
+
+  tbody {
+    td {
+      border-top: none !important;
+      border-bottom: none !important;
+    }
+  }
 }

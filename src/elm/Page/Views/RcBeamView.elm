@@ -1,5 +1,7 @@
 module Page.Views.RcBeamView exposing (view)
 
+import Bootstrap.Card as Card
+import Bootstrap.Card.Block as Block
 import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
 import Bootstrap.Form.Select as Select
@@ -127,7 +129,7 @@ view model =
                                 ]
                             ]
                         , Form.row []
-                            [ Form.col [ Col.xs3 ]
+                            [ Form.col [ Col.md6, Col.xl3 ]
                                 [ Form.label [ for "concrete-class" ]
                                     [ text "concrete class (MPa)" ]
                                 , Select.select
@@ -136,7 +138,7 @@ view model =
                                     ]
                                     concreteClassesToSelect
                                 ]
-                            , Form.col [ Col.xs3 ]
+                            , Form.col [ Col.md6, Col.xl3 ]
                                 [ Form.label [ for "steel-class" ]
                                     [ text "steel class (MPa)" ]
                                 , Select.select
@@ -145,7 +147,7 @@ view model =
                                     ]
                                     steelClassesToSelect
                                 ]
-                            , Form.col [ Col.xs3 ]
+                            , Form.col [ Col.md6, Col.xl3 ]
                                 [ Form.label [ for "gammaC" ]
                                     [ text "concrete - "
                                     , text gamma
@@ -157,7 +159,7 @@ view model =
                                     ]
                                     concreteFactorsToSelect
                                 ]
-                            , Form.col [ Col.xs3 ]
+                            , Form.col [ Col.md6, Col.xl3 ]
                                 [ Form.label [ for "gammaS" ]
                                     [ text "steel - "
                                     , text gamma
@@ -197,11 +199,17 @@ view model =
                         ]
                     ]
                 , Grid.col [ Col.middleXs, Col.xs4 ]
-                    [ h1 [] [ text "test" ] ]
+                    [ Card.config [ Card.attrs [ class "card-side-element" ] ]
+                        |> Card.block [ Block.attrs [ class "rc-element-image-wrapper" ] ]
+                            [ Block.text [] [ img [ src "assets/images/rc-beam.svg" ] [] ] ]
+                        |> Card.view
+                    ]
                 ]
             , Grid.row [ Row.centerMd ]
-                [ Grid.col [ Col.middleXs, Col.xs8 ]
-                    [ barSectionTable Diameters.listOfBarSection totalReqReinforcement ]
+                [ Grid.col [ Col.xs6 ]
+                    [ barSectionTable Diameters.listOfBarSection top ]
+                , Grid.col [ Col.xs6 ]
+                    [ barSectionTable Diameters.listOfBarSection bottom ]
                 ]
             ]
     }
@@ -229,33 +237,42 @@ mapItemFromFloatWithDefault collection itemValue =
         collection
 
 
-barSectionTable : BarSectionsList -> Float -> Html msg
+barSectionTable : BarSectionsList -> Int -> Html msg
 barSectionTable barSectionList reqReinforcement =
-    Table.simpleTable
-        ( Table.simpleThead
-            [ Table.th [] [ text "Diameter" ]
-            , Table.th [] [ text "1" ]
-            , Table.th [] [ text "2" ]
-            , Table.th [] [ text "3" ]
-            , Table.th [] [ text "4" ]
-            , Table.th [] [ text "5" ]
-            , Table.th [] [ text "6" ]
-            ]
-        , Table.tbody []
-            [ tableRow .m12 Diameters.listOfBarSection "M12" reqReinforcement
-            , tableRow .m16 Diameters.listOfBarSection "M16" reqReinforcement
-            , tableRow .m20 Diameters.listOfBarSection "M20" reqReinforcement
-            , tableRow .m25 Diameters.listOfBarSection "M25" reqReinforcement
-            , tableRow .m32 Diameters.listOfBarSection "M32" reqReinforcement
-            ]
-        )
+    let
+        phi =
+            String.fromChar (Char.fromCode 966)
+    in
+    Table.table
+        { options = [ Table.small ]
+        , thead =
+            Table.simpleThead
+                [ Table.th [] [ text phi ]
+                , Table.th [] [ text "1" ]
+                , Table.th [] [ text "2" ]
+                , Table.th [] [ text "3" ]
+                , Table.th [] [ text "4" ]
+                , Table.th [] [ text "5" ]
+                , Table.th [] [ text "6" ]
+                , Table.th [] [ text "7" ]
+                , Table.th [] [ text "8" ]
+                ]
+        , tbody =
+            Table.tbody []
+                [ tableRow .m12 Diameters.listOfBarSection "12" reqReinforcement
+                , tableRow .m16 Diameters.listOfBarSection "16" reqReinforcement
+                , tableRow .m20 Diameters.listOfBarSection "20" reqReinforcement
+                , tableRow .m25 Diameters.listOfBarSection "25" reqReinforcement
+                , tableRow .m32 Diameters.listOfBarSection "32" reqReinforcement
+                ]
+        }
 
 
-tableRow : (BarSectionsList -> List Float) -> BarSectionsList -> String -> Float -> Table.Row msg
+tableRow : (BarSectionsList -> List Int) -> BarSectionsList -> String -> Int -> Table.Row msg
 tableRow function listOfSections bar reqReinforcement =
     let
         firstSixElementsOfList =
-            List.take 6 (function listOfSections)
+            List.take 8 (function listOfSections)
 
         mappedCells =
             List.map
@@ -268,7 +285,7 @@ tableRow function listOfSections bar reqReinforcement =
                             else
                                 Table.cellDanger
                     in
-                    Table.td [ color ] [ text (String.fromFloat section) ]
+                    Table.td [ color ] [ text (String.fromInt section) ]
                 )
                 firstSixElementsOfList
 
