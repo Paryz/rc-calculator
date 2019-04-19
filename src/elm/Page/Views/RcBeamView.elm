@@ -16,6 +16,8 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
 import Page.RcBeam exposing (Field(..), Model, Msg(..))
+import Page.Translators.RcBeamTranslator exposing (translate)
+import Page.Views.BeamDrawing exposing (beamDrawing)
 
 
 view : Model -> { title : String, content : Html Msg }
@@ -78,21 +80,41 @@ view model =
                         [ Form.row []
                             [ Form.col [ Col.xs6 ]
                                 [ Form.label [ for "height" ] [ text "height - h (mm)" ]
-                                , Input.text
+                                , Input.number
                                     [ Input.id "width"
                                     , Input.onInput (\height -> Update Height height)
                                     , Input.value model.beam.height
-                                    , Input.attrs [ type_ "number" ]
+                                    , Input.attrs
+                                        [ Html.Attributes.max "1000"
+                                        , Html.Attributes.min "0"
+                                        ]
                                     ]
+                                , input
+                                    [ type_ "range"
+                                    , Html.Attributes.min "100"
+                                    , Html.Attributes.max "2000"
+                                    , Html.Attributes.step "10"
+                                    , value model.beam.height
+                                    , onInput (Update Height)
+                                    ]
+                                    []
                                 ]
                             , Form.col [ Col.xs6 ]
                                 [ Form.label [ for "width" ] [ text "width - b (mm)" ]
-                                , Input.text
+                                , Input.number
                                     [ Input.id "width"
                                     , Input.onInput (\width -> Update Width width)
                                     , Input.value model.beam.width
-                                    , Input.attrs [ type_ "number" ]
                                     ]
+                                , input
+                                    [ type_ "range"
+                                    , Html.Attributes.min "100"
+                                    , Html.Attributes.max "1000"
+                                    , Html.Attributes.step "10"
+                                    , value model.beam.width
+                                    , onInput (Update Width)
+                                    ]
+                                    []
                                 ]
                             ]
                         , Form.row []
@@ -102,24 +124,40 @@ view model =
                                     , sub [] [ text "nom" ]
                                     , text " (mm)"
                                     ]
-                                , Input.text
+                                , Input.number
                                     [ Input.id "cover"
                                     , Input.onInput (\cover -> Update Cover cover)
                                     , Input.value model.beam.cover
-                                    , Input.attrs [ type_ "number" ]
                                     ]
+                                , input
+                                    [ type_ "range"
+                                    , Html.Attributes.min "10"
+                                    , Html.Attributes.max "100"
+                                    , Html.Attributes.step "5"
+                                    , value model.beam.cover
+                                    , onInput (Update Cover)
+                                    ]
+                                    []
                                 ]
                             , Form.col [ Col.xs6 ]
                                 [ Form.label [ for "bending-moment" ]
                                     [ text "bending moment - M"
                                     , sub [] [ text "ed" ]
                                     ]
-                                , Input.text
+                                , Input.number
                                     [ Input.id "bending-moment"
                                     , Input.onInput (\moment -> Update BendingMoment moment)
                                     , Input.value model.beam.bendingMoment
-                                    , Input.attrs [ type_ "number" ]
                                     ]
+                                , input
+                                    [ type_ "range"
+                                    , Html.Attributes.min "100"
+                                    , Html.Attributes.max "5000"
+                                    , Html.Attributes.step "100"
+                                    , value model.beam.bendingMoment
+                                    , onInput (Update BendingMoment)
+                                    ]
+                                    []
                                 ]
                             ]
                         , Form.row []
@@ -191,11 +229,7 @@ view model =
                         ]
                     ]
                 , Grid.col [ Col.middleXs, Col.xs6 ]
-                    [ Card.config [ Card.attrs [ class "card-side-element" ] ]
-                        |> Card.block [ Block.attrs [ class "rc-element-image-wrapper" ] ]
-                            [ Block.text [] [ img [ src "assets/images/rc-beam.svg" ] [] ] ]
-                        |> Card.view
-                    ]
+                    [ beamDrawing (translate model.beam) ]
                 ]
             , Grid.row [ Row.centerMd ]
                 [ Grid.col [ Col.xs12 ]
