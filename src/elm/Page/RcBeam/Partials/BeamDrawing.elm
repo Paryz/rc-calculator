@@ -9,26 +9,37 @@ import Svg.Attributes exposing (..)
 beamDrawing : Beam -> Svg msg
 beamDrawing beam =
     let
+        scale =
+            if beam.height < 900 then
+                "scale(0.5)"
+
+            else
+                "scale(0.25)"
+
         canvasWidth =
             beam.width / 2 + 20
 
         canvasHeight =
-            beam.height / 2 + 20
+            if beam.height < 900 then
+                beam.height / 2 + 20
+
+            else
+                beam.height / 4 + 20
 
         scaledWidth =
-            beam.width / 2
+            beam.width
 
         scaledHeight =
-            beam.height / 2
+            beam.height
 
         scaledMainBarDiameter =
-            beam.mainBarDiameter / 2
+            beam.mainBarDiameter
 
         scaledLinkDiameter =
-            beam.linkDiameter / 2
+            beam.linkDiameter
 
         scaledCover =
-            beam.cover / 2
+            beam.cover
 
         translation =
             "translate(" ++ String.fromFloat (scaledCover + 10) ++ "," ++ String.fromFloat (scaledCover + 10) ++ ")"
@@ -60,31 +71,33 @@ beamDrawing beam =
                 scaledLinkDiameter * 2
     in
     svg [ width <| String.fromFloat canvasWidth, height <| String.fromFloat canvasHeight ]
-        [ rect
-            [ x "10"
-            , y "10"
-            , width <| String.fromFloat scaledWidth
-            , height <| String.fromFloat scaledHeight
-            , Svg.Attributes.style "stroke:black;fill:lightgrey"
-            ]
-            []
-        , g [ transform translation ]
+        [ g [ transform scale ]
             [ rect
-                [ width <| String.fromFloat linkOuterWidth
-                , height <| String.fromFloat linkOuterHeight
-                , rx <| String.fromFloat <| linkOuterRadius beam.linkDiameter
-                , ry <| String.fromFloat <| linkOuterRadius beam.linkDiameter
-                ]
-                []
-            , rect
-                [ x <| String.fromFloat scaledLinkDiameter
-                , y <| String.fromFloat scaledLinkDiameter
-                , width <| String.fromFloat linkInnerWidth
-                , height <| String.fromFloat linkInnerHeight
-                , rx <| String.fromFloat <| linkInnerRadius beam.linkDiameter
-                , ry <| String.fromFloat <| linkInnerRadius beam.linkDiameter
+                [ x "10"
+                , y "10"
+                , width <| String.fromFloat scaledWidth
+                , height <| String.fromFloat scaledHeight
                 , Svg.Attributes.style "stroke:black;fill:lightgrey"
                 ]
                 []
+            , g [ transform translation ]
+                [ rect
+                    [ width <| String.fromFloat linkOuterWidth
+                    , height <| String.fromFloat linkOuterHeight
+                    , rx <| String.fromFloat <| linkOuterRadius beam.linkDiameter
+                    , ry <| String.fromFloat <| linkOuterRadius beam.linkDiameter
+                    ]
+                    []
+                , rect
+                    [ x <| String.fromFloat scaledLinkDiameter
+                    , y <| String.fromFloat scaledLinkDiameter
+                    , width <| String.fromFloat linkInnerWidth
+                    , height <| String.fromFloat linkInnerHeight
+                    , rx <| String.fromFloat <| linkInnerRadius beam.linkDiameter
+                    , ry <| String.fromFloat <| linkInnerRadius beam.linkDiameter
+                    , Svg.Attributes.style "stroke:black;fill:lightgrey"
+                    ]
+                    []
+                ]
             ]
         ]
