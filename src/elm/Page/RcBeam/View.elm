@@ -30,12 +30,12 @@ view model =
             List.map
                 (\( cube, cylinder ) ->
                     if cube == 30 then
-                        Select.item [ value (String.fromInt cube), selected True ]
-                            [ text (String.fromInt cube ++ "/" ++ String.fromInt cylinder) ]
+                        Select.item [ value <| String.fromInt cube, selected True ]
+                            [ text <| String.fromInt cube ++ "/" ++ String.fromInt cylinder ]
 
                     else
-                        Select.item [ value (String.fromInt cube) ]
-                            [ text (String.fromInt cube ++ "/" ++ String.fromInt cylinder) ]
+                        Select.item [ value <| String.fromInt cube ]
+                            [ text <| String.fromInt cube ++ "/" ++ String.fromInt cylinder ]
                 )
                 Classes.concrete
 
@@ -58,7 +58,7 @@ view model =
             model.reinforcement
 
         totalReqReinforcement =
-            Basics.toFloat (bottom + top)
+            Basics.toFloat <| bottom + top
 
         reinforcementRequiredToString =
             let
@@ -245,7 +245,7 @@ view model =
 mapItemFromFloat : List Float -> List (Select.Item msg)
 mapItemFromFloat collection =
     List.map
-        (\item -> Select.item [ value (String.fromFloat item) ] [ text (String.fromFloat item) ])
+        (\item -> Select.item [ value <| String.fromFloat item ] [ text <| String.fromFloat item ])
         collection
 
 
@@ -254,12 +254,12 @@ mapItemFromFloatWithDefault collection itemValue =
     List.map
         (\item ->
             if item == itemValue then
-                Select.item [ value (String.fromInt item), selected True ]
-                    [ text (String.fromInt item) ]
+                Select.item [ value <| String.fromInt item, selected True ]
+                    [ text <| String.fromInt item ]
 
             else
-                Select.item [ value (String.fromInt item) ]
-                    [ text (String.fromInt item) ]
+                Select.item [ value <| String.fromInt item ]
+                    [ text <| String.fromInt item ]
         )
         collection
 
@@ -286,7 +286,7 @@ barSectionTable : BarSectionsList -> Int -> Html msg
 barSectionTable barSectionList reqReinforcement =
     let
         phi =
-            String.fromChar (Char.fromCode 966)
+            String.fromChar <| Char.fromCode 966
     in
     Table.table
         { options = [ Table.small ]
@@ -330,7 +330,7 @@ tableRow function listOfSections bar reqReinforcement =
                             else
                                 Table.cellDanger
                     in
-                    Table.td [ color ] [ text (String.fromInt section) ]
+                    Table.td [ color ] [ text <| String.fromInt section ]
                 )
                 firstSixElementsOfList
 

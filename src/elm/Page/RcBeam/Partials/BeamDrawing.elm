@@ -59,30 +59,30 @@ beamDrawing beam =
             else
                 scaledLinkDiameter * 2
     in
-    svg [ width (String.fromFloat canvasWidth), height (String.fromFloat canvasHeight) ]
+    svg [ width <| String.fromFloat canvasWidth, height <| String.fromFloat canvasHeight ]
         [ rect
             [ x "10"
             , y "10"
-            , width (String.fromFloat scaledWidth)
-            , height (String.fromFloat scaledHeight)
+            , width <| String.fromFloat scaledWidth
+            , height <| String.fromFloat scaledHeight
             , Svg.Attributes.style "stroke:black;fill:lightgrey"
             ]
             []
         , g [ transform translation ]
             [ rect
-                [ width (String.fromFloat linkOuterWidth)
-                , height (String.fromFloat linkOuterHeight)
-                , rx (String.fromFloat (linkOuterRadius beam.linkDiameter))
-                , ry (String.fromFloat (linkOuterRadius beam.linkDiameter))
+                [ width <| String.fromFloat linkOuterWidth
+                , height <| String.fromFloat linkOuterHeight
+                , rx <| String.fromFloat <| linkOuterRadius beam.linkDiameter
+                , ry <| String.fromFloat <| linkOuterRadius beam.linkDiameter
                 ]
                 []
             , rect
-                [ x (String.fromFloat scaledLinkDiameter)
-                , y (String.fromFloat scaledLinkDiameter)
-                , width (String.fromFloat linkInnerWidth)
-                , height (String.fromFloat linkInnerHeight)
-                , rx (String.fromFloat (linkInnerRadius beam.linkDiameter))
-                , ry (String.fromFloat (linkInnerRadius beam.linkDiameter))
+                [ x <| String.fromFloat scaledLinkDiameter
+                , y <| String.fromFloat scaledLinkDiameter
+                , width <| String.fromFloat linkInnerWidth
+                , height <| String.fromFloat linkInnerHeight
+                , rx <| String.fromFloat <| linkInnerRadius beam.linkDiameter
+                , ry <| String.fromFloat <| linkInnerRadius beam.linkDiameter
                 , Svg.Attributes.style "stroke:black;fill:lightgrey"
                 ]
                 []
