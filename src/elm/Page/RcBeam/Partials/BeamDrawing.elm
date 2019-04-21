@@ -1,7 +1,7 @@
-module Page.Views.BeamDrawing exposing (beamDrawing)
+module Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
 
 import Html
-import Page.Translators.RcBeamTranslator exposing (Beam)
+import Page.RcBeam.Translator exposing (Beam)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 

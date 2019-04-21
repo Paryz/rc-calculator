@@ -1,4 +1,4 @@
-module Page.Translators.RcBeamTranslator exposing (Beam, StringedBeam, translate)
+module Page.RcBeam.Translator exposing (Beam, StringedBeam, translate)
 
 
 type alias StringedBeam =

@@ -1,8 +1,8 @@
-module Page.RcBeam exposing (Field(..), Model, Msg(..), init, subscriptions, toSession, update)
+module Page.RcBeam.Model exposing (Field(..), Model, Msg(..), init, subscriptions, toSession, update)
 
 import Calculator.Beam as Beam
 import Calculator.Types as Types
-import Page.Translators.RcBeamTranslator as RcBeamTranslator exposing (Beam, StringedBeam)
+import Page.RcBeam.Translator as Translator exposing (Beam, StringedBeam)
 import Session exposing (Session)
 
 
@@ -128,7 +128,7 @@ calculateReinforcement : StringedBeam -> Types.ReqReinforcement
 calculateReinforcement stringedBeam =
     let
         beam =
-            RcBeamTranslator.translate stringedBeam
+            Translator.translate stringedBeam
 
         fyd =
             Beam.fYd beam.steelClass beam.steelFactor
@@ -161,7 +161,7 @@ calculateMaximumReinforcement : StringedBeam -> Types.MaximumReinforcement
 calculateMaximumReinforcement stringedBeam =
     let
         beam =
-            RcBeamTranslator.translate stringedBeam
+            Translator.translate stringedBeam
     in
     Beam.maximumReinforcement beam.height beam.width
 
@@ -170,7 +170,7 @@ calculateMinimumReinforcement : StringedBeam -> Types.MinReinforcement
 calculateMinimumReinforcement stringedBeam =
     let
         beam =
-            RcBeamTranslator.translate stringedBeam
+            Translator.translate stringedBeam
 
         effectiveHeight =
             Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter

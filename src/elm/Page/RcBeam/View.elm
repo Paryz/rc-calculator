@@ -1,4 +1,4 @@
-module Page.Views.RcBeamView exposing (view)
+module Page.RcBeam.View exposing (view)
 
 import Bootstrap.Card as Card
 import Bootstrap.Card.Block as Block
@@ -15,9 +15,9 @@ import Calculator.Factors as Factors
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
-import Page.RcBeam exposing (Field(..), Model, Msg(..))
-import Page.Translators.RcBeamTranslator exposing (translate)
-import Page.Views.BeamDrawing exposing (beamDrawing)
+import Page.RcBeam.Model exposing (Field(..), Model, Msg(..))
+import Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
+import Page.RcBeam.Translator exposing (translate)
 
 
 view : Model -> { title : String, content : Html Msg }
@@ -153,7 +153,7 @@ view model =
                                     [ type_ "range"
                                     , Html.Attributes.min "100"
                                     , Html.Attributes.max "5000"
-                                    , Html.Attributes.step "100"
+                                    , Html.Attributes.step "50"
                                     , value model.beam.bendingMoment
                                     , onInput (Update BendingMoment)
                                     ]

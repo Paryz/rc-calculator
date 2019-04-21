@@ -8,9 +8,9 @@ import Page
 import Page.Blank as Blank
 import Page.Home as Home
 import Page.NotFound as NotFound
-import Page.RcBeam as RcBeam
+import Page.RcBeam.Model as RcBeam
+import Page.RcBeam.View as RcBeamView
 import Page.RcColumn as RcColumn
-import Page.Views.RcBeamView as RcBeamView
 import Route exposing (Route)
 import Session exposing (Session)
 import Url exposing (Url)
