@@ -28,6 +28,11 @@
     "> 1%",
     "last 2 versions"
   ],
+  "dependencies": {
+    "elm": "elm0.19.0",
+    "elm-format": "^0.8.1",
+    "elm-test": "^0.19.0-rev6"
+  },
   "devDependencies": {
     "autoprefixer": "^9.4.5",
     "bootstrap": "^4.3.1",
