@@ -1,4 +1,5 @@
-language: elm
-node_js: 'stable'
+language: node_js
+node_js:
+  - "lts/*"
 script:
-  - elm-format --validate . && elm-test
+  - yarn format --validate && yarn test
