@@ -19,7 +19,8 @@
     "dev": "webpack-dashboard --title 'Elm Dev Server' -- npm run webpack-dev-server -- --env.mode development",
     "elm-analyse": "elm-analyse -s -o",
     "preprod": "rimraf dist",
-    "lint": "stylelint src/assets/styles"
+    "lint": "stylelint src/assets/styles",
+    "ci-test": "elm-test"
   },
   "license": "MIT",
   "browserslist": [
