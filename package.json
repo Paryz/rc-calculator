@@ -21,7 +21,7 @@
     "preprod": "rimraf dist",
     "lint": "stylelint src/assets/styles",
     "test": "elm-test",
-    "format": "elm-format"
+    "format": "elm-format ."
   },
   "license": "MIT",
   "browserslist": [
