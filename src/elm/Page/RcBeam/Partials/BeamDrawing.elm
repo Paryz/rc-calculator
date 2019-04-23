@@ -1,14 +1,16 @@
 module Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
 
 import Array
+import Calculator.Diameters as Diameters
+import Calculator.Types as Types
 import Html
 import Page.RcBeam.Translator exposing (Beam)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
-beamDrawing : Beam -> Svg msg
-beamDrawing beam =
+beamDrawing : Beam -> Types.ReqReinforcement -> Svg msg
+beamDrawing beam reqReinforcement =
     let
         scale =
             if beam.height < 900 then
@@ -56,11 +58,8 @@ beamDrawing beam =
             else
                 beam.linkDiameter * 2
 
-        topBars =
-            2
-
-        bottomBars =
-            4
+        ( topBars, bottomBars ) =
+            fetchBars beam.mainBarDiameter reqReinforcement
 
         topMainBarTranslation =
             let
@@ -139,3 +138,39 @@ mainReinforcement count beam =
         |> List.map Basics.toFloat
         |> List.map (\item -> item * intervalDistnace)
         |> List.map (\offset -> circle [ cx <| String.fromFloat offset, r <| String.fromFloat beam.mainBarDiameter ] [])
+
+
+fetchBars : Types.MainBarDiameter -> Types.ReqReinforcement -> ( Int, Int )
+fetchBars diameter reqReinforcement =
+    let
+        barSectionList =
+            Diameters.mapDiameterToReinforcementList diameter
+
+        ( topReinforcement, bottomReinforcement ) =
+            reqReinforcement
+
+        topBars =
+            barCount barSectionList topReinforcement
+
+        bottomBars =
+            barCount barSectionList bottomReinforcement
+    in
+    ( topBars, bottomBars )
+
+
+barCount : List Int -> Int -> Int
+barCount barSectionList sideOfReinforcement =
+    barSectionList
+        |> List.filter (\value -> value <= sideOfReinforcement)
+        |> List.length
+        |> (+) 1
+        |> minimalBarNumber
+
+
+minimalBarNumber : Int -> Int
+minimalBarNumber value =
+    if value == 1 then
+        2
+
+    else
+        value

@@ -60,6 +60,12 @@ view model =
         totalReqReinforcement =
             Basics.toFloat <| bottom + top
 
+        translatedBeam =
+            translate model.beam
+
+        svgBeamDrawing =
+            beamDrawing translatedBeam model.reinforcement
+
         reinforcementRequiredToString =
             let
                 maximumReinforcement =
@@ -229,7 +235,7 @@ view model =
                         ]
                     ]
                 , Grid.col [ Col.middleXs, Col.xs6 ]
-                    [ beamDrawing (translate model.beam) ]
+                    [ svgBeamDrawing ]
                 ]
             , Grid.row [ Row.centerMd ]
                 [ Grid.col [ Col.xs12 ]

@@ -1,4 +1,6 @@
-module Calculator.Diameters exposing (BarSectionsList, barDiameters, listOfBarSection)
+module Calculator.Diameters exposing (BarSectionsList, barDiameters, listOfBarSection, mapDiameterToReinforcementList)
+
+import Calculator.Types as Types
 
 
 barDiameters : List Int
@@ -43,3 +45,40 @@ listOfBarSection =
     , m40 = [ 1256, 2513, 3769, 5026, 6283, 7539, 8796, 10053, 11309, 12566 ]
     , m50 = [ 1963, 3926, 5890, 7853, 9817, 11780, 13744, 15707, 17671, 19634 ]
     }
+
+
+mapDiameterToReinforcementList : Types.MainBarDiameter -> List Int
+mapDiameterToReinforcementList diameter =
+    case Basics.floor diameter of
+        6 ->
+            listOfBarSection.m6
+
+        8 ->
+            listOfBarSection.m8
+
+        10 ->
+            listOfBarSection.m10
+
+        12 ->
+            listOfBarSection.m12
+
+        16 ->
+            listOfBarSection.m16
+
+        20 ->
+            listOfBarSection.m20
+
+        25 ->
+            listOfBarSection.m25
+
+        32 ->
+            listOfBarSection.m32
+
+        40 ->
+            listOfBarSection.m40
+
+        50 ->
+            listOfBarSection.m50
+
+        _ ->
+            [ 0 ]
