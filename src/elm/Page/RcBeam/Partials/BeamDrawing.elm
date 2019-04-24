@@ -29,7 +29,7 @@ beamDrawing beam reqReinforcement =
             else
                 beam.height / 4 + 20
 
-        translation =
+        linkTranslation =
             "translate(" ++ String.fromFloat (beam.cover + 10) ++ "," ++ String.fromFloat (beam.cover + 10) ++ ")"
 
         linkOuterHeight =
@@ -94,7 +94,7 @@ beamDrawing beam reqReinforcement =
                 , Svg.Attributes.style "stroke:black;fill:lightgrey"
                 ]
                 []
-            , g [ transform translation ]
+            , g [ transform linkTranslation ]
                 [ rect
                     [ width <| String.fromFloat linkOuterWidth
                     , height <| String.fromFloat linkOuterHeight
@@ -141,13 +141,10 @@ mainReinforcement count beam =
 
 
 fetchBars : Types.MainBarDiameter -> Types.ReqReinforcement -> ( Int, Int )
-fetchBars diameter reqReinforcement =
+fetchBars diameter ( topReinforcement, bottomReinforcement ) =
     let
         barSectionList =
             Diameters.mapDiameterToReinforcementList diameter
-
-        ( topReinforcement, bottomReinforcement ) =
-            reqReinforcement
 
         topBars =
             barCount barSectionList topReinforcement
