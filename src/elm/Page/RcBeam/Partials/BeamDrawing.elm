@@ -32,6 +32,13 @@ beamDrawing beam reqReinforcement =
         linkTranslation =
             "translate(" ++ String.fromFloat (beam.cover + 10) ++ "," ++ String.fromFloat (beam.cover + 10) ++ ")"
 
+        linkRadius diameter smallerValue biggerValue =
+            if diameter >= 16 then
+                beam.linkDiameter * biggerValue
+
+            else
+                beam.linkDiameter * smallerValue
+
         linkOuterHeight =
             beam.height - 2 * beam.cover
 
@@ -39,11 +46,7 @@ beamDrawing beam reqReinforcement =
             beam.width - 2 * beam.cover
 
         linkOuterRadius diameter =
-            if diameter >= 16 then
-                beam.linkDiameter * 4.5
-
-            else
-                beam.linkDiameter * 3
+            linkRadius diameter 4.5 3
 
         linkInnerHeight =
             beam.height - 2 * (beam.cover + beam.linkDiameter)
@@ -52,11 +55,7 @@ beamDrawing beam reqReinforcement =
             beam.width - 2 * (beam.cover + beam.linkDiameter)
 
         linkInnerRadius diameter =
-            if diameter >= 16 then
-                beam.linkDiameter * 3.5
-
-            else
-                beam.linkDiameter * 2
+            linkRadius diameter 3.5 2
 
         ( topBars, bottomBars ) =
             fetchBars beam.mainBarDiameter reqReinforcement
