@@ -14,6 +14,7 @@ import Url.Parser as Parser exposing (Parser, oneOf, s)
 type Route
     = Home
     | Root
+    | AboutUs
     | RcBeam
     | RcColumn
 
@@ -27,6 +28,7 @@ parser : Parser (Route -> a) a
 parser =
     oneOf
         [ Parser.map Home Parser.top
+        , Parser.map AboutUs (s "about-us")
         , Parser.map RcBeam (s "rc-beam")
         , Parser.map RcColumn (s "rc-column")
 
@@ -69,6 +71,9 @@ routeToString page =
 
                 Root ->
                     []
+
+                AboutUs ->
+                    [ "about-us" ]
 
                 RcBeam ->
                     [ "rc-beam" ]

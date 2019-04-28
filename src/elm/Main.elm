@@ -5,6 +5,7 @@ import Browser.Navigation as Nav
 import Html exposing (..)
 import Json.Decode exposing (Value)
 import Page
+import Page.AboutUs as AboutUs
 import Page.Blank as Blank
 import Page.Home as Home
 import Page.NotFound as NotFound
@@ -29,6 +30,7 @@ type Model
     = Redirect Session
     | NotFound Session
     | Home Home.Model
+    | AboutUs AboutUs.Model
     | RcBeam RcBeam.Model
     | RcColumn RcColumn.Model
 
@@ -65,6 +67,9 @@ view model =
         Home homeModel ->
             viewPage Page.Home GotHomeMsg (Home.view homeModel)
 
+        AboutUs aboutUsModel ->
+            viewPage Page.AboutUs GotAboutUsMsg (AboutUs.view aboutUsModel)
+
         RcBeam rcBeamModel ->
             viewPage Page.RcBeam GotRcBeamMsg (RcBeamView.view rcBeamModel)
 
@@ -82,6 +87,7 @@ type Msg
     | ChangedUrl Url
     | ClickedLink Browser.UrlRequest
     | GotHomeMsg Home.Msg
+    | GotAboutUsMsg AboutUs.Msg
     | GotRcBeamMsg RcBeam.Msg
     | GotRcColumnMsg RcColumn.Msg
 
@@ -97,6 +103,9 @@ toSession page =
 
         Home homePage ->
             Home.toSession homePage
+
+        AboutUs aboutUsPage ->
+            AboutUs.toSession aboutUsPage
 
         RcBeam rcBeamPage ->
             RcBeam.toSession rcBeamPage
@@ -121,6 +130,10 @@ changeRouteTo maybeRoute model =
         Just Route.Home ->
             Home.init session
                 |> updateWith Home GotHomeMsg model
+
+        Just Route.AboutUs ->
+            AboutUs.init session
+                |> updateWith AboutUs GotAboutUsMsg model
 
         Just Route.RcBeam ->
             RcBeam.init session
@@ -203,6 +216,9 @@ subscriptions model =
 
         Home homeModel ->
             Sub.map GotHomeMsg (Home.subscriptions homeModel)
+
+        AboutUs aboutUsModel ->
+            Sub.map GotAboutUsMsg (AboutUs.subscriptions aboutUsModel)
 
         RcBeam rcBeamModel ->
             Sub.map GotRcBeamMsg (RcBeam.subscriptions rcBeamModel)

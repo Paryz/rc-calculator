@@ -19,6 +19,7 @@ under Other.
 type Page
     = Other
     | Home
+    | AboutUs
     | RcBeam
     | RcColumn
 
@@ -51,7 +52,7 @@ viewHeader =
         [ Grid.col [ Col.middleXs ]
             [ ul [ class "list-inline" ]
                 [ li [ class "list-inline-item" ] [ a [ Route.href Route.Home ] [ text "Home" ] ]
-                , li [ class "list-inline-item" ] [ text "About Us" ]
+                , li [ class "list-inline-item" ] [ a [ Route.href Route.AboutUs ] [ text "About Us" ] ]
                 , li [ class "list-inline-item" ] [ text "Link" ]
                 ]
             ]
