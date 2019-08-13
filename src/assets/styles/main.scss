@@ -5,7 +5,7 @@
 @import "~bootstrap/scss/bootstrap";
 
 @font-face {
-  font-family: "Averta Standard Regular";
+  font-family: "Averta Standard Regular", sans-serif;
   font-style: normal;
   font-weight: normal;
   src:
@@ -14,7 +14,7 @@
 }
 
 body {
-  font-family: "Averta Standard Regular";
+  font-family: "Averta Standard Regular", sans-serif;
   margin: 0;
   text-align: center;
   color: #293c4b;
