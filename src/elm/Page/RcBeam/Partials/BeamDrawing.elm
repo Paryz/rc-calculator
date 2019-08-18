@@ -1,15 +1,19 @@
-module Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
+module Page.RcBeam.Partials.BeamDrawing exposing (render)
 
 import Calculator.Diameters as Diameters
 import Calculator.Types as Types
-import Page.RcBeam.Types exposing (Beam)
+import Page.RcBeam.Translator as Translator
+import Page.RcBeam.Types exposing (Beam, StringedBeam)
 import Svg exposing (Svg, circle, g, rect, svg)
 import Svg.Attributes exposing (cx, height, r, rx, ry, transform, width, x, y)
 
 
-beamDrawing : Beam -> Types.ReqReinforcement -> Svg msg
-beamDrawing beam reqReinforcement =
+render : StringedBeam -> Types.ReqReinforcement -> Svg msg
+render stringedBeam reqReinforcement =
     let
+        beam =
+            Translator.translate stringedBeam
+
         scale =
             if beam.height < 900 then
                 "scale(0.5)"

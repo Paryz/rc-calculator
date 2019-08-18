@@ -3,16 +3,14 @@ module Page.RcBeam exposing (init, subscriptions, toSession, update, view)
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
-import Bootstrap.Table as Table
 import Calculator.Beam as Beam
-import Calculator.Diameters as Diameters exposing (BarSectionsList)
 import Calculator.Types as Types
 import Html exposing (Html, div, text)
-import Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
+import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
 import Page.RcBeam.Partials.Form as Form
 import Page.RcBeam.Partials.Tables as Tables
 import Page.RcBeam.Translator as Translator
-import Page.RcBeam.Types exposing (Beam, Field(..), Model, Msg(..), StringedBeam)
+import Page.RcBeam.Types exposing (Field(..), Model, Msg(..), StringedBeam)
 import Session exposing (Session)
 
 
@@ -194,12 +192,6 @@ view model =
         totalReqReinforcement =
             Basics.toFloat <| bottom + top
 
-        translatedBeam =
-            Translator.translate model.beam
-
-        svgBeamDrawing =
-            beamDrawing translatedBeam model.reinforcement
-
         reinforcementRequiredToString =
             let
                 maximumReinforcement =
@@ -218,7 +210,7 @@ view model =
                 [ Grid.col [ Col.middleXs, Col.xs6 ]
                     [ Form.render model.beam ]
                 , Grid.col [ Col.middleXs, Col.xs6 ]
-                    [ svgBeamDrawing ]
+                    [ BeamDrawing.render model.beam model.reinforcement ]
                 ]
             , Grid.row [ Row.centerMd ]
                 [ Grid.col [ Col.xs12 ]
