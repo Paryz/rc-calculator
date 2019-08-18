@@ -9,8 +9,8 @@ import Page.AboutUs as AboutUs
 import Page.Blank as Blank
 import Page.Home as Home
 import Page.NotFound as NotFound
-import Page.RcBeam.Model as RcBeam
-import Page.RcBeam.View as RcBeamView
+import Page.RcBeam as RcBeam
+import Page.RcBeam.Types as RcBeamTypes
 import Page.RcColumn as RcColumn
 import Route exposing (Route)
 import Session exposing (Session)
@@ -31,7 +31,7 @@ type Model
     | NotFound Session
     | Home Home.Model
     | AboutUs AboutUs.Model
-    | RcBeam RcBeam.Model
+    | RcBeam RcBeamTypes.Model
     | RcColumn RcColumn.Model
 
 
@@ -71,7 +71,7 @@ view model =
             viewPage GotAboutUsMsg (AboutUs.view aboutUsModel)
 
         RcBeam rcBeamModel ->
-            viewPage GotRcBeamMsg (RcBeamView.view rcBeamModel)
+            viewPage GotRcBeamMsg (RcBeam.view rcBeamModel)
 
         RcColumn rcColumnModel ->
             viewPage GotRcColumnMsg (RcColumn.view rcColumnModel)
@@ -87,7 +87,7 @@ type Msg
     | ClickedLink Browser.UrlRequest
     | GotHomeMsg Home.Msg
     | GotAboutUsMsg AboutUs.Msg
-    | GotRcBeamMsg RcBeam.Msg
+    | GotRcBeamMsg RcBeamTypes.Msg
     | GotRcColumnMsg RcColumn.Msg
 
 

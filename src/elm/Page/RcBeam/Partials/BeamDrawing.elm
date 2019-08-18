@@ -2,7 +2,7 @@ module Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
 
 import Calculator.Diameters as Diameters
 import Calculator.Types as Types
-import Page.RcBeam.Translator exposing (Beam)
+import Page.RcBeam.Types exposing (Beam)
 import Svg exposing (Svg, circle, g, rect, svg)
 import Svg.Attributes exposing (cx, height, r, rx, ry, transform, width, x, y)
 

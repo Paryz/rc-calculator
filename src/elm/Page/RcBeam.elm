@@ -1,41 +1,23 @@
-module Page.RcBeam.Model exposing (Field(..), Model, Msg(..), init, subscriptions, toSession, update)
+module Page.RcBeam exposing (init, subscriptions, toSession, update, view)
 
+import Bootstrap.Grid as Grid
+import Bootstrap.Grid.Col as Col
+import Bootstrap.Grid.Row as Row
+import Bootstrap.Table as Table
 import Calculator.Beam as Beam
+import Calculator.Diameters as Diameters exposing (BarSectionsList)
 import Calculator.Types as Types
-import Page.RcBeam.Translator as Translator exposing (StringedBeam)
+import Html exposing (Html, div, text)
+import Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
+import Page.RcBeam.Partials.Form as Form
+import Page.RcBeam.Partials.Tables as Tables
+import Page.RcBeam.Translator as Translator
+import Page.RcBeam.Types exposing (Beam, Field(..), Model, Msg(..), StringedBeam)
 import Session exposing (Session)
 
 
 
 -- MODEL
-
-
-type alias Model =
-    { session : Session
-    , pageTitle : String
-    , pageBody : String
-    , beam : StringedBeam
-    , reinforcement : Types.ReqReinforcement
-    , minimumReinforcement : Types.MinReinforcement
-    , maximumReinforcement : Types.MaximumReinforcement
-    }
-
-
-type Field
-    = Height
-    | Width
-    | Cover
-    | BendingMoment
-    | ConcreteClass
-    | SteelClass
-    | ConcreteFactor
-    | SteelFactor
-    | LinBarDiameter
-    | MainBarDiameter
-
-
-type Msg
-    = Update Field String
 
 
 init : Session -> ( Model, Cmd Msg )
@@ -197,3 +179,52 @@ subscriptions _ =
 toSession : Model -> Session
 toSession model =
     model.session
+
+
+
+-- VIEW
+
+
+view : Model -> { title : String, content : Html Msg }
+view model =
+    let
+        ( top, bottom ) =
+            model.reinforcement
+
+        totalReqReinforcement =
+            Basics.toFloat <| bottom + top
+
+        translatedBeam =
+            Translator.translate model.beam
+
+        svgBeamDrawing =
+            beamDrawing translatedBeam model.reinforcement
+
+        reinforcementRequiredToString =
+            let
+                maximumReinforcement =
+                    model.maximumReinforcement
+            in
+            if top < 0 || bottom < 0 || maximumReinforcement < totalReqReinforcement then
+                "Please provide bigger section"
+
+            else
+                "Top Reinforcement = " ++ String.fromInt top ++ ", Bottom Reinforcement = " ++ String.fromInt bottom
+    in
+    { title = model.pageTitle
+    , content =
+        Grid.container []
+            [ Grid.row []
+                [ Grid.col [ Col.middleXs, Col.xs6 ]
+                    [ Form.render model.beam ]
+                , Grid.col [ Col.middleXs, Col.xs6 ]
+                    [ svgBeamDrawing ]
+                ]
+            , Grid.row [ Row.centerMd ]
+                [ Grid.col [ Col.xs12 ]
+                    [ div [] [ text reinforcementRequiredToString ] ]
+                ]
+            , Grid.row [ Row.centerMd ]
+                (Tables.render top bottom)
+            ]
+    }

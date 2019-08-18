@@ -1,4 +1,4 @@
-module Page.RcBeam.View.Form exposing (view)
+module Page.RcBeam.Partials.Form exposing (render)
 
 import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
@@ -10,11 +10,11 @@ import Calculator.Factors as Factors
 import Html exposing (input, sub, text)
 import Html.Attributes exposing (for, selected, type_, value)
 import Html.Events exposing (onInput)
-import Page.RcBeam.Model exposing (Field(..), Model, Msg(..))
+import Page.RcBeam.Types exposing (Field(..), Msg(..), StringedBeam)
 
 
-view : Model -> Html.Html Msg
-view model =
+render : StringedBeam -> Html.Html Msg
+render beam =
     let
         gamma =
             String.fromChar (Char.fromCode 947)
@@ -54,7 +54,7 @@ view model =
                 , Input.number
                     [ Input.id "width"
                     , Input.onInput (\height -> Update Height height)
-                    , Input.value model.beam.height
+                    , Input.value beam.height
                     , Input.attrs
                         [ Html.Attributes.max "1000"
                         , Html.Attributes.min "0"
@@ -65,7 +65,7 @@ view model =
                     , Html.Attributes.min "100"
                     , Html.Attributes.max "2000"
                     , Html.Attributes.step "10"
-                    , value model.beam.height
+                    , value beam.height
                     , onInput (Update Height)
                     ]
                     []
@@ -75,14 +75,14 @@ view model =
                 , Input.number
                     [ Input.id "width"
                     , Input.onInput (\width -> Update Width width)
-                    , Input.value model.beam.width
+                    , Input.value beam.width
                     ]
                 , input
                     [ type_ "range"
                     , Html.Attributes.min "100"
                     , Html.Attributes.max "1000"
                     , Html.Attributes.step "10"
-                    , value model.beam.width
+                    , value beam.width
                     , onInput (Update Width)
                     ]
                     []
@@ -98,14 +98,14 @@ view model =
                 , Input.number
                     [ Input.id "cover"
                     , Input.onInput (\cover -> Update Cover cover)
-                    , Input.value model.beam.cover
+                    , Input.value beam.cover
                     ]
                 , input
                     [ type_ "range"
                     , Html.Attributes.min "10"
                     , Html.Attributes.max "100"
                     , Html.Attributes.step "5"
-                    , value model.beam.cover
+                    , value beam.cover
                     , onInput (Update Cover)
                     ]
                     []
@@ -118,14 +118,14 @@ view model =
                 , Input.number
                     [ Input.id "bending-moment"
                     , Input.onInput (\moment -> Update BendingMoment moment)
-                    , Input.value model.beam.bendingMoment
+                    , Input.value beam.bendingMoment
                     ]
                 , input
                     [ type_ "range"
                     , Html.Attributes.min "100"
                     , Html.Attributes.max "5000"
                     , Html.Attributes.step "50"
-                    , value model.beam.bendingMoment
+                    , value beam.bendingMoment
                     , onInput (Update BendingMoment)
                     ]
                     []

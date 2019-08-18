@@ -1,64 +1,14 @@
-module Page.RcBeam.View exposing (view)
+module Page.RcBeam.Partials.Tables exposing (render)
 
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
-import Bootstrap.Grid.Row as Row
 import Bootstrap.Table as Table
 import Calculator.Diameters as Diameters exposing (BarSectionsList)
-import Html exposing (Html, div, text)
-import Page.RcBeam.Model exposing (Field(..), Model, Msg(..))
-import Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
-import Page.RcBeam.Translator exposing (translate)
-import Page.RcBeam.View.Form as Form
+import Html exposing (Html, text)
 
 
-view : Model -> { title : String, content : Html Msg }
-view model =
-    let
-        ( top, bottom ) =
-            model.reinforcement
-
-        totalReqReinforcement =
-            Basics.toFloat <| bottom + top
-
-        translatedBeam =
-            translate model.beam
-
-        svgBeamDrawing =
-            beamDrawing translatedBeam model.reinforcement
-
-        reinforcementRequiredToString =
-            let
-                maximumReinforcement =
-                    model.maximumReinforcement
-            in
-            if top < 0 || bottom < 0 || maximumReinforcement < totalReqReinforcement then
-                "Please provide bigger section"
-
-            else
-                "Top Reinforcement = " ++ String.fromInt top ++ ", Bottom Reinforcement = " ++ String.fromInt bottom
-    in
-    { title = model.pageTitle
-    , content =
-        Grid.container []
-            [ Grid.row []
-                [ Grid.col [ Col.middleXs, Col.xs6 ]
-                    [ Form.view model ]
-                , Grid.col [ Col.middleXs, Col.xs6 ]
-                    [ svgBeamDrawing ]
-                ]
-            , Grid.row [ Row.centerMd ]
-                [ Grid.col [ Col.xs12 ]
-                    [ div [] [ text reinforcementRequiredToString ] ]
-                ]
-            , Grid.row [ Row.centerMd ]
-                (renderTables top bottom)
-            ]
-    }
-
-
-renderTables : Int -> Int -> List (Grid.Column msg)
-renderTables top bottom =
+render : Int -> Int -> List (Grid.Column msg)
+render top bottom =
     if top > 0 && bottom > 0 then
         [ Grid.col [ Col.xs6 ]
             [ barSectionTable top ]
