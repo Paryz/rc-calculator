@@ -19,15 +19,12 @@ beamDrawing beam reqReinforcement =
             else
                 "scale(0.25)"
 
-        canvasWidth =
-            beam.width / 2 + 10
-
-        canvasHeight =
+        ( canvasWidth, canvasHeight ) =
             if beam.height < 900 then
-                beam.height / 2 + 20
+                ( beam.width / 2 + 20, beam.height / 2 + 20 )
 
             else
-                beam.height / 4 + 20
+                ( beam.width / 4 + 20, beam.height / 4 + 20 )
 
         linkTranslation =
             "translate(" ++ String.fromFloat (beam.cover + 10) ++ "," ++ String.fromFloat (beam.cover + 10) ++ ")"
@@ -165,8 +162,9 @@ barCount barSectionList sideOfReinforcement =
 
 minimalBarNumber : Int -> Int
 minimalBarNumber value =
-    if value == 1 then
-        2
+    case value of
+        1 ->
+            2
 
-    else
-        value
+        _ ->
+            value
