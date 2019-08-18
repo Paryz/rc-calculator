@@ -137,7 +137,7 @@ render beam =
                     [ text "link bar diameter (mm)" ]
                 , Select.select
                     [ Select.id "link-bar-diameter"
-                    , Select.onChange (\diameter -> Update LinBarDiameter diameter)
+                    , Select.onChange (\diameter -> Update LinkBarDiameter diameter)
                     ]
                     linBarDiametersToSelect
                 ]

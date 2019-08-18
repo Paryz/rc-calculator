@@ -1,6 +1,7 @@
-module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, ksiEffective, ksiEffectiveLim, maximumReinforcement, minReinforcement, reqReinforcement, sC)
+module Calculator.Beam exposing (calculate, effectiveHeight, fCd, fCtm, fYd, ksiEffective, ksiEffectiveLim, maximumReinforcement, minReinforcement, reqReinforcement, sC)
 
 import Calculator.Types exposing (Alpha, AlphaCC, BendingMoment, Cover, EffectiveHeight, Fcd, Fck, Fctm, Fyd, Fyk, GammaC, GammaS, Height, KsiEffective, KsiEffectiveLim, LinkDiameter, MainBarDiameter, MaximumReinforcement, MinReinforcement, ReqReinforcement, Sc, Width)
+import Page.RcBeam.Types exposing (Beam)
 
 
 fYd : Fyk -> GammaS -> Fyd
@@ -95,3 +96,33 @@ reqReinforcement ksiEffectiveValue ksiEffectiveLimValue alpha fCdValue width eff
 maximumReinforcement : Height -> Width -> MaximumReinforcement
 maximumReinforcement height width =
     0.04 * height * width
+
+
+calculate : Beam -> ReqReinforcement
+calculate beam =
+    let
+        fyd =
+            fYd beam.steelClass beam.steelFactor
+
+        fcd =
+            fCd 0.85 beam.concreteClass beam.concreteFactor
+
+        fctm =
+            fCtm beam.concreteClass
+
+        effectiveHeightLocal =
+            effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
+
+        minReinforcementLocal =
+            minReinforcement fctm beam.steelClass beam.width effectiveHeightLocal
+
+        sc =
+            sC beam.bendingMoment 1.0 fcd beam.width effectiveHeightLocal
+
+        ksiEffectiveLocal =
+            ksiEffective sc
+
+        ksiEffectiveLimLocal =
+            ksiEffectiveLim fyd
+    in
+    reqReinforcement ksiEffectiveLocal ksiEffectiveLimLocal 1.0 fcd beam.width effectiveHeightLocal fyd beam.bendingMoment beam.topCover minReinforcementLocal

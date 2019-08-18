@@ -24,7 +24,7 @@ type Field
     | SteelClass
     | ConcreteFactor
     | SteelFactor
-    | LinBarDiameter
+    | LinkBarDiameter
     | MainBarDiameter
 
 

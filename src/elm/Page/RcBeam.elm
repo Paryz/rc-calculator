@@ -3,7 +3,7 @@ module Page.RcBeam exposing (init, subscriptions, toSession, update, view)
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
-import Calculator.Beam as Beam
+import Calculator.Beam
 import Calculator.Types as Types
 import Html exposing (Html, div, text)
 import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
@@ -89,7 +89,7 @@ update msg model =
                         MainBarDiameter ->
                             { beam | mainBarDiameter = newValue }
 
-                        LinBarDiameter ->
+                        LinkBarDiameter ->
                             { beam | linkDiameter = newValue }
 
                 reqReinforcement =
@@ -106,35 +106,9 @@ update msg model =
 
 calculateReinforcement : StringedBeam -> Types.ReqReinforcement
 calculateReinforcement stringedBeam =
-    let
-        beam =
-            Translator.translate stringedBeam
-
-        fyd =
-            Beam.fYd beam.steelClass beam.steelFactor
-
-        fcd =
-            Beam.fCd 0.85 beam.concreteClass beam.concreteFactor
-
-        fctm =
-            Beam.fCtm beam.concreteClass
-
-        effectiveHeight =
-            Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
-
-        minReinforcement =
-            Beam.minReinforcement fctm beam.steelClass beam.width effectiveHeight
-
-        sc =
-            Beam.sC beam.bendingMoment 1.0 fcd beam.width effectiveHeight
-
-        ksiEffective =
-            Beam.ksiEffective sc
-
-        ksiEffectiveLim =
-            Beam.ksiEffectiveLim fyd
-    in
-    Beam.reqReinforcement ksiEffective ksiEffectiveLim 1.0 fcd beam.width effectiveHeight fyd beam.bendingMoment beam.topCover minReinforcement
+    stringedBeam
+        |> Translator.translate
+        |> Calculator.Beam.calculate
 
 
 calculateMaximumReinforcement : StringedBeam -> Types.MaximumReinforcement
@@ -143,7 +117,7 @@ calculateMaximumReinforcement stringedBeam =
         beam =
             Translator.translate stringedBeam
     in
-    Beam.maximumReinforcement beam.height beam.width
+    Calculator.Beam.maximumReinforcement beam.height beam.width
 
 
 calculateMinimumReinforcement : StringedBeam -> Types.MinReinforcement
@@ -153,12 +127,12 @@ calculateMinimumReinforcement stringedBeam =
             Translator.translate stringedBeam
 
         effectiveHeight =
-            Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
+            Calculator.Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
 
         fctm =
-            Beam.fCtm beam.concreteClass
+            Calculator.Beam.fCtm beam.concreteClass
     in
-    Beam.minReinforcement fctm beam.steelClass beam.width effectiveHeight
+    Calculator.Beam.minReinforcement fctm beam.steelClass beam.width effectiveHeight
 
 
 
