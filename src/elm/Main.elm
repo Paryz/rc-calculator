@@ -2,15 +2,15 @@ module Main exposing (main)
 
 import Browser exposing (Document)
 import Browser.Navigation as Nav
-import Html exposing (..)
+import Html
 import Json.Decode exposing (Value)
 import Page
 import Page.AboutUs as AboutUs
 import Page.Blank as Blank
 import Page.Home as Home
 import Page.NotFound as NotFound
-import Page.RcBeam.Model as RcBeam
-import Page.RcBeam.View as RcBeamView
+import Page.RcBeam as RcBeam
+import Page.RcBeam.Types as RcBeamTypes
 import Page.RcColumn as RcColumn
 import Route exposing (Route)
 import Session exposing (Session)
@@ -31,7 +31,7 @@ type Model
     | NotFound Session
     | Home Home.Model
     | AboutUs AboutUs.Model
-    | RcBeam RcBeam.Model
+    | RcBeam RcBeamTypes.Model
     | RcColumn RcColumn.Model
 
 
@@ -48,10 +48,10 @@ init _ url navKey =
 view : Model -> Document Msg
 view model =
     let
-        viewPage page toMsg config =
+        viewPage toMsg config =
             let
                 { title, body } =
-                    Page.view page config
+                    Page.view config
             in
             { title = title
             , body = List.map (Html.map toMsg) body
@@ -59,22 +59,22 @@ view model =
     in
     case model of
         Redirect _ ->
-            viewPage Page.Other (\_ -> Ignored) Blank.view
+            viewPage (\_ -> Ignored) Blank.view
 
         NotFound _ ->
-            viewPage Page.Other (\_ -> Ignored) NotFound.view
+            viewPage (\_ -> Ignored) NotFound.view
 
         Home homeModel ->
-            viewPage Page.Home GotHomeMsg (Home.view homeModel)
+            viewPage GotHomeMsg (Home.view homeModel)
 
         AboutUs aboutUsModel ->
-            viewPage Page.AboutUs GotAboutUsMsg (AboutUs.view aboutUsModel)
+            viewPage GotAboutUsMsg (AboutUs.view aboutUsModel)
 
         RcBeam rcBeamModel ->
-            viewPage Page.RcBeam GotRcBeamMsg (RcBeamView.view rcBeamModel)
+            viewPage GotRcBeamMsg (RcBeam.view rcBeamModel)
 
         RcColumn rcColumnModel ->
-            viewPage Page.RcColumn GotRcColumnMsg (RcColumn.view rcColumnModel)
+            viewPage GotRcColumnMsg (RcColumn.view rcColumnModel)
 
 
 
@@ -83,12 +83,11 @@ view model =
 
 type Msg
     = Ignored
-    | ChangedRoute (Maybe Route)
     | ChangedUrl Url
     | ClickedLink Browser.UrlRequest
     | GotHomeMsg Home.Msg
     | GotAboutUsMsg AboutUs.Msg
-    | GotRcBeamMsg RcBeam.Msg
+    | GotRcBeamMsg RcBeamTypes.Msg
     | GotRcColumnMsg RcColumn.Msg
 
 
@@ -129,19 +128,19 @@ changeRouteTo maybeRoute model =
 
         Just Route.Home ->
             Home.init session
-                |> updateWith Home GotHomeMsg model
+                |> updateWith Home GotHomeMsg
 
         Just Route.AboutUs ->
             AboutUs.init session
-                |> updateWith AboutUs GotAboutUsMsg model
+                |> updateWith AboutUs GotAboutUsMsg
 
         Just Route.RcBeam ->
             RcBeam.init session
-                |> updateWith RcBeam GotRcBeamMsg model
+                |> updateWith RcBeam GotRcBeamMsg
 
         Just Route.RcColumn ->
             RcColumn.init session
-                |> updateWith RcColumn GotRcColumnMsg model
+                |> updateWith RcColumn GotRcColumnMsg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -178,24 +177,21 @@ update msg model =
         ( ChangedUrl url, _ ) ->
             changeRouteTo (Route.fromUrl url) model
 
-        ( ChangedRoute route, _ ) ->
-            changeRouteTo route model
-
         ( GotRcBeamMsg subMsg, RcBeam rcBeamModel ) ->
             RcBeam.update subMsg rcBeamModel
-                |> updateWith RcBeam GotRcBeamMsg model
+                |> updateWith RcBeam GotRcBeamMsg
 
         ( GotRcColumnMsg subMsg, RcColumn rcColumnModel ) ->
             RcColumn.update subMsg rcColumnModel
-                |> updateWith RcColumn GotRcColumnMsg model
+                |> updateWith RcColumn GotRcColumnMsg
 
         ( _, _ ) ->
             -- Disregard messages that arrived for the wrong page.
             ( model, Cmd.none )
 
 
-updateWith : (subModel -> Model) -> (subMsg -> Msg) -> Model -> ( subModel, Cmd subMsg ) -> ( Model, Cmd Msg )
-updateWith toModel toMsg model ( subModel, subCmd ) =
+updateWith : (subModel -> Model) -> (subMsg -> Msg) -> ( subModel, Cmd subMsg ) -> ( Model, Cmd Msg )
+updateWith toModel toMsg ( subModel, subCmd ) =
     ( toModel subModel
     , Cmd.map toMsg subCmd
     )

@@ -1,34 +1,6 @@
-module Page.RcBeam.Translator exposing (Beam, StringedBeam, translate)
+module Page.RcBeam.Translator exposing (translate)
 
-
-type alias StringedBeam =
-    { height : String
-    , width : String
-    , cover : String
-    , topCover : String
-    , concreteClass : String
-    , steelClass : String
-    , concreteFactor : String
-    , steelFactor : String
-    , linkDiameter : String
-    , mainBarDiameter : String
-    , bendingMoment : String
-    }
-
-
-type alias Beam =
-    { height : Float
-    , width : Float
-    , cover : Float
-    , topCover : Float
-    , concreteClass : Float
-    , steelClass : Float
-    , concreteFactor : Float
-    , steelFactor : Float
-    , linkDiameter : Float
-    , mainBarDiameter : Float
-    , bendingMoment : Float
-    }
+import Page.RcBeam.Types exposing (Beam, StringedBeam)
 
 
 translate : StringedBeam -> Beam

@@ -1,17 +1,19 @@
-module Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
+module Page.RcBeam.Partials.BeamDrawing exposing (render)
 
-import Array
 import Calculator.Diameters as Diameters
 import Calculator.Types as Types
-import Html
-import Page.RcBeam.Translator exposing (Beam)
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
+import Page.RcBeam.Translator as Translator
+import Page.RcBeam.Types exposing (Beam, StringedBeam)
+import Svg exposing (Svg, circle, g, rect, svg)
+import Svg.Attributes exposing (cx, height, r, rx, ry, transform, width, x, y)
 
 
-beamDrawing : Beam -> Types.ReqReinforcement -> Svg msg
-beamDrawing beam reqReinforcement =
+render : StringedBeam -> Types.ReqReinforcement -> Svg msg
+render stringedBeam reqReinforcement =
     let
+        beam =
+            Translator.translate stringedBeam
+
         scale =
             if beam.height < 900 then
                 "scale(0.5)"
@@ -19,15 +21,12 @@ beamDrawing beam reqReinforcement =
             else
                 "scale(0.25)"
 
-        canvasWidth =
-            beam.width / 2 + 10
-
-        canvasHeight =
+        ( canvasWidth, canvasHeight ) =
             if beam.height < 900 then
-                beam.height / 2 + 20
+                ( beam.width / 2 + 20, beam.height / 2 + 20 )
 
             else
-                beam.height / 4 + 20
+                ( beam.width / 4 + 20, beam.height / 4 + 20 )
 
         linkTranslation =
             "translate(" ++ String.fromFloat (beam.cover + 10) ++ "," ++ String.fromFloat (beam.cover + 10) ++ ")"
@@ -165,8 +164,9 @@ barCount barSectionList sideOfReinforcement =
 
 minimalBarNumber : Int -> Int
 minimalBarNumber value =
-    if value == 1 then
-        2
+    case value of
+        1 ->
+            2
 
-    else
-        value
+        _ ->
+            value

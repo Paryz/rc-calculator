@@ -1,41 +1,21 @@
-module Page.RcBeam.Model exposing (Field(..), Model, Msg(..), init, subscriptions, toSession, update)
+module Page.RcBeam exposing (init, subscriptions, toSession, update, view)
 
-import Calculator.Beam as Beam
+import Bootstrap.Grid as Grid
+import Bootstrap.Grid.Col as Col
+import Bootstrap.Grid.Row as Row
+import Calculator.Beam
 import Calculator.Types as Types
-import Page.RcBeam.Translator as Translator exposing (Beam, StringedBeam)
+import Html exposing (Html, div, text)
+import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
+import Page.RcBeam.Partials.Form as Form
+import Page.RcBeam.Partials.Tables as Tables
+import Page.RcBeam.Translator as Translator
+import Page.RcBeam.Types exposing (Field(..), Model, Msg(..), StringedBeam)
 import Session exposing (Session)
 
 
 
 -- MODEL
-
-
-type alias Model =
-    { session : Session
-    , pageTitle : String
-    , pageBody : String
-    , beam : StringedBeam
-    , reinforcement : Types.ReqReinforcement
-    , minimumReinforcement : Types.MinReinforcement
-    , maximumReinforcement : Types.MaximumReinforcement
-    }
-
-
-type Field
-    = Height
-    | Width
-    | Cover
-    | BendingMoment
-    | ConcreteClass
-    | SteelClass
-    | ConcreteFactor
-    | SteelFactor
-    | LinBarDiameter
-    | MainBarDiameter
-
-
-type Msg
-    = Update Field String
 
 
 init : Session -> ( Model, Cmd Msg )
@@ -109,7 +89,7 @@ update msg model =
                         MainBarDiameter ->
                             { beam | mainBarDiameter = newValue }
 
-                        LinBarDiameter ->
+                        LinkBarDiameter ->
                             { beam | linkDiameter = newValue }
 
                 reqReinforcement =
@@ -126,35 +106,9 @@ update msg model =
 
 calculateReinforcement : StringedBeam -> Types.ReqReinforcement
 calculateReinforcement stringedBeam =
-    let
-        beam =
-            Translator.translate stringedBeam
-
-        fyd =
-            Beam.fYd beam.steelClass beam.steelFactor
-
-        fcd =
-            Beam.fCd 0.85 beam.concreteClass beam.concreteFactor
-
-        fctm =
-            Beam.fCtm beam.concreteClass
-
-        effectiveHeight =
-            Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
-
-        minReinforcement =
-            Beam.minReinforcement fctm beam.steelClass beam.width effectiveHeight
-
-        sc =
-            Beam.sC beam.bendingMoment 1.0 fcd beam.width effectiveHeight
-
-        ksiEffective =
-            Beam.ksiEffective sc
-
-        ksiEffectiveLim =
-            Beam.ksiEffectiveLim fyd
-    in
-    Beam.reqReinforcement ksiEffective ksiEffectiveLim 1.0 fcd beam.width effectiveHeight fyd beam.bendingMoment beam.topCover minReinforcement
+    stringedBeam
+        |> Translator.translate
+        |> Calculator.Beam.calculate
 
 
 calculateMaximumReinforcement : StringedBeam -> Types.MaximumReinforcement
@@ -163,7 +117,7 @@ calculateMaximumReinforcement stringedBeam =
         beam =
             Translator.translate stringedBeam
     in
-    Beam.maximumReinforcement beam.height beam.width
+    Calculator.Beam.maximumReinforcement beam.height beam.width
 
 
 calculateMinimumReinforcement : StringedBeam -> Types.MinReinforcement
@@ -173,12 +127,12 @@ calculateMinimumReinforcement stringedBeam =
             Translator.translate stringedBeam
 
         effectiveHeight =
-            Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
+            Calculator.Beam.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
 
         fctm =
-            Beam.fCtm beam.concreteClass
+            Calculator.Beam.fCtm beam.concreteClass
     in
-    Beam.minReinforcement fctm beam.steelClass beam.width effectiveHeight
+    Calculator.Beam.minReinforcement fctm beam.steelClass beam.width effectiveHeight
 
 
 
@@ -197,3 +151,46 @@ subscriptions _ =
 toSession : Model -> Session
 toSession model =
     model.session
+
+
+
+-- VIEW
+
+
+view : Model -> { title : String, content : Html Msg }
+view model =
+    let
+        ( top, bottom ) =
+            model.reinforcement
+
+        totalReqReinforcement =
+            Basics.toFloat <| bottom + top
+
+        reinforcementRequiredToString =
+            let
+                maximumReinforcement =
+                    model.maximumReinforcement
+            in
+            if top < 0 || bottom < 0 || maximumReinforcement < totalReqReinforcement then
+                "Please provide bigger section"
+
+            else
+                "Top Reinforcement = " ++ String.fromInt top ++ ", Bottom Reinforcement = " ++ String.fromInt bottom
+    in
+    { title = model.pageTitle
+    , content =
+        Grid.container []
+            [ Grid.row []
+                [ Grid.col [ Col.middleXs, Col.xs6 ]
+                    [ Form.render model.beam ]
+                , Grid.col [ Col.middleXs, Col.xs6 ]
+                    [ BeamDrawing.render model.beam model.reinforcement ]
+                ]
+            , Grid.row [ Row.centerMd ]
+                [ Grid.col [ Col.xs12 ]
+                    [ div [] [ text reinforcementRequiredToString ] ]
+                ]
+            , Grid.row [ Row.centerMd ]
+                (Tables.render top bottom)
+            ]
+    }
