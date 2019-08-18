@@ -2,7 +2,7 @@ module Page.RcBeam.Model exposing (Field(..), Model, Msg(..), init, subscription
 
 import Calculator.Beam as Beam
 import Calculator.Types as Types
-import Page.RcBeam.Translator as Translator exposing (Beam, StringedBeam)
+import Page.RcBeam.Translator as Translator exposing (StringedBeam)
 import Session exposing (Session)
 
 

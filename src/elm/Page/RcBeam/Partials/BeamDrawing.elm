@@ -1,12 +1,10 @@
 module Page.RcBeam.Partials.BeamDrawing exposing (beamDrawing)
 
-import Array
 import Calculator.Diameters as Diameters
 import Calculator.Types as Types
-import Html
 import Page.RcBeam.Translator exposing (Beam)
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
+import Svg exposing (Svg, circle, g, rect, svg)
+import Svg.Attributes exposing (cx, height, r, rx, ry, transform, width, x, y)
 
 
 beamDrawing : Beam -> Types.ReqReinforcement -> Svg msg

@@ -1,6 +1,6 @@
 module Calculator.Beam exposing (effectiveHeight, fCd, fCtm, fYd, ksiEffective, ksiEffectiveLim, maximumReinforcement, minReinforcement, reqReinforcement, sC)
 
-import Calculator.Types exposing (..)
+import Calculator.Types exposing (Alpha, AlphaCC, BendingMoment, Cover, EffectiveHeight, Fcd, Fck, Fctm, Fyd, Fyk, GammaC, GammaS, Height, KsiEffective, KsiEffectiveLim, LinkDiameter, MainBarDiameter, MaximumReinforcement, MinReinforcement, ReqReinforcement, Sc, Width)
 
 
 fYd : Fyk -> GammaS -> Fyd

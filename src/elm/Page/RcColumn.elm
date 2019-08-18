@@ -46,13 +46,13 @@ view model =
 
 
 type Msg
-    = Todo
+    = NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Todo ->
+        NoOp ->
             ( model, Cmd.none )
 
 

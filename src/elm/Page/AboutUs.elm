@@ -1,14 +1,8 @@
 module Page.AboutUs exposing (Model, Msg, init, subscriptions, toSession, view)
 
-import Asset
-import Bootstrap.Card as Card
-import Bootstrap.Card.Block as Block
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
-import Bootstrap.Grid.Row as Row
-import Html exposing (Html, a, br, div, h1, h3, img, p, text)
-import Html.Attributes exposing (class, href, src)
-import Route
+import Html exposing (Html, h1, text)
 import Session exposing (Session)
 
 
@@ -20,6 +14,10 @@ type alias Model =
     { session : Session
     , pageTitle : String
     }
+
+
+type Msg
+    = NoOp
 
 
 init : Session -> ( Model, Cmd Msg )
@@ -46,14 +44,6 @@ view model =
                 ]
             ]
     }
-
-
-
--- UPDATE
-
-
-type Msg
-    = NoOp
 
 
 
