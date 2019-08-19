@@ -135,7 +135,7 @@ mainReinforcement count beam =
         |> List.range 0
         |> List.map Basics.toFloat
         |> List.map (\item -> item * intervalDistnace)
-        |> List.map (\offset -> circle [ cx <| String.fromFloat offset, r <| String.fromFloat beam.mainBarDiameter ] [])
+        |> List.map (\offset -> circle [ cx <| String.fromFloat offset, r <| String.fromFloat <| beam.mainBarDiameter / 2 ] [])
 
 
 fetchBars : Types.MainBarDiameter -> Types.ReqReinforcement -> ( Int, Int )
