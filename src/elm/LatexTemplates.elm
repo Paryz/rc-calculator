@@ -1,4 +1,16 @@
-module LatexTemplates exposing (normalized_macros)
+module LatexTemplates exposing (render)
+
+import Html exposing (Html)
+import MiniLatex.MiniLatex as MiniLatex
+
+
+render : String -> Html msg
+render sourceText =
+    let
+        macroDefinitions =
+            normalize macros
+    in
+    MiniLatex.render macroDefinitions sourceText
 
 
 normalize : String -> String
@@ -14,8 +26,3 @@ macros =
 \\newcommand{\\sett}[2]{\\{\\ #1 \\ |\\ #2 \\}}
 \\newcommand{\\id}{\\mathbb{\\,I\\,}}
 """
-
-
-normalized_macros : String
-normalized_macros =
-    normalize macros
