@@ -6,6 +6,9 @@ import Bootstrap.Grid.Row as Row
 import Calculator.Beam
 import Calculator.Types as Types
 import Html exposing (Html, div, text)
+import LatexTemplates
+import LatexTemplates.RcBeam as RcBeamLatex
+import MiniLatex.MiniLatex as MiniLatex
 import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
 import Page.RcBeam.Partials.Form as Form
 import Page.RcBeam.Partials.Tables as Tables
@@ -192,5 +195,9 @@ view model =
                 ]
             , Grid.row [ Row.centerMd ]
                 (Tables.render top bottom)
+            , Grid.row [ Row.centerMd ]
+                [ Grid.col [ Col.xs12 ]
+                    [ MiniLatex.render LatexTemplates.normalized_macros RcBeamLatex.template ]
+                ]
             ]
     }
