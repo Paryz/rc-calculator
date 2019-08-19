@@ -197,7 +197,7 @@ view model =
                 (Tables.render top bottom)
             , Grid.row [ Row.centerMd ]
                 [ Grid.col [ Col.xs12 ]
-                    [ LatexTemplates.render RcBeamLatex.template2 ]
+                    [ LatexTemplates.render RcBeamLatex.template ]
                 ]
             ]
     }
