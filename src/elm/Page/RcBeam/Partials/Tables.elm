@@ -44,6 +44,8 @@ barSectionTable reqReinforcement =
                 , Table.th [] [ text "6" ]
                 , Table.th [] [ text "7" ]
                 , Table.th [] [ text "8" ]
+                , Table.th [] [ text "9" ]
+                , Table.th [] [ text "10" ]
                 ]
         , tbody =
             Table.tbody []
@@ -52,6 +54,8 @@ barSectionTable reqReinforcement =
                 , tableRow .m20 Diameters.listOfBarSection "20" reqReinforcement
                 , tableRow .m25 Diameters.listOfBarSection "25" reqReinforcement
                 , tableRow .m32 Diameters.listOfBarSection "32" reqReinforcement
+                , tableRow .m40 Diameters.listOfBarSection "40" reqReinforcement
+                , tableRow .m50 Diameters.listOfBarSection "50" reqReinforcement
                 ]
         }
 
@@ -60,7 +64,7 @@ tableRow : (BarSectionsList -> List Int) -> BarSectionsList -> String -> Int -> 
 tableRow function listOfSections bar reqReinforcement =
     let
         firstSixElementsOfList =
-            List.take 8 (function listOfSections)
+            List.take 10 (function listOfSections)
 
         mappedCells =
             List.map
