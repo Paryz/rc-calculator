@@ -120,6 +120,10 @@ a {
 }
 
 @media (max-width: 650px) {
+  .drawing {
+    transform: scale(0.7);
+  }
+
   table {
     font-size: xx-small;
   }

@@ -6,6 +6,7 @@ import Bootstrap.Grid.Row as Row
 import Calculator.Beam
 import Calculator.Types as Types
 import Html exposing (Html, div, text)
+import Html.Attributes exposing (class)
 import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
 import Page.RcBeam.Partials.Form as Form
 import Page.RcBeam.Partials.Tables as Tables
@@ -183,7 +184,7 @@ view model =
             [ Grid.row []
                 [ Grid.col [ Col.middleXs, Col.lg12, Col.xl6 ]
                     [ Form.render model.beam ]
-                , Grid.col [ Col.middleXs, Col.lg12, Col.xl6 ]
+                , Grid.col [ Col.middleXs, Col.lg12, Col.xl6, Col.attrs [ class "drawing" ] ]
                     [ BeamDrawing.render model.beam model.reinforcement ]
                 ]
             , Grid.row [ Row.centerMd ]
