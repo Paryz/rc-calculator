@@ -10,9 +10,9 @@ import Html exposing (Html, text)
 render : Int -> Int -> List (Grid.Column msg)
 render top bottom =
     if top > 0 && bottom > 0 then
-        [ Grid.col [ Col.xs6 ]
+        [ Grid.col [ Col.lg12, Col.xl6 ]
             [ barSectionTable top ]
-        , Grid.col [ Col.xs6 ]
+        , Grid.col [ Col.lg12, Col.xl6 ]
             [ barSectionTable bottom ]
         ]
 

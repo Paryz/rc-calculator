@@ -181,9 +181,9 @@ view model =
     , content =
         Grid.container []
             [ Grid.row []
-                [ Grid.col [ Col.middleXs, Col.xs6 ]
+                [ Grid.col [ Col.middleXs, Col.lg12, Col.xl6 ]
                     [ Form.render model.beam ]
-                , Grid.col [ Col.middleXs, Col.xs6 ]
+                , Grid.col [ Col.middleXs, Col.lg12, Col.xl6 ]
                     [ BeamDrawing.render model.beam model.reinforcement ]
                 ]
             , Grid.row [ Row.centerMd ]
