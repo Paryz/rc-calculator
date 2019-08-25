@@ -10,6 +10,7 @@ import Html.Attributes exposing (class, id)
 import Html.Events exposing (onClick)
 import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
 import Page.RcBeam.Partials.Form as Form
+import Page.RcBeam.Partials.Results as Results
 import Page.RcBeam.Partials.Tables as Tables
 import Page.RcBeam.Translator as Translator
 import Page.RcBeam.Types exposing (Field(..), Model, Msg(..), StringedBeam)
@@ -201,10 +202,6 @@ view model =
             , Grid.row [ Row.centerMd ]
                 (Tables.render top bottom)
             , Grid.row [ Row.centerMd ]
-                [ Grid.col [ Col.xs12 ]
-                    [ button [ onClick <| SendToJs model.beam ] [ text "Print results" ]
-                    , div [ id "test" ] []
-                    ]
-                ]
+                [ Results.template model.beam ]
             ]
     }
