@@ -1,12 +1,13 @@
-module Page.RcBeam exposing (init, subscriptions, toSession, update, view)
+port module Page.RcBeam exposing (init, subscriptions, toSession, update, view)
 
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
 import Calculator.Beam
 import Calculator.Types as Types
-import Html exposing (Html, div, text)
-import Html.Attributes exposing (class)
+import Html exposing (Html, button, div, text)
+import Html.Attributes exposing (class, id)
+import Html.Events exposing (onClick)
 import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
 import Page.RcBeam.Partials.Form as Form
 import Page.RcBeam.Partials.Tables as Tables
@@ -59,6 +60,9 @@ update msg model =
             model.beam
     in
     case msg of
+        SendToJs stringedBeam ->
+            ( model, toJs stringedBeam )
+
         Update field newValue ->
             let
                 updatedBeam =
@@ -140,8 +144,11 @@ calculateMinimumReinforcement stringedBeam =
 -- SUBSCRIPTIONS
 
 
+port toJs : StringedBeam -> Cmd msg
+
+
 subscriptions : Model -> Sub Msg
-subscriptions _ =
+subscriptions model =
     Sub.none
 
 
@@ -193,5 +200,11 @@ view model =
                 ]
             , Grid.row [ Row.centerMd ]
                 (Tables.render top bottom)
+            , Grid.row [ Row.centerMd ]
+                [ Grid.col [ Col.xs12 ]
+                    [ button [ onClick <| SendToJs model.beam ] [ text "Print results" ]
+                    , div [ id "test" ] []
+                    ]
+                ]
             ]
     }

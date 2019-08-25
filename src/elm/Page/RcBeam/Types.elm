@@ -30,6 +30,7 @@ type Field
 
 type Msg
     = Update Field String
+    | SendToJs StringedBeam
 
 
 type alias StringedBeam =
