@@ -119,6 +119,11 @@ a {
   color: inherit;
 }
 
+#concreteDetailsSection,
+#rcSectionSection {
+  font-size: 1.5rem;
+}
+
 @media (max-width: 992px) {
   .drawing {
     transform: scale(0.7);

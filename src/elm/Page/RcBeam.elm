@@ -46,7 +46,7 @@ init session =
       , minimumReinforcement = 331.355
       , maximumReinforcement = 9600.0
       }
-    , Cmd.none
+    , toJs beam
     )
 
 
@@ -66,48 +66,53 @@ update msg model =
 
         Update field newValue ->
             let
-                updatedBeam =
-                    case field of
-                        Height ->
-                            { beam | height = newValue }
-
-                        Width ->
-                            { beam | width = newValue }
-
-                        Cover ->
-                            { beam | cover = newValue }
-
-                        BendingMoment ->
-                            { beam | bendingMoment = newValue }
-
-                        ConcreteClass ->
-                            { beam | concreteClass = newValue }
-
-                        SteelClass ->
-                            { beam | steelClass = newValue }
-
-                        ConcreteFactor ->
-                            { beam | concreteFactor = newValue }
-
-                        SteelFactor ->
-                            { beam | steelFactor = newValue }
-
-                        MainBarDiameter ->
-                            { beam | mainBarDiameter = newValue }
-
-                        LinkBarDiameter ->
-                            { beam | linkDiameter = newValue }
+                newBeam =
+                    updateBeam beam field newValue
 
                 reqReinforcement =
-                    calculateReinforcement updatedBeam
+                    calculateReinforcement newBeam
 
                 maximumReinforcement =
-                    calculateMaximumReinforcement updatedBeam
+                    calculateMaximumReinforcement newBeam
 
                 minimumReinforcement =
-                    calculateMinimumReinforcement updatedBeam
+                    calculateMinimumReinforcement newBeam
             in
-            ( { model | beam = updatedBeam, reinforcement = reqReinforcement, maximumReinforcement = maximumReinforcement, minimumReinforcement = minimumReinforcement }, Cmd.none )
+            ( { model | beam = newBeam, reinforcement = reqReinforcement, maximumReinforcement = maximumReinforcement, minimumReinforcement = minimumReinforcement }, toJs newBeam )
+
+
+updateBeam : StringedBeam -> Field -> String -> StringedBeam
+updateBeam beam field value =
+    case field of
+        Height ->
+            { beam | height = value }
+
+        Width ->
+            { beam | width = value }
+
+        Cover ->
+            { beam | cover = value }
+
+        BendingMoment ->
+            { beam | bendingMoment = value }
+
+        ConcreteClass ->
+            { beam | concreteClass = value }
+
+        SteelClass ->
+            { beam | steelClass = value }
+
+        ConcreteFactor ->
+            { beam | concreteFactor = value }
+
+        SteelFactor ->
+            { beam | steelFactor = value }
+
+        MainBarDiameter ->
+            { beam | mainBarDiameter = value }
+
+        LinkBarDiameter ->
+            { beam | linkDiameter = value }
 
 
 calculateReinforcement : StringedBeam -> Types.ReqReinforcement
