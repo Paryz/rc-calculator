@@ -9,12 +9,20 @@ const katexRender = (template, elem) => {
 }
 
 // concrete details section
+const fctm = (fck) => {
+  if(fck <= '50') {
+    return (`0.3\\frac{N}{mm^2} * (\\frac{f_{ck}}{\\frac{N}{mm^2}})^\\frac{2}{3}`)
+  } else {
+    return (`2.12*\\ln(1+\\frac{f_{cm}}{10})`)
+  }
+}
+
 const resultsTemplate = (beam) => (`
   \\begin{aligned}
   \\LARGE Concret&\\LARGE e\\ Details \\\\
   f_{ck} &= ${beam.concreteClass}\\frac{N}{mm^2} \\\\
   f_{cm} &= f_{ck} + 8\\frac{N}{mm^2} = ${parseInt(beam.concreteClass)+8}\\frac{N}{mm^2} \\\\
-  f_{ctm} &= 0.3\\frac{N}{mm^2} * (\\frac{f_{ck}}{\\frac{N}{mm^2}})^\\frac{2}{3} = 2.9\\frac{N}{mm^2} \\\\
+  f_{ctm} &= ${fctm(beam.concreteClass)} = 2.9\\frac{N}{mm^2} \\\\
   \\varepsilon_{cu2} &= 0.0035 \\\\
   \\varepsilon_{cu2} &= 0.0035 \\\\
   \\gamma_C &= ${beam.concreteFactor} \\\\
@@ -28,9 +36,10 @@ const resultsTemplate = (beam) => (`
   \\LARGE RC\\ Sect&\\LARGE ion\\ Details \\\\
   height &= ${beam.height}mm \\\\
   width &= ${beam.width}mm \\\\
+  bending moment &= ${beam.bendingMoment}\\frac{N}{mm^2}\\\\
   \\end{aligned}
 `)
 
-export const renderResults = (beam, node) => {
+export function renderResults(beam, node) {
   katexRender(resultsTemplate(beam), node)
 }

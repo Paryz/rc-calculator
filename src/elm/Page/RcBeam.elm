@@ -13,7 +13,7 @@ import Page.RcBeam.Partials.Form as Form
 import Page.RcBeam.Partials.Results as Results
 import Page.RcBeam.Partials.Tables as Tables
 import Page.RcBeam.Translator as Translator
-import Page.RcBeam.Types exposing (Field(..), Model, Msg(..), StringedBeam)
+import Page.RcBeam.Types exposing (Field(..), Model, Msg(..), StringedBeam, StringedResultBeam)
 import Session exposing (Session)
 
 
@@ -25,18 +25,7 @@ init : Session -> ( Model, Cmd Msg )
 init session =
     let
         beam =
-            { height = "600"
-            , width = "400"
-            , cover = "30"
-            , topCover = "50"
-            , concreteClass = "30"
-            , steelClass = "500"
-            , concreteFactor = "1.5"
-            , steelFactor = "1.15"
-            , linkDiameter = "10.0"
-            , mainBarDiameter = "20.0"
-            , bendingMoment = "200.0"
-            }
+            StringedBeam "600" "400" "30" "50" "30" "500" "1.5" "1.15" "10.0" "20.0" "200.0"
     in
     ( { session = session
       , pageTitle = "Rc Beam"
@@ -46,7 +35,7 @@ init session =
       , minimumReinforcement = 331.355
       , maximumReinforcement = 9600.0
       }
-    , toJs beam
+    , toJs <| Translator.withCalcs beam
     )
 
 
@@ -62,7 +51,7 @@ update msg model =
     in
     case msg of
         SendToJs stringedBeam ->
-            ( model, toJs stringedBeam )
+            ( model, toJs <| Translator.withCalcs stringedBeam )
 
         Update field newValue ->
             let
@@ -78,7 +67,7 @@ update msg model =
                 minimumReinforcement =
                     calculateMinimumReinforcement newBeam
             in
-            ( { model | beam = newBeam, reinforcement = reqReinforcement, maximumReinforcement = maximumReinforcement, minimumReinforcement = minimumReinforcement }, toJs newBeam )
+            ( { model | beam = newBeam, reinforcement = reqReinforcement, maximumReinforcement = maximumReinforcement, minimumReinforcement = minimumReinforcement }, toJs <| Translator.withCalcs newBeam )
 
 
 updateBeam : StringedBeam -> Field -> String -> StringedBeam
@@ -150,7 +139,7 @@ calculateMinimumReinforcement stringedBeam =
 -- SUBSCRIPTIONS
 
 
-port toJs : StringedBeam -> Cmd msg
+port toJs : StringedResultBeam -> Cmd msg
 
 
 subscriptions : Model -> Sub Msg
