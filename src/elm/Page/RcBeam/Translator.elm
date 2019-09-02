@@ -33,10 +33,10 @@ withCalcs stringedBeam =
             translate stringedBeam
 
         fcd =
-            Calculator.fCd 1.0 beam.concreteClass beam.concreteFactor
+            Calculator.fCd 0.85 beam.concreteClass beam.concreteFactor
 
         fctm =
-            Calculator.fCtm beam.concreteClass
+            Round.ceilingNum 1 (Calculator.fCtm beam.concreteClass)
 
         fyd =
             Calculator.fYd beam.steelClass beam.steelFactor
@@ -70,17 +70,17 @@ withCalcs stringedBeam =
     , steelClass = stringedBeam.steelClass
     , concreteFactor = stringedBeam.concreteFactor
     , steelFactor = stringedBeam.steelFactor
-    , linkDiameter = stringedBeam.linkDiameter
-    , mainBarDiameter = stringedBeam.mainBarDiameter
+    , linkDiameter = String.slice 0 -2 stringedBeam.linkDiameter
+    , mainBarDiameter = String.slice 0 -2 stringedBeam.mainBarDiameter
     , bendingMoment = stringedBeam.bendingMoment
     , fcd = Round.round 2 fcd
-    , fctm = Round.round 2 fctm
+    , fctm = String.fromFloat fctm
     , fyd = Round.round 2 fyd
-    , effectiveHeight = Round.round 2 effectiveHeight
+    , effectiveHeight = String.fromFloat effectiveHeight
     , minReinforcement = Round.round 2 minReinforcement
-    , sC = Round.round 2 sC
-    , ksiEffective = Round.round 2 ksiEffective
-    , ksiEffectiveLim = Round.round 2 ksiEffectiveLim
+    , sC = Round.round 4 sC
+    , ksiEffective = Round.round 4 ksiEffective
+    , ksiEffectiveLim = Round.round 4 ksiEffectiveLim
     , topReqReinforcement = Round.round 2 (toFloat topReqReinforcement)
     , bottomReqReinforcement = Round.round 2 (toFloat bottomReqReinforcement)
     , maximumReinforcement = Round.round 2 maximumReinforcement
