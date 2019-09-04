@@ -1,14 +1,11 @@
 module Page.RcBeam.Partials.Form exposing (render)
 
 import Bootstrap.Form as Form
-import Bootstrap.Form.Fieldset as Fieldset
 import Bootstrap.Form.Input as Input
-import Bootstrap.Form.Radio as Radio
 import Bootstrap.Form.Select as Select
 import Bootstrap.Grid.Col as Col
 import Calculator.Classes as Classes
 import Calculator.Diameters as Diameters
-import Calculator.Factors as Factors
 import Html exposing (div, input, label, sub, text)
 import Html.Attributes exposing (class, for, selected, type_, value)
 import Html.Events exposing (onClick, onInput)
@@ -242,14 +239,6 @@ radioFactorChecked factor target =
 
     else
         False
-
-
-mapItemFromFloat : List Float -> List (Select.Item msg)
-mapItemFromFloat collection =
-    List.map
-        (\item -> Select.item [ value <| String.fromFloat item ] [ text <| String.fromFloat item ])
-        collection
-
 
 mapItemFromFloatWithDefault : List Int -> Int -> List (Select.Item msg)
 mapItemFromFloatWithDefault collection itemValue =

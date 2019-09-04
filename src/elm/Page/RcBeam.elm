@@ -5,9 +5,8 @@ import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
 import Calculator.Beam
 import Calculator.Types as Types
-import Html exposing (Html, button, div, text)
-import Html.Attributes exposing (class, id)
-import Html.Events exposing (onClick)
+import Html exposing (Html, div, text)
+import Html.Attributes exposing (class)
 import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
 import Page.RcBeam.Partials.Form as Form
 import Page.RcBeam.Partials.Results as Results
@@ -195,7 +194,7 @@ view model =
                         ]
                     ]
                 , Grid.col [ Col.lg12, Col.xl3 ]
-                    [ Grid.row [ Row.centerMd ] [ Results.template model.beam ] ]
+                    [ Grid.row [ Row.centerMd ] [ Results.template ] ]
                 ]
             ]
     }
