@@ -21,20 +21,20 @@ const fctmTex = (beam) => {
   }
 }
 
-const requiredReinforcement = (beam) {
+const requiredReinforcement = (beam) => {
   if(beam.ksiEffectiveLim > beam.ksiEffective) {
     return (`
-      A_{s,1} &= ${beam.bottomReqReinforcement}mm^2
-      A_{s,1} &> A_{s,min}
-      A_{s,req} &= ${beam.bottomReqReinforcement}mm^2
+      A_{s,1} &= ${beam.bottomReqReinforcement}mm^2 \\\\
+      A_{s,1} &> A_{s,min} \\\\
+      A_{s,req} &= ${beam.bottomReqReinforcement}mm^2 \\\\
       `)
   } else {
     return (`
-      A_{s,1} &= ${beam.bottomReinforcementPrime}mm^2
-      M_{sd}' &= ${beam.bendingMomentPrime}MPa
-      A_{s,2} &= ${beam.topReqReinforcement}mm^2
-      A_{s} &= ${beam.bottomReqReinforcement}MPa
-      A_{s,max} &= ${beam.maximumReinforcement}mm^2
+      A_{s,1} &= ${beam.bottomReinforcementPrime}mm^2 \\\\
+      M_{sd}' &= ${beam.bendingMomentPrime}MPa \\\\
+      A_{s,2} &= ${beam.topReqReinforcement}mm^2 \\\\
+      A_{s} &= ${beam.bottomReqReinforcement}MPa \\\\
+      A_{s,max} &= ${beam.maximumReinforcement}mm^2 \\\\
       `)
 
   }
@@ -98,6 +98,7 @@ return `
   S_{C} &= ${sC} \\\\
   \\xi_{eff} &= ${ksiEffective} \\\\
   \\xi_{eff,lim} &= ${ksiEffectiveLim} \\\\
+  ${requiredReinforcement(beam)}
   \\\\
   \\end{aligned}
 `}
