@@ -12,4 +12,3 @@ window.$      = jQuery;
 // https://getbootstrap.com/docs/4.1/components/tooltips/
 // You need to initialize the popover but you need to think that this is a SPA,
 // it may not be initalized correctly on document ready
-

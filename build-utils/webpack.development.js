@@ -9,7 +9,6 @@ module.exports = () => ({
         test: /\.elm$/,
         exclude: [/elm-stuff/, /node_modules/],
         use: [
-
           { loader: 'elm-hot-webpack-loader' },
           {
             loader: 'elm-webpack-loader',
@@ -19,13 +18,6 @@ module.exports = () => ({
             }
           }
         ]
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
       },
       {
         test: /\.s?css$/,

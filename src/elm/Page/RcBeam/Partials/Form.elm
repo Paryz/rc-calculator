@@ -6,9 +6,10 @@ import Bootstrap.Form.Select as Select
 import Bootstrap.Grid.Col as Col
 import Calculator.Classes as Classes
 import Calculator.Diameters as Diameters
-import Html exposing (div, input, label, sub, text)
-import Html.Attributes exposing (class, for, selected, type_, value)
-import Html.Events exposing (onClick, onInput)
+import Calculator.Factors as Factors
+import Html exposing (input, sub, text)
+import Html.Attributes exposing (for, selected, type_, value)
+import Html.Events exposing (onInput)
 import Page.RcBeam.Types exposing (Field(..), Msg(..), StringedBeam)
 
 
@@ -39,11 +40,17 @@ render beam =
 
         mainBarDiametersToSelect =
             mapItemFromFloatWithDefault Diameters.barDiameters 20
+
+        concreteFactorsToSelect =
+            mapItemFromFloat Factors.concrete
+
+        steelFactorsToSelect =
+            mapItemFromFloat Factors.steel
     in
     Form.form []
         [ Form.row []
             [ Form.col [ Col.xs6 ]
-                [ Form.label [ for "height" ] [ text "h (mm)" ]
+                [ Form.label [ for "height" ] [ text "height - h (mm)" ]
                 , Input.number
                     [ Input.id "width"
                     , Input.onInput (\height -> Update Height height)
@@ -58,14 +65,13 @@ render beam =
                     , Html.Attributes.min "100"
                     , Html.Attributes.max "2000"
                     , Html.Attributes.step "10"
-                    , class "slider"
                     , value beam.height
                     , onInput (Update Height)
                     ]
                     []
                 ]
             , Form.col [ Col.xs6 ]
-                [ Form.label [ for "width" ] [ text "b (mm)" ]
+                [ Form.label [ for "width" ] [ text "width - b (mm)" ]
                 , Input.number
                     [ Input.id "width"
                     , Input.onInput (\width -> Update Width width)
@@ -76,7 +82,6 @@ render beam =
                     , Html.Attributes.min "100"
                     , Html.Attributes.max "1000"
                     , Html.Attributes.step "10"
-                    , class "slider"
                     , value beam.width
                     , onInput (Update Width)
                     ]
@@ -86,7 +91,7 @@ render beam =
         , Form.row []
             [ Form.col [ Col.xs6 ]
                 [ Form.label [ for "cover" ]
-                    [ text "c"
+                    [ text "cover - c"
                     , sub [] [ text "nom" ]
                     , text " (mm)"
                     ]
@@ -100,7 +105,6 @@ render beam =
                     , Html.Attributes.min "10"
                     , Html.Attributes.max "100"
                     , Html.Attributes.step "5"
-                    , class "slider"
                     , value beam.cover
                     , onInput (Update Cover)
                     ]
@@ -108,9 +112,8 @@ render beam =
                 ]
             , Form.col [ Col.xs6 ]
                 [ Form.label [ for "bending-moment" ]
-                    [ text "M"
+                    [ text "bending moment - M"
                     , sub [] [ text "ed" ]
-                    , text " (MPa)"
                     ]
                 , Input.number
                     [ Input.id "bending-moment"
@@ -122,7 +125,6 @@ render beam =
                     , Html.Attributes.min "100"
                     , Html.Attributes.max "5000"
                     , Html.Attributes.step "50"
-                    , class "slider"
                     , value beam.bendingMoment
                     , onInput (Update BendingMoment)
                     ]
@@ -132,7 +134,7 @@ render beam =
         , Form.row []
             [ Form.col [ Col.xs6 ]
                 [ Form.label [ for "link-bar-diameter" ]
-                    [ text "links (mm)" ]
+                    [ text "link bar diameter (mm)" ]
                 , Select.select
                     [ Select.id "link-bar-diameter"
                     , Select.onChange (\diameter -> Update LinkBarDiameter diameter)
@@ -141,7 +143,7 @@ render beam =
                 ]
             , Form.col [ Col.xs6 ]
                 [ Form.label [ for "main-bar-diameter" ]
-                    [ text "main bar(mm)" ]
+                    [ text "main bar diameter (mm)" ]
                 , Select.select
                     [ Select.id "main-bar-diameter"
                     , Select.onChange (\diameter -> Update MainBarDiameter diameter)
@@ -152,10 +154,7 @@ render beam =
         , Form.row []
             [ Form.col [ Col.xs6 ]
                 [ Form.label [ for "concrete-class" ]
-                    [ text "f"
-                    , sub [] [ text "ck" ]
-                    , text " (MPa)"
-                    ]
+                    [ text "concrete class (MPa)" ]
                 , Select.select
                     [ Select.id "concrete-class"
                     , Select.onChange (\concreteClass -> Update ConcreteClass concreteClass)
@@ -164,10 +163,7 @@ render beam =
                 ]
             , Form.col [ Col.xs6 ]
                 [ Form.label [ for "steel-class" ]
-                    [ text "f"
-                    , sub [] [ text "yk" ]
-                    , text " (MPa)"
-                    ]
+                    [ text "steel class (MPa)" ]
                 , Select.select
                     [ Select.id "steel-class"
                     , Select.onChange (\steelClass -> Update SteelClass steelClass)
@@ -178,67 +174,38 @@ render beam =
         , Form.row []
             [ Form.col [ Col.xs6 ]
                 [ Form.label [ for "gammaC" ]
-                    [ text gamma
+                    [ text "concrete - "
+                    , text gamma
                     , sub [] [ text "c" ]
                     ]
-                , div [ class "switch-field" ]
-                    [ input
-                        [ type_ "radio"
-                        , Html.Attributes.id "concreteFactorOne"
-                        , Html.Attributes.checked <| radioFactorChecked beam.concreteFactor "1.5"
-                        , onClick (Update ConcreteFactor "1.5")
-                        , Html.Attributes.class "switch-one"
-                        ]
-                        []
-                    , label [ for "concreteFactorOne" ] [ text "1.5" ]
-                    , input
-                        [ type_ "radio"
-                        , Html.Attributes.id "concreteFactorTwo"
-                        , Html.Attributes.checked <| radioFactorChecked beam.concreteFactor "1.2"
-                        , onClick (Update ConcreteFactor "1.2")
-                        , Html.Attributes.class "switch-two"
-                        ]
-                        []
-                    , label [ for "concreteFactorTwo" ] [ text "1.2" ]
+                , Select.select
+                    [ Select.id "gammaC"
+                    , Select.onChange (\concreteFactor -> Update ConcreteFactor concreteFactor)
                     ]
+                    concreteFactorsToSelect
                 ]
             , Form.col [ Col.xs6 ]
                 [ Form.label [ for "gammaS" ]
-                    [ text gamma
+                    [ text "steel - "
+                    , text gamma
                     , sub [] [ text "s" ]
                     ]
-                , div [ class "switch-field" ]
-                    [ input
-                        [ type_ "radio"
-                        , Html.Attributes.id "steelFactorOne"
-                        , Html.Attributes.checked <| radioFactorChecked beam.steelFactor "1.15"
-                        , onClick (Update SteelFactor "1.15")
-                        , Html.Attributes.class "switch-one"
-                        ]
-                        []
-                    , label [ for "steelFactorOne" ] [ text "1.15" ]
-                    , input
-                        [ type_ "radio"
-                        , Html.Attributes.id "steelFactorTwo"
-                        , Html.Attributes.checked <| radioFactorChecked beam.steelFactor "1.0"
-                        , onClick (Update SteelFactor "1.0")
-                        , Html.Attributes.class "switch-two"
-                        ]
-                        []
-                    , label [ for "steelFactorTwo" ] [ text "1.0" ]
+                , Select.select
+                    [ Select.id "gammaS"
+                    , Select.onChange (\steelFactor -> Update SteelFactor steelFactor)
                     ]
+                    steelFactorsToSelect
                 ]
             ]
         ]
 
 
-radioFactorChecked : String -> String -> Bool
-radioFactorChecked factor target =
-    if factor == target then
-        True
+mapItemFromFloat : List Float -> List (Select.Item msg)
+mapItemFromFloat collection =
+    List.map
+        (\item -> Select.item [ value <| String.fromFloat item ] [ text <| String.fromFloat item ])
+        collection
 
-    else
-        False
 
 mapItemFromFloatWithDefault : List Int -> Int -> List (Select.Item msg)
 mapItemFromFloatWithDefault collection itemValue =

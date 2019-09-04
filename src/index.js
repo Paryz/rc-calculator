@@ -1,14 +1,8 @@
 // Styles
-require('./assets/styles/main.scss')
+require('./assets/styles/main.scss');
 
-// KaTeX
-import { renderResults } from './assets/js/katex'
+// Vendor JS is imported as an entry in webpack.config.js
 
 // Elm
-import { Elm } from './elm/Main.elm'
-const app = Elm.Main.init({})
-
-app.ports.toJs.subscribe(function (beam) {
-  console.log('got from Elm:', beam)
-  renderResults(beam, document.getElementById('results'))
-})
+var Elm = require('./elm/Main.elm').Elm;
+Elm.Main.init({});

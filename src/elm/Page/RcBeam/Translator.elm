@@ -1,8 +1,6 @@
-module Page.RcBeam.Translator exposing (translate, withCalcs)
+module Page.RcBeam.Translator exposing (translate)
 
-import Calculator.Beam as Calculator
-import Page.RcBeam.Types exposing (Beam, StringedBeam, StringedResultBeam)
-import Round
+import Page.RcBeam.Types exposing (Beam, StringedBeam)
 
 
 translate : StringedBeam -> Beam
@@ -24,80 +22,3 @@ translate stringedBeam =
 maybeStringToFloat : String -> Float
 maybeStringToFloat string =
     Maybe.withDefault 0 (String.toFloat string)
-
-
-withCalcs : StringedBeam -> StringedResultBeam
-withCalcs stringedBeam =
-    let
-        beam =
-            translate stringedBeam
-
-        fcd =
-            Calculator.fCd 0.85 beam.concreteClass beam.concreteFactor
-
-        fctm =
-            Round.ceilingNum 1 (Calculator.fCtm beam.concreteClass)
-
-        fyd =
-            Calculator.fYd beam.steelClass beam.steelFactor
-
-        effectiveHeight =
-            Calculator.effectiveHeight beam.height beam.cover beam.linkDiameter beam.mainBarDiameter
-
-        minReinforcement =
-            Calculator.minReinforcement fctm beam.steelClass beam.width effectiveHeight
-
-        sC =
-            Calculator.sC beam.bendingMoment 1.0 fcd beam.width effectiveHeight
-
-        ksiEffective =
-            Calculator.ksiEffective sC
-
-        ksiEffectiveLim =
-            Calculator.ksiEffectiveLim fyd
-
-        bottomReinforcementPrime =
-            if ksiEffective < ksiEffectiveLim then
-                Calculator.bottomReinforcement 1 fcd beam.width effectiveHeight ksiEffective fyd
-
-            else
-                Calculator.bottomReinforcement 1 fcd beam.width effectiveHeight ksiEffectiveLim fyd
-
-        bendingMomentPrime =
-            Calculator.bendingMomentPrime fcd 1 beam.width ksiEffectiveLim effectiveHeight
-
-        bendingMomentDelta =
-            Calculator.bendingMomentDelta beam.bendingMoment bendingMomentPrime
-
-        ( topReqReinforcement, bottomReqReinforcement ) =
-            Calculator.reqReinforcement ksiEffective ksiEffectiveLim 1.0 fcd beam.width effectiveHeight fyd beam.bendingMoment beam.cover minReinforcement
-
-        maximumReinforcement =
-            Calculator.maximumReinforcement beam.height beam.width
-    in
-    { height = stringedBeam.height
-    , width = stringedBeam.width
-    , cover = stringedBeam.cover
-    , topCover = stringedBeam.topCover
-    , concreteClass = stringedBeam.concreteClass
-    , steelClass = stringedBeam.steelClass
-    , concreteFactor = stringedBeam.concreteFactor
-    , steelFactor = stringedBeam.steelFactor
-    , linkDiameter = String.slice 0 -2 stringedBeam.linkDiameter
-    , mainBarDiameter = String.slice 0 -2 stringedBeam.mainBarDiameter
-    , bendingMoment = stringedBeam.bendingMoment
-    , fcd = Round.round 2 fcd
-    , fctm = String.fromFloat fctm
-    , fyd = Round.round 2 fyd
-    , effectiveHeight = String.fromFloat effectiveHeight
-    , minReinforcement = Round.round 2 minReinforcement
-    , sC = Round.round 4 sC
-    , ksiEffective = Round.round 4 ksiEffective
-    , ksiEffectiveLim = Round.round 4 ksiEffectiveLim
-    , bottomReinforcementPrime = Round.round 2 bottomReinforcementPrime
-    , bendingMomentPrime = Round.round 2 bendingMomentPrime
-    , bendingMomentDelta = Round.round 2 bendingMomentDelta
-    , topReqReinforcement = Round.round 2 (toFloat topReqReinforcement)
-    , bottomReqReinforcement = Round.round 2 (toFloat bottomReqReinforcement)
-    , maximumReinforcement = Round.round 2 maximumReinforcement
-    }
