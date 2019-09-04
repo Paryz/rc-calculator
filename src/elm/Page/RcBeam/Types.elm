@@ -1,4 +1,4 @@
-module Page.RcBeam.Types exposing (Beam, Field(..), Model, Msg(..), StringedBeam)
+module Page.RcBeam.Types exposing (Beam, Field(..), Model, Msg(..), StringedBeam, StringedResultBeam)
 
 import Calculator.Types
 import Session exposing (Session)
@@ -44,6 +44,35 @@ type alias StringedBeam =
     , linkDiameter : String
     , mainBarDiameter : String
     , bendingMoment : String
+    }
+
+
+type alias StringedResultBeam =
+    { height : String
+    , width : String
+    , cover : String
+    , topCover : String
+    , concreteClass : String
+    , steelClass : String
+    , concreteFactor : String
+    , steelFactor : String
+    , linkDiameter : String
+    , mainBarDiameter : String
+    , bendingMoment : String
+    , fcd : String
+    , fctm : String
+    , fyd : String
+    , effectiveHeight : String
+    , minReinforcement : String
+    , sC : String
+    , ksiEffective : String
+    , ksiEffectiveLim : String
+    , bottomReinforcementPrime : String
+    , bendingMomentPrime : String
+    , bendingMomentDelta : String
+    , topReqReinforcement : String
+    , bottomReqReinforcement : String
+    , maximumReinforcement : String
     }
 
 
