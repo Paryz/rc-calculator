@@ -9,7 +9,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = () => ({
   output: {
-    filename: '[name].[contenthash].js'
+    filename: '[name].[contenthash].js',
   },
 
   module: {
@@ -28,20 +28,15 @@ module.exports = () => ({
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-          'sass-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
       },
-      { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' }
-    ]
+      { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' },
+    ],
   },
 
   optimization: {
@@ -51,20 +46,32 @@ module.exports = () => ({
         cache: true,
         parallel: true,
         terserOptions: {
-          mangle: false,
+          mangle: true,
           compress: {
-            pure_funcs: ['F2','F3','F4','F5','F6','F7','F8','F9','A2','A3','A4','A5','A6','A7','A8','A9'],
+            pure_funcs: [
+              'F2',
+              'F3',
+              'F4',
+              'F5',
+              'F6',
+              'F7',
+              'F8',
+              'F9',
+              'A2',
+              'A3',
+              'A4',
+              'A5',
+              'A6',
+              'A7',
+              'A8',
+              'A9',
+            ],
             pure_getters: true,
             keep_fargs: false,
             unsafe_comps: true,
             unsafe: true,
           },
         },
-      }),
-      new TerserPlugin({
-        cache: true,
-        parallel: true,
-        terserOptions: { mangle: true },
       }),
     ],
   },
@@ -78,15 +85,13 @@ module.exports = () => ({
       paths: glob.sync(path.join(__dirname, '../src/**/*.elm'), { nodir: true }),
     }),
 
-    new CopyWebpackPlugin([
-      { from: 'src/assets/images', to: 'assets/images' },
-    ]),
+    new CopyWebpackPlugin([{ from: 'src/assets/images', to: 'assets/images' }]),
 
     new ImageminPlugin({
       test: /\.(jpe?g|png|gif|svg)$/i,
       cache: true,
     }),
 
-    new OptimizeCSSAssetsPlugin()
-  ]
+    new OptimizeCSSAssetsPlugin(),
+  ],
 });
