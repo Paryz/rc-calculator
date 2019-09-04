@@ -5,6 +5,7 @@ import Bootstrap.Grid.Col as Col
 import Bootstrap.Table as Table
 import Calculator.Diameters as Diameters exposing (BarSectionsList)
 import Html exposing (Html, text)
+import Html.Attributes exposing (class)
 
 
 render : Int -> Int -> List (Grid.Column msg)
@@ -77,7 +78,7 @@ tableRow function listOfSections bar reqReinforcement =
                             else
                                 Table.cellDanger
                     in
-                    Table.td [ color ] [ text <| String.fromInt section ]
+                    Table.td [ color, Table.cellAttr <| class "reinforcement-table-cell" ] [ text <| String.fromInt section ]
                 )
                 firstSixElementsOfList
 
