@@ -35,13 +35,12 @@ init session =
       , minimumReinforcement = 331.355
       , maximumReinforcement = 9600.0
       }
-    , toJs <| Translator.withCalcs beam
+    , Cmd.none
     )
 
 
 
 -- UPDATE
-
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -50,9 +49,6 @@ update msg model =
             model.beam
     in
     case msg of
-        SendToJs stringedBeam ->
-            ( model, toJs <| Translator.withCalcs stringedBeam )
-
         Update field newValue ->
             let
                 newBeam =

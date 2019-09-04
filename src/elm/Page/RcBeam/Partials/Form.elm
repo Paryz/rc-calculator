@@ -61,6 +61,7 @@ render beam =
                     , Html.Attributes.min "100"
                     , Html.Attributes.max "2000"
                     , Html.Attributes.step "10"
+                    , class "slider"
                     , value beam.height
                     , onInput (Update Height)
                     ]
@@ -78,6 +79,7 @@ render beam =
                     , Html.Attributes.min "100"
                     , Html.Attributes.max "1000"
                     , Html.Attributes.step "10"
+                    , class "slider"
                     , value beam.width
                     , onInput (Update Width)
                     ]
@@ -101,6 +103,7 @@ render beam =
                     , Html.Attributes.min "10"
                     , Html.Attributes.max "100"
                     , Html.Attributes.step "5"
+                    , class "slider"
                     , value beam.cover
                     , onInput (Update Cover)
                     ]
@@ -122,6 +125,7 @@ render beam =
                     , Html.Attributes.min "100"
                     , Html.Attributes.max "5000"
                     , Html.Attributes.step "50"
+                    , class "slider"
                     , value beam.bendingMoment
                     , onInput (Update BendingMoment)
                     ]
