@@ -36,7 +36,7 @@ view model =
     , content =
         div [ class "container" ]
             [ h2 [] [ text model.pageTitle ]
-            , div [] [ text model.pageBody ]
+            , div [][text model.pageBody]
             ]
     }
 
@@ -55,9 +55,6 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-
-
--- SUBSCRIPTIONS
 
 
 subscriptions : Model -> Sub Msg
