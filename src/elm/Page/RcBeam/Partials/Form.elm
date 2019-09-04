@@ -240,6 +240,7 @@ radioFactorChecked factor target =
     else
         False
 
+
 mapItemFromFloatWithDefault : List Int -> Int -> List (Select.Item msg)
 mapItemFromFloatWithDefault collection itemValue =
     List.map
