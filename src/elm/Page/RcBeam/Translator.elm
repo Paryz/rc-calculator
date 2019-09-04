@@ -56,6 +56,19 @@ withCalcs stringedBeam =
         ksiEffectiveLim =
             Calculator.ksiEffectiveLim fyd
 
+        bottomReinforcementPrime =
+            if ksiEffective < ksiEffectiveLim then
+                Calculator.bottomReinforcement 1 fcd beam.width effectiveHeight ksiEffective fyd
+
+            else
+                Calculator.bottomReinforcement 1 fcd beam.width effectiveHeight ksiEffectiveLim fyd
+
+        bendingMomentPrime =
+            Calculator.bendingMomentPrime fcd 1 beam.width ksiEffectiveLim effectiveHeight
+
+        bendingMomentDelta =
+            Calculator.bendingMomentDelta beam.bendingMoment bendingMomentPrime
+
         ( topReqReinforcement, bottomReqReinforcement ) =
             Calculator.reqReinforcement ksiEffective ksiEffectiveLim 1.0 fcd beam.width effectiveHeight fyd beam.bendingMoment beam.cover minReinforcement
 
@@ -81,6 +94,9 @@ withCalcs stringedBeam =
     , sC = Round.round 4 sC
     , ksiEffective = Round.round 4 ksiEffective
     , ksiEffectiveLim = Round.round 4 ksiEffectiveLim
+    , bottomReinforcementPrime = Round.round 2 bottomReinforcementPrime
+    , bendingMomentPrime = Round.round 2 bendingMomentPrime
+    , bendingMomentDelta = Round.round 2 bendingMomentDelta
     , topReqReinforcement = Round.round 2 (toFloat topReqReinforcement)
     , bottomReqReinforcement = Round.round 2 (toFloat bottomReqReinforcement)
     , maximumReinforcement = Round.round 2 maximumReinforcement

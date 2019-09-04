@@ -68,6 +68,9 @@ type alias StringedResultBeam =
     , sC : String
     , ksiEffective : String
     , ksiEffectiveLim : String
+    , bottomReinforcementPrime : String
+    , bendingMomentPrime : String
+    , bendingMomentDelta : String
     , topReqReinforcement : String
     , bottomReqReinforcement : String
     , maximumReinforcement : String

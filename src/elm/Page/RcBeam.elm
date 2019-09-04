@@ -25,7 +25,7 @@ init : Session -> ( Model, Cmd Msg )
 init session =
     let
         beam =
-            StringedBeam "600" "400" "30" "50" "30" "500" "1.5" "1.15" "10.0" "20.0" "200"
+            StringedBeam "600" "400" "30" "30" "30" "500" "1.5" "1.15" "10.0" "20.0" "200"
     in
     ( { session = session
       , pageTitle = "Rc Beam"
