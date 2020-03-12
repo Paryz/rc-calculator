@@ -60,4 +60,4 @@ viewHeader =
 
 viewFooter : Html msg
 viewFooter =
-    footer [class "comming-soon"] [ text "More Coming Soon!" ]
+    footer [ class "comming-soon" ] [ text "More Coming Soon!" ]
