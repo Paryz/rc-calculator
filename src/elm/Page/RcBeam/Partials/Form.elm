@@ -234,11 +234,7 @@ render beam =
 
 radioFactorChecked : String -> String -> Bool
 radioFactorChecked factor target =
-    if factor == target then
-        True
-
-    else
-        False
+    factor == target
 
 
 mapItemFromFloatWithDefault : List Int -> Int -> List (Select.Item msg)

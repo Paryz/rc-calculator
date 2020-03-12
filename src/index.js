@@ -6,9 +6,13 @@ import { renderResults } from './assets/js/katex'
 
 // Elm
 import { Elm } from './elm/Main.elm'
-const app = Elm.Main.init({})
 
-app.ports.toJs.subscribe(function (beam) {
-  // console.log('got from Elm:', beam)
-  renderResults(beam, document.getElementById('results'))
-})
+document.addEventListener("DOMContentLoaded", () => {
+  const app = Elm.Main.init({})
+
+  app.ports.toJs.subscribe(beam => {
+    window.requestAnimationFrame(() => {
+      renderResults(beam, document.getElementById('results'))
+    });
+  });
+});
