@@ -3,7 +3,7 @@ module Page exposing (Page(..), view)
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Browser exposing (Document)
-import Html exposing (Html, a, div, footer, li, p, text, ul)
+import Html exposing (Html, a, div, footer, li, text, ul)
 import Html.Attributes exposing (class)
 import Route
 

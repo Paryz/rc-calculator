@@ -34,7 +34,7 @@ init session =
       , minimumReinforcement = 331.355
       , maximumReinforcement = 9600.0
       }
-    , Cmd.none
+    , toJs <| Translator.withCalcs beam
     )
 
 
@@ -63,7 +63,14 @@ update msg model =
                 minimumReinforcement =
                     calculateMinimumReinforcement newBeam
             in
-            ( { model | beam = newBeam, reinforcement = reqReinforcement, maximumReinforcement = maximumReinforcement, minimumReinforcement = minimumReinforcement }, toJs <| Translator.withCalcs newBeam )
+            ( { model
+                | beam = newBeam
+                , reinforcement = reqReinforcement
+                , maximumReinforcement = maximumReinforcement
+                , minimumReinforcement = minimumReinforcement
+              }
+            , toJs <| Translator.withCalcs newBeam
+            )
 
 
 updateBeam : StringedBeam -> Field -> String -> StringedBeam
@@ -139,7 +146,7 @@ port toJs : StringedResultBeam -> Cmd msg
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
