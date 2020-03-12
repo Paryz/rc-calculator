@@ -41,7 +41,7 @@ view : Model -> { title : String, content : Html Msg }
 view model =
     { title = model.pageTitle
     , content =
-        Grid.container [ class "test" ]
+        Grid.container []
             [ Grid.row []
                 [ Grid.col [ Col.middleXs ]
                     [ h1 [] [ text "Welcome to Structy" ] ]

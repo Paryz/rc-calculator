@@ -21,6 +21,10 @@ body {
 }
 
 .main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
   .row {
     margin-right: 0 !important;
   }
@@ -29,8 +33,7 @@ body {
 }
 
 .container {
-  position: relative;
-  height: 100%;
+  flex: 1 0 auto;
 }
 
 .card-side-element {
@@ -109,10 +112,8 @@ body {
 }
 
 .coming-soon {
-  padding-top: 21rem;
-  bottom: 0;
+  flex-shrink: 0;
   width: 100%;
-  margin-bottom: 0;
 }
 
 h1 {
