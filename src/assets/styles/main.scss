@@ -24,12 +24,11 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #ffd8be;
 
   .row {
-    margin-right: 0 !important;
+    margin: 0;
   }
-
-  background-color: #ffd8be;
 }
 
 .container {
@@ -166,7 +165,6 @@ table {
 .switch-field {
   display: flex;
   justify-content: center;
-  margin-bottom: 36px;
   overflow: hidden;
 
   label {
