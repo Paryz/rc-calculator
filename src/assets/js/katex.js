@@ -60,6 +60,7 @@ const resultsTemplate = (beam) => {
     fcd,
     steelClass,
     steelFactor,
+    alphaCC,
     fyd,
     effectiveHeight,
     fctm,
@@ -79,7 +80,7 @@ return `
   \\large Concre&\\large te\\ Details \\\\
   f_{ck} &= ${concreteClass}MPa \\\\
   \\gamma_C &= ${concreteFactor} \\\\
-  \\alpha_{cc} &= 0.85 \\\\
+  \\alpha_{cc} &= ${alphaCC} \\\\
   f_{cd} &= ${fcd}MPa \\\\
   ${fctmTex(beam)}
   \\large Steel\\ &\\large Details \\\\

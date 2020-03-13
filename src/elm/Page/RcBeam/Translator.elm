@@ -17,6 +17,7 @@ translate stringedBeam =
     , steelFactor = maybeStringToFloat stringedBeam.steelFactor
     , concreteClass = maybeStringToFloat stringedBeam.concreteClass
     , concreteFactor = maybeStringToFloat stringedBeam.concreteFactor
+    , alphaCC = maybeStringToFloat stringedBeam.alphaCC
     , bendingMoment = maybeStringToFloat stringedBeam.bendingMoment
     }
 
@@ -33,7 +34,7 @@ withCalcs stringedBeam =
             translate stringedBeam
 
         fcd =
-            Calculator.fCd 0.85 beam.concreteClass beam.concreteFactor
+            Calculator.fCd beam.alphaCC beam.concreteClass beam.concreteFactor
 
         fctm =
             Round.ceilingNum 1 (Calculator.fCtm beam.concreteClass)
@@ -83,6 +84,7 @@ withCalcs stringedBeam =
     , steelClass = stringedBeam.steelClass
     , concreteFactor = stringedBeam.concreteFactor
     , steelFactor = stringedBeam.steelFactor
+    , alphaCC = stringedBeam.alphaCC
     , linkDiameter = String.slice 0 -2 stringedBeam.linkDiameter
     , mainBarDiameter = String.slice 0 -2 stringedBeam.mainBarDiameter
     , bendingMoment = stringedBeam.bendingMoment
