@@ -198,8 +198,6 @@ view model =
                             [ BeamDrawing.render model.beam model.reinforcement ]
                         ]
                     , Grid.row [ Row.centerMd ]
-                        (Tables.render top bottom)
-                    , Grid.row [ Row.centerMd ]
                         [ Grid.col [ Col.xs12 ]
                             [ div []
                                 [ strong []
@@ -207,6 +205,8 @@ view model =
                                 ]
                             ]
                         ]
+                    , Grid.row [ Row.centerMd ]
+                        (Tables.render top bottom)
                     ]
                 , Grid.col [ Col.lg12, Col.xl3 ]
                     [ Grid.row [ Row.centerMd ] [ Results.template ] ]
