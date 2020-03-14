@@ -35,9 +35,9 @@ const requiredReinforcement = (beam) => {
   } else {
     return (`
       A_{s,1} &= ${roundToOneDecimalPlaces(beam.bottomReinforcementPrime)}mm^2 \\\\
-      M_{sd}' &= ${roundToOneDecimalPlaces(beam.bendingMomentPrime)}MPa \\\\
+      M_{sd}' &= ${roundToOneDecimalPlaces(beam.bendingMomentPrime)}kNm \\\\
       A_{s,2} &= ${roundToOneDecimalPlaces(beam.topReqReinforcement)}mm^2 \\\\
-      A_{s} &= ${roundToOneDecimalPlaces(beam.bottomReqReinforcement)}MPa \\\\
+      A_{s} &= ${roundToOneDecimalPlaces(beam.bottomReqReinforcement)}mm^2 \\\\
       A_{s,max} &= ${roundToOneDecimalPlaces(beam.maximumReinforcement)}mm^2 \\\\
       `)
 
@@ -80,21 +80,25 @@ return `
   \\phi &= ${mainBarDiameter}mm \\\\
   \\phi_{S} &= ${linkDiameter}mm \\\\
   M_{Ed} &= ${bendingMoment}kNm \\\\
+  \\\\
   \\large Concre&\\large te\\ Details \\\\
   f_{ck} &= ${concreteClass}MPa \\\\
   \\gamma_C &= ${concreteFactor} \\\\
   \\alpha_{cc} &= ${alphaCC} \\\\
   f_{cd} &= ${fcd}MPa \\\\
   ${fctmTex(beam)}
+  \\\\
   \\large Steel\\ &\\large Details \\\\
   f_{yk} &= ${steelClass}MPa \\\\
   \\gamma_S &= ${steelFactor} \\\\
   f_{yd} &= ${fyd}MPa \\\\
+  \\\\
   \\large Minim&\\large um\\ Reinforcement \\\\
   d &= ${effectiveHeight}mm \\\\
   A_{s,min,1} &= ${minReinforcement1(beam)}mm^2 \\\\
   A_{s,min,2} &= ${minReinforcement2(beam)}mm^2 \\\\
   A_{s,min} &= ${Math.max(minReinforcement1(beam), minReinforcement2(beam))}mm^2 \\\\
+  \\\\
   \\large Requir&\\large ed\\ Reinforcement \\\\
   \\varepsilon_{cu2} &= 0.0035 \\\\
   \\varepsilon_{cu2} &= 0.0035 \\\\

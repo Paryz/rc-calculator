@@ -138,10 +138,16 @@ a {
   #results {
     font-size: 0.6rem;
   }
+
+  .reinforcement-table-cell {
+    font-size: 0;
+  }
 }
 
-.reinforcement-table-cell {
-  font-size: 0;
+@media (min-width: 768px) {
+  .reinforcement-table-cell {
+    font-size: 1vh;
+  }
 }
 
 table {
@@ -155,6 +161,7 @@ table {
 
   tbody {
     td {
+      vertical-align: middle !important;
       border-top: none !important;
       border-bottom: none !important;
       padding: 0.3rem !important;

@@ -41,7 +41,7 @@ render beam =
             mapItemFromFloatWithDefault Classes.steel 500
 
         linBarDiametersToSelect =
-            mapItemFromFloatWithDefault Diameters.barDiameters 10
+            mapItemFromFloatWithDefault Diameters.linkBarDiameters 10
 
         mainBarDiametersToSelect =
             mapItemFromFloatWithDefault Diameters.barDiameters 20
@@ -115,7 +115,7 @@ render beam =
             , Form.col [ Col.xs6 ]
                 [ Form.label [ for "bending-moment" ]
                     [ text "M"
-                    , sub [] [ text "ed" ]
+                    , sub [] [ text "Ed" ]
                     , text " (MPa)"
                     ]
                 , Input.number

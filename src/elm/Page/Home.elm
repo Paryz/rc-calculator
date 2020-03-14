@@ -51,7 +51,7 @@ view model =
                     [ p []
                         [ text "Free Reinforced Concrete Calculator and"
                         , br [] []
-                        , text "PDF Documentation Generator"
+                        , text "PDF Documentation Generator (soon)"
                         ]
                     ]
                 ]
