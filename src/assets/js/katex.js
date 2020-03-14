@@ -35,9 +35,9 @@ const requiredReinforcement = (beam) => {
   } else {
     return (`
       A_{s,1} &= ${roundToOneDecimalPlaces(beam.bottomReinforcementPrime)}mm^2 \\\\
-      M_{sd}' &= ${roundToOneDecimalPlaces(beam.bendingMomentPrime)}MPa \\\\
+      M_{sd}' &= ${roundToOneDecimalPlaces(beam.bendingMomentPrime)}kNm \\\\
       A_{s,2} &= ${roundToOneDecimalPlaces(beam.topReqReinforcement)}mm^2 \\\\
-      A_{s} &= ${roundToOneDecimalPlaces(beam.bottomReqReinforcement)}MPa \\\\
+      A_{s} &= ${roundToOneDecimalPlaces(beam.bottomReqReinforcement)}mm^2 \\\\
       A_{s,max} &= ${roundToOneDecimalPlaces(beam.maximumReinforcement)}mm^2 \\\\
       `)
 

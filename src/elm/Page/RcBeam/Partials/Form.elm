@@ -115,7 +115,7 @@ render beam =
             , Form.col [ Col.xs6 ]
                 [ Form.label [ for "bending-moment" ]
                     [ text "M"
-                    , sub [] [ text "ed" ]
+                    , sub [] [ text "Ed" ]
                     , text " (MPa)"
                     ]
                 , Input.number
