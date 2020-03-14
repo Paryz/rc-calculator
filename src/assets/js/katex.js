@@ -8,6 +8,10 @@ const katexRender = (template, elem) => {
   });
 }
 
+const roundToOneDecimalPlaces = (stringedNumber) => (
+  Math.round((stringedNumber*100)/100).toFixed(1)
+)
+
 const fctmTex = (beam) => {
   if(beam.concreteClass <= '50') {
     return (`
@@ -24,27 +28,27 @@ const fctmTex = (beam) => {
 const requiredReinforcement = (beam) => {
   if(beam.ksiEffectiveLim > beam.ksiEffective) {
     return (`
-      A_{s,1} &= ${beam.bottomReqReinforcement}mm^2 \\\\
+      A_{s,1} &= ${roundToOneDecimalPlaces(beam.bottomReqReinforcement)}mm^2 \\\\
       A_{s,1} &> A_{s,min} \\\\
-      A_{s,req} &= ${beam.bottomReqReinforcement}mm^2 \\\\
+      A_{s,req} &= ${roundToOneDecimalPlaces(beam.bottomReqReinforcement)}mm^2 \\\\
       `)
   } else {
     return (`
-      A_{s,1} &= ${beam.bottomReinforcementPrime}mm^2 \\\\
-      M_{sd}' &= ${beam.bendingMomentPrime}MPa \\\\
-      A_{s,2} &= ${beam.topReqReinforcement}mm^2 \\\\
-      A_{s} &= ${beam.bottomReqReinforcement}MPa \\\\
-      A_{s,max} &= ${beam.maximumReinforcement}mm^2 \\\\
+      A_{s,1} &= ${roundToOneDecimalPlaces(beam.bottomReinforcementPrime)}mm^2 \\\\
+      M_{sd}' &= ${roundToOneDecimalPlaces(beam.bendingMomentPrime)}MPa \\\\
+      A_{s,2} &= ${roundToOneDecimalPlaces(beam.topReqReinforcement)}mm^2 \\\\
+      A_{s} &= ${roundToOneDecimalPlaces(beam.bottomReqReinforcement)}MPa \\\\
+      A_{s,max} &= ${roundToOneDecimalPlaces(beam.maximumReinforcement)}mm^2 \\\\
       `)
 
   }
 }
 
 const minReinforcement1 = ({fctm, steelClass, width, effectiveHeight}) => (
-  Math.round((0.26*(fctm/steelClass)*width*effectiveHeight)*100)/100
+  (Math.round((0.26*(fctm/steelClass)*width*effectiveHeight)*100)/100).toFixed(1)
 )
 const minReinforcement2 = ({width, effectiveHeight}) => (
-  Math.round((0.0013*width*effectiveHeight)*100)/100
+  (Math.round((0.0013*width*effectiveHeight)*100)/100).toFixed(1)
 )
 
 const resultsTemplate = (beam) => {
@@ -63,7 +67,6 @@ const resultsTemplate = (beam) => {
     alphaCC,
     fyd,
     effectiveHeight,
-    fctm,
     sC,
     ksiEffective,
     ksiEffectiveLim,
