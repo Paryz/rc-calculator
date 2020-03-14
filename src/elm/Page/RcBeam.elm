@@ -5,7 +5,7 @@ import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
 import Calculator.Beam
 import Calculator.Types as Types
-import Html exposing (Html, div, text)
+import Html exposing (Html, div, strong, text)
 import Html.Attributes exposing (class)
 import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
 import Page.RcBeam.Partials.Form as Form
@@ -201,7 +201,11 @@ view model =
                         (Tables.render top bottom)
                     , Grid.row [ Row.centerMd ]
                         [ Grid.col [ Col.xs12 ]
-                            [ div [] [ text reinforcementRequiredToString ] ]
+                            [ div []
+                                [ strong []
+                                    [ text reinforcementRequiredToString ]
+                                ]
+                            ]
                         ]
                     ]
                 , Grid.col [ Col.lg12, Col.xl3 ]
