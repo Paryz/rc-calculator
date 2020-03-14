@@ -2,8 +2,8 @@ module BeamTest exposing (suite)
 
 import BeamMock as Mock
 import Calculator.Beam as Calculator
-import Expect exposing (Expectation, FloatingPointTolerance(..))
-import Test exposing (..)
+import Expect exposing (FloatingPointTolerance(..))
+import Test exposing (Test, describe, test)
 
 
 suite : Test

@@ -41,7 +41,7 @@ render beam =
             mapItemFromFloatWithDefault Classes.steel 500
 
         linBarDiametersToSelect =
-            mapItemFromFloatWithDefault Diameters.barDiameters 10
+            mapItemFromFloatWithDefault Diameters.linkBarDiameters 10
 
         mainBarDiametersToSelect =
             mapItemFromFloatWithDefault Diameters.barDiameters 20

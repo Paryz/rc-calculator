@@ -1,4 +1,4 @@
-module Calculator.Diameters exposing (BarSectionsList, barDiameters, listOfBarSection, mapDiameterToReinforcementList)
+module Calculator.Diameters exposing (BarSectionsList, barDiameters, linkBarDiameters, listOfBarSection, mapDiameterToReinforcementList)
 
 import Calculator.Types as Types
 
@@ -15,6 +15,19 @@ barDiameters =
     , 32
     , 40
     , 50
+    ]
+
+
+linkBarDiameters : List Int
+linkBarDiameters =
+    [ 6
+    , 8
+    , 10
+    , 12
+    , 16
+    , 20
+    , 25
+    , 32
     ]
 
 
