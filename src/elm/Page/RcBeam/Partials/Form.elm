@@ -18,6 +18,12 @@ render beam =
         gamma =
             String.fromChar (Char.fromCode 947)
 
+        alpha =
+            String.fromChar (Char.fromCode 945)
+
+        phi =
+            String.fromChar (Char.fromCode 966)
+
         concreteClassesToSelect =
             List.map
                 (\( cube, cylinder ) ->
@@ -132,7 +138,10 @@ render beam =
         , Form.row []
             [ Form.col [ Col.xs6 ]
                 [ Form.label [ for "link-bar-diameter" ]
-                    [ text "links (mm)" ]
+                    [ text phi
+                    , sub [] [ text "s" ]
+                    , text " (mm)"
+                    ]
                 , Select.select
                     [ Select.id "link-bar-diameter"
                     , Select.onChange (\diameter -> Update LinkBarDiameter diameter)
@@ -141,7 +150,9 @@ render beam =
                 ]
             , Form.col [ Col.xs6 ]
                 [ Form.label [ for "main-bar-diameter" ]
-                    [ text "main bar(mm)" ]
+                    [ text phi
+                    , text " (mm)"
+                    ]
                 , Select.select
                     [ Select.id "main-bar-diameter"
                     , Select.onChange (\diameter -> Update MainBarDiameter diameter)
@@ -176,33 +187,33 @@ render beam =
                 ]
             ]
         , Form.row []
-            [ Form.col [ Col.xs6 ]
-                [ Form.label [ for "gammaC" ]
-                    [ text gamma
-                    , sub [] [ text "c" ]
+            [ Form.col [ Col.xs12, Col.md6 ]
+                [ Form.label [ for "alphaCC" ]
+                    [ text alpha
+                    , sub [] [ text "cc" ]
                     ]
                 , div [ class "switch-field" ]
                     [ input
                         [ type_ "radio"
-                        , Html.Attributes.id "concreteFactorOne"
-                        , Html.Attributes.checked <| radioFactorChecked beam.concreteFactor "1.5"
-                        , onClick (Update ConcreteFactor "1.5")
+                        , Html.Attributes.id "alphaCCOne"
+                        , Html.Attributes.checked <| radioFactorChecked beam.alphaCC "0.85"
+                        , onClick (Update AlphaCC "0.85")
                         , Html.Attributes.class "switch-one"
                         ]
                         []
-                    , label [ for "concreteFactorOne" ] [ text "1.5" ]
+                    , label [ for "alphaCCOne" ] [ text "0.85" ]
                     , input
                         [ type_ "radio"
-                        , Html.Attributes.id "concreteFactorTwo"
-                        , Html.Attributes.checked <| radioFactorChecked beam.concreteFactor "1.2"
-                        , onClick (Update ConcreteFactor "1.2")
+                        , Html.Attributes.id "alphaCCTwo"
+                        , Html.Attributes.checked <| radioFactorChecked beam.alphaCC "1.0"
+                        , onClick (Update AlphaCC "1.0")
                         , Html.Attributes.class "switch-two"
                         ]
                         []
-                    , label [ for "concreteFactorTwo" ] [ text "1.2" ]
+                    , label [ for "alphaCCTwo" ] [ text "1.0" ]
                     ]
                 ]
-            , Form.col [ Col.xs6 ]
+            , Form.col [ Col.xs12, Col.md6 ]
                 [ Form.label [ for "gammaS" ]
                     [ text gamma
                     , sub [] [ text "s" ]
@@ -226,6 +237,43 @@ render beam =
                         ]
                         []
                     , label [ for "steelFactorTwo" ] [ text "1.0" ]
+                    ]
+                ]
+            ]
+        , Form.row []
+            [ Form.col [ Col.xs12 ]
+                [ Form.label [ for "gammaC" ]
+                    [ text gamma
+                    , sub [] [ text "c" ]
+                    ]
+                , div [ class "switch-field" ]
+                    [ input
+                        [ type_ "radio"
+                        , Html.Attributes.id "concreteFactorOne"
+                        , Html.Attributes.checked <| radioFactorChecked beam.concreteFactor "1.5"
+                        , onClick (Update ConcreteFactor "1.5")
+                        , Html.Attributes.class "switch-one"
+                        ]
+                        []
+                    , label [ for "concreteFactorOne" ] [ text "1.5" ]
+                    , input
+                        [ type_ "radio"
+                        , Html.Attributes.id "concreteFactorTwo"
+                        , Html.Attributes.checked <| radioFactorChecked beam.concreteFactor "1.4"
+                        , onClick (Update ConcreteFactor "1.4")
+                        , Html.Attributes.class "switch-two"
+                        ]
+                        []
+                    , label [ for "concreteFactorTwo" ] [ text "1.4" ]
+                    , input
+                        [ type_ "radio"
+                        , Html.Attributes.id "concreteFactorThree"
+                        , Html.Attributes.checked <| radioFactorChecked beam.concreteFactor "1.2"
+                        , onClick (Update ConcreteFactor "1.2")
+                        , Html.Attributes.class "switch-three"
+                        ]
+                        []
+                    , label [ for "concreteFactorThree" ] [ text "1.2" ]
                     ]
                 ]
             ]

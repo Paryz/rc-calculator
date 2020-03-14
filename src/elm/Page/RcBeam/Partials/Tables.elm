@@ -18,7 +18,7 @@ render top bottom =
         ]
 
     else if top == 0 && bottom > 0 then
-        [ Grid.col [ Col.xs8 ]
+        [ Grid.col [ Col.xs12 ]
             [ barSectionTable bottom ]
         ]
 

@@ -24,6 +24,7 @@ type Field
     | SteelClass
     | ConcreteFactor
     | SteelFactor
+    | AlphaCC
     | LinkBarDiameter
     | MainBarDiameter
 
@@ -41,6 +42,7 @@ type alias StringedBeam =
     , steelClass : String
     , concreteFactor : String
     , steelFactor : String
+    , alphaCC : String
     , linkDiameter : String
     , mainBarDiameter : String
     , bendingMoment : String
@@ -56,6 +58,7 @@ type alias StringedResultBeam =
     , steelClass : String
     , concreteFactor : String
     , steelFactor : String
+    , alphaCC : String
     , linkDiameter : String
     , mainBarDiameter : String
     , bendingMoment : String
@@ -85,6 +88,7 @@ type alias Beam =
     , steelClass : Float
     , concreteFactor : Float
     , steelFactor : Float
+    , alphaCC : Float
     , linkDiameter : Float
     , mainBarDiameter : Float
     , bendingMoment : Float
