@@ -15,14 +15,14 @@ render stringedBeam reqReinforcement =
             Translator.translate stringedBeam
 
         scale =
-            if beam.height < 900 then
+            if beam.width < 700 && beam.height < 900 then
                 "scale(0.5)"
 
             else
                 "scale(0.25)"
 
         ( canvasWidth, canvasHeight ) =
-            if beam.height < 900 then
+            if beam.width < 700 && beam.height < 900 then
                 ( beam.width / 2 + 20, beam.height / 2 + 20 )
 
             else
