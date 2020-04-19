@@ -13,7 +13,7 @@
             "elm/svg": "1.0.1",
             "elm/url": "1.0.0",
             "myrho/elm-round": "1.0.4",
-            "rundis/elm-bootstrap": "5.1.0"
+            "rundis/elm-bootstrap": "5.2.0"
         },
         "indirect": {
             "avh4/elm-color": "1.0.0",
