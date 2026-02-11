@@ -1,6 +1,16 @@
 {
+  "customSyntax": "postcss-scss",
   "extends": "stylelint-config-standard",
   "rules": {
-    "font-family-no-missing-generic-family-keyword": null
+    "alpha-value-notation": null,
+    "at-rule-descriptor-value-no-unknown": null,
+    "color-function-alias-notation": null,
+    "color-function-notation": null,
+    "font-family-no-missing-generic-family-keyword": null,
+    "import-notation": null,
+    "media-feature-range-notation": null,
+    "property-no-deprecated": null,
+    "property-no-vendor-prefix": null,
+    "selector-id-pattern": null
   }
 }

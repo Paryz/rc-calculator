@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: corepack yarn install --frozen-lockfile
+
+      - name: Validate formatting
+        run: corepack yarn format --validate
+
+      - name: Lint styles
+        run: corepack yarn lint
+
+      - name: Run Elm tests
+        run: corepack yarn test
+
+      - name: Build
+        run: corepack yarn build

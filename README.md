@@ -1,4 +1,31 @@
-[![Build Status](https://travis-ci.org/Paryz/rc-calculator.svg?branch=master)](https://travis-ci.org/Paryz/rc-calculator)
-# This project is created to see if structural engineering can be open source
+# RC Calculator
 
-demo: https://structy-calculator.netlify.com/#/
+Open-source reinforced concrete calculator built with Elm.
+
+Live demo: https://structy-calculator.netlify.app/#/
+
+## Requirements
+
+- Node.js 22+
+- Yarn (classic)
+
+## Development
+
+```bash
+yarn install
+yarn dev
+```
+
+## Quality checks
+
+```bash
+yarn format --validate
+yarn lint
+yarn test
+```
+
+## Production build
+
+```bash
+yarn build
+```

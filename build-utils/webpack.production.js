@@ -1,17 +1,12 @@
-const path = require('path');
-const glob = require('glob');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const PurgecssPlugin = require('purgecss-webpack-plugin');
-const ImageminPlugin = require('imagemin-webpack-plugin').default;
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = () => ({
   output: {
-    filename: '[name].[contenthash].js',
+    filename: 'assets/js/[name].[contenthash].js',
+    assetModuleFilename: 'assets/media/[name].[contenthash][ext][query]'
   },
 
   module: {
@@ -35,23 +30,42 @@ module.exports = () => ({
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                silenceDeprecations: [ 'import', 'global-builtin', 'color-functions' ]
+              }
+            }
+          }
+        ],
       },
-      { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' },
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/i,
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 100 * 1024
+          }
+        }
+      }
     ],
   },
 
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({
-        uglifyOptions: {
+      new TerserPlugin({
+        terserOptions: {
           // ES5 is required in the minified code if you want compatibility with IE11,
           // otherwise you can bump it up to ES8
           ecma: 5,
           // Compression settings mostly based on <https://guide.elm-lang.org/optimization/asset_size.html>
           compress: {
             passes: 2,
-            warnings: false,
             // Disabled because of an issue with Uglify breaking seemingly valid code:
             // https://github.com/facebook/create-react-app/issues/2376
             // Pending further investigation:
@@ -90,13 +104,10 @@ module.exports = () => ({
             ascii_only: true
           }
         },
-        // Use multi-process parallel running to improve the build speed
-        // Default number of concurrent runs: os.cpus().length - 1
         parallel: true,
-        // Enable file caching
-        cache: true,
-        sourceMap: shouldUseSourceMap
-      })
+        extractComments: false
+      }),
+      new CssMinimizerPlugin()
     ],
     // Automatically split vendor and commons
     // https://twitter.com/wSokra/status/969633336732905474
@@ -113,17 +124,8 @@ module.exports = () => ({
       filename: 'assets/css/[name].[contenthash].css',
     }),
 
-    new PurgecssPlugin({
-      paths: glob.sync(path.join(__dirname, '../src/**/*.elm'), { nodir: true }),
-    }),
-
-    new CopyWebpackPlugin([{ from: 'src/assets/images', to: 'assets/images' }]),
-
-    new ImageminPlugin({
-      test: /\.(jpe?g|png|gif|svg)$/i,
-      cache: true,
-    }),
-
-    new OptimizeCSSAssetsPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [{ from: 'src/assets/images', to: 'assets/images' }]
+    })
   ],
 });

@@ -1,6 +1,4 @@
 const path = require("path");
-const DashboardPlugin = require('webpack-dashboard/plugin');
-const webpack = require('webpack');
 
 module.exports = () => ({
   module: {
@@ -9,8 +7,6 @@ module.exports = () => ({
         test: /\.elm$/,
         exclude: [/elm-stuff/, /node_modules/],
         use: [
-
-          { loader: 'elm-hot-webpack-loader' },
           {
             loader: 'elm-webpack-loader',
             options: {
@@ -29,23 +25,43 @@ module.exports = () => ({
       },
       {
         test: /\.s?css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                silenceDeprecations: [ 'import', 'global-builtin', 'color-functions' ]
+              }
+            }
+          }
+        ]
       },
-      { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' }
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/i,
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 100 * 1024
+          }
+        }
+      }
     ]
   },
 
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-
-    new DashboardPlugin(),
-  ],
-
   devServer: {
-    contentBase: './src',
+    static: {
+      directory: path.join(__dirname, '../src')
+    },
     historyApiFallback: true,
-    inline: true,
-    stats: 'errors-only',
     hot: true,
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false
+      }
+    }
   }
 });
