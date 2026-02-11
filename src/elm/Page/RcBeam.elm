@@ -4,11 +4,13 @@ import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
 import Calculator.Beam
+import Calculator.BeamOptimizer as BeamOptimizer
 import Calculator.Types as Types
 import Html exposing (Html, a, div, strong, text)
 import Html.Attributes exposing (class, href, target)
 import Page.RcBeam.Partials.BeamDrawing as BeamDrawing
 import Page.RcBeam.Partials.Form as Form
+import Page.RcBeam.Partials.Optimizer as Optimizer
 import Page.RcBeam.Partials.Results as Results
 import Page.RcBeam.Partials.Tables as Tables
 import Page.RcBeam.Translator as Translator
@@ -185,6 +187,9 @@ view model =
 
             else
                 "Top Reinforcement = " ++ String.fromInt top ++ ", Bottom Reinforcement = " ++ String.fromInt bottom
+
+        optimizationSolutions =
+            BeamOptimizer.optimize (Translator.translate model.beam)
     in
     { title = model.pageTitle
     , content =
@@ -208,6 +213,10 @@ view model =
                         ]
                     , Grid.row [ Row.centerMd ]
                         (Tables.render top bottom)
+                    , Grid.row [ Row.centerMd ]
+                        [ Grid.col [ Col.xs12 ]
+                            [ Optimizer.render optimizationSolutions ]
+                        ]
                     , Grid.row [ Row.centerMd ]
                         [ Grid.col [ Col.xs12 ]
                             [ a
