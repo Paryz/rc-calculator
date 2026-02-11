@@ -174,7 +174,7 @@ view : Model -> { title : String, content : Html Msg }
 view model =
     { title = model.pageTitle
     , content =
-        Grid.container []
+        Grid.container [ class "rc-column-page" ]
             [ Grid.row []
                 [ Grid.col [ Col.lg12, Col.xl9 ]
                     [ Grid.row [ Row.centerMd ]
