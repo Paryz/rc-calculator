@@ -1,24 +1,56 @@
 module Calculator.BeamOptimizer exposing (optimize)
 
 import Calculator.Beam
-import Page.RcBeam.Types exposing (Beam, OptimizationSolution)
+import Page.RcBeam.Types exposing (Beam, OptimizationSolution, OptimizerLocks)
 
 
-optimize : Beam -> List OptimizationSolution
-optimize baseBeam =
+optimize : Beam -> OptimizerLocks -> List OptimizationSolution
+optimize baseBeam optimizerLocks =
     let
+        widths =
+            if optimizerLocks.width then
+                [ round baseBeam.width ]
+
+            else
+                candidateWidths
+
+        heights =
+            if optimizerLocks.height then
+                [ round baseBeam.height ]
+
+            else
+                candidateHeights
+
+        diameters =
+            if optimizerLocks.mainBarDiameter then
+                [ round baseBeam.mainBarDiameter ]
+
+            else
+                candidateDiameters
+
+        stirrupDiameters =
+            if optimizerLocks.stirrupDiameter then
+                [ round baseBeam.linkDiameter ]
+
+            else
+                candidateStirrupDiameters
+
         solutions =
             List.concatMap
                 (\width ->
                     List.concatMap
                         (\height ->
-                            List.map
-                                (evaluateCandidate baseBeam width height)
-                                candidateDiameters
+                            List.concatMap
+                                (\stirrupDiameter ->
+                                    List.map
+                                        (evaluateCandidate baseBeam width height stirrupDiameter)
+                                        diameters
+                                )
+                                stirrupDiameters
                         )
-                        candidateHeights
+                        heights
                 )
-                candidateWidths
+                widths
                 |> List.filterMap identity
     in
     solutions
@@ -28,12 +60,12 @@ optimize baseBeam =
 
 candidateWidths : List Int
 candidateWidths =
-    rangeStep 250 650 25
+    rangeStep 250 1500 25
 
 
 candidateHeights : List Int
 candidateHeights =
-    rangeStep 350 1000 25
+    rangeStep 350 1500 25
 
 
 candidateDiameters : List Int
@@ -41,18 +73,24 @@ candidateDiameters =
     [ 12, 16, 20, 25, 32 ]
 
 
+candidateStirrupDiameters : List Int
+candidateStirrupDiameters =
+    [ 6, 8, 10, 12, 16 ]
+
+
 maxBarsPerLayer : Int
 maxBarsPerLayer =
     10
 
 
-evaluateCandidate : Beam -> Int -> Int -> Int -> Maybe OptimizationSolution
-evaluateCandidate baseBeam width height diameter =
+evaluateCandidate : Beam -> Int -> Int -> Int -> Int -> Maybe OptimizationSolution
+evaluateCandidate baseBeam width height stirrupDiameter diameter =
     let
         beam =
             { baseBeam
                 | width = toFloat width
                 , height = toFloat height
+                , linkDiameter = toFloat stirrupDiameter
                 , mainBarDiameter = toFloat diameter
             }
 
@@ -108,6 +146,7 @@ evaluateCandidate baseBeam width height diameter =
             { width = width
             , height = height
             , diameter = diameter
+            , stirrupDiameter = stirrupDiameter
             , topBars = topBars
             , bottomBars = bottomBars
             , requiredAs = requiredAs

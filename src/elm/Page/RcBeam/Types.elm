@@ -1,4 +1,4 @@
-module Page.RcBeam.Types exposing (Beam, Field(..), Model, Msg(..), OptimizationSolution, StringedBeam, StringedResultBeam)
+module Page.RcBeam.Types exposing (Beam, Field(..), LockField(..), Model, Msg(..), OptimizationSolution, OptimizerLocks, StringedBeam, StringedResultBeam)
 
 import Calculator.Types
 import Session exposing (Session)
@@ -9,6 +9,7 @@ type alias Model =
     , pageTitle : String
     , pageBody : String
     , beam : StringedBeam
+    , optimizerLocks : OptimizerLocks
     , reinforcement : Calculator.Types.ReqReinforcement
     , minimumReinforcement : Calculator.Types.MinReinforcement
     , maximumReinforcement : Calculator.Types.MaximumReinforcement
@@ -31,6 +32,22 @@ type Field
 
 type Msg
     = Update Field String
+    | ToggleOptimizerLock LockField Bool
+
+
+type LockField
+    = LockWidth
+    | LockHeight
+    | LockMainBarDiameter
+    | LockStirrupDiameter
+
+
+type alias OptimizerLocks =
+    { width : Bool
+    , height : Bool
+    , mainBarDiameter : Bool
+    , stirrupDiameter : Bool
+    }
 
 
 type alias StringedBeam =
@@ -99,6 +116,7 @@ type alias OptimizationSolution =
     { width : Int
     , height : Int
     , diameter : Int
+    , stirrupDiameter : Int
     , topBars : Int
     , bottomBars : Int
     , requiredAs : Int

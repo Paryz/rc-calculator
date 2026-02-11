@@ -14,7 +14,7 @@ import Page.RcBeam.Partials.Optimizer as Optimizer
 import Page.RcBeam.Partials.Results as Results
 import Page.RcBeam.Partials.Tables as Tables
 import Page.RcBeam.Translator as Translator
-import Page.RcBeam.Types exposing (Field(..), Model, Msg(..), StringedBeam, StringedResultBeam)
+import Page.RcBeam.Types exposing (Field(..), LockField(..), Model, Msg(..), OptimizerLocks, StringedBeam, StringedResultBeam)
 import Session exposing (Session)
 
 
@@ -32,6 +32,12 @@ init session =
       , pageTitle = "Rc Beam"
       , pageBody = "This is the rc-beam page"
       , beam = beam
+      , optimizerLocks =
+            { width = False
+            , height = False
+            , mainBarDiameter = False
+            , stirrupDiameter = False
+            }
       , reinforcement = calculateReinforcement beam
       , minimumReinforcement = 331.355
       , maximumReinforcement = 9600.0
@@ -74,6 +80,11 @@ update msg model =
             , toJs <| Translator.withCalcs newBeam
             )
 
+        ToggleOptimizerLock lockField isLocked ->
+            ( { model | optimizerLocks = updateOptimizerLocks model.optimizerLocks lockField isLocked }
+            , Cmd.none
+            )
+
 
 updateBeam : StringedBeam -> Field -> String -> StringedBeam
 updateBeam beam field value =
@@ -110,6 +121,22 @@ updateBeam beam field value =
 
         LinkBarDiameter ->
             { beam | linkDiameter = value }
+
+
+updateOptimizerLocks : OptimizerLocks -> LockField -> Bool -> OptimizerLocks
+updateOptimizerLocks locks lockField isLocked =
+    case lockField of
+        LockWidth ->
+            { locks | width = isLocked }
+
+        LockHeight ->
+            { locks | height = isLocked }
+
+        LockMainBarDiameter ->
+            { locks | mainBarDiameter = isLocked }
+
+        LockStirrupDiameter ->
+            { locks | stirrupDiameter = isLocked }
 
 
 calculateReinforcement : StringedBeam -> Types.ReqReinforcement
@@ -189,7 +216,7 @@ view model =
                 "Top Reinforcement = " ++ String.fromInt top ++ ", Bottom Reinforcement = " ++ String.fromInt bottom
 
         optimizationSolutions =
-            BeamOptimizer.optimize (Translator.translate model.beam)
+            BeamOptimizer.optimize (Translator.translate model.beam) model.optimizerLocks
     in
     { title = model.pageTitle
     , content =
@@ -198,7 +225,7 @@ view model =
                 [ Grid.col [ Col.lg12, Col.xl9 ]
                     [ Grid.row [ Row.centerMd ]
                         [ Grid.col [ Col.middleXs, Col.lg12, Col.xl6 ]
-                            [ Form.render model.beam
+                            [ Form.render model.beam model.optimizerLocks
                             ]
                         , Grid.col [ Col.middleXs, Col.lg12, Col.xl6, Col.attrs [ class "drawing" ] ]
                             [ BeamDrawing.render model.beam model.reinforcement ]

@@ -7,13 +7,13 @@ import Bootstrap.Grid.Col as Col
 import Calculator.Classes as Classes
 import Calculator.Diameters as Diameters
 import Html exposing (div, input, label, sub, text)
-import Html.Attributes exposing (class, for, selected, type_, value)
-import Html.Events exposing (onClick, onInput)
-import Page.RcBeam.Types exposing (Field(..), Msg(..), StringedBeam)
+import Html.Attributes exposing (checked, class, for, selected, type_, value)
+import Html.Events exposing (onCheck, onClick, onInput)
+import Page.RcBeam.Types exposing (Field(..), LockField(..), Msg(..), OptimizerLocks, StringedBeam)
 
 
-render : StringedBeam -> Html.Html Msg
-render beam =
+render : StringedBeam -> OptimizerLocks -> Html.Html Msg
+render beam optimizerLocks =
     let
         gamma =
             String.fromChar (Char.fromCode 947)
@@ -50,6 +50,7 @@ render beam =
         [ Form.row []
             [ Form.col [ Col.xs6 ]
                 [ Form.label [ for "height" ] [ text "h (mm)" ]
+                , lockCheckbox "lock-height" optimizerLocks.height (ToggleOptimizerLock LockHeight)
                 , Input.number
                     [ Input.id "width"
                     , Input.onInput (\height -> Update Height height)
@@ -72,6 +73,7 @@ render beam =
                 ]
             , Form.col [ Col.xs6 ]
                 [ Form.label [ for "width" ] [ text "b (mm)" ]
+                , lockCheckbox "lock-width" optimizerLocks.width (ToggleOptimizerLock LockWidth)
                 , Input.number
                     [ Input.id "width"
                     , Input.onInput (\width -> Update Width width)
@@ -142,6 +144,7 @@ render beam =
                     , sub [] [ text "s" ]
                     , text " (mm)"
                     ]
+                , lockCheckbox "lock-stirrup-diameter" optimizerLocks.stirrupDiameter (ToggleOptimizerLock LockStirrupDiameter)
                 , Select.select
                     [ Select.id "link-bar-diameter"
                     , Select.onChange (\diameter -> Update LinkBarDiameter diameter)
@@ -153,6 +156,7 @@ render beam =
                     [ text phi
                     , text " (mm)"
                     ]
+                , lockCheckbox "lock-main-bar-diameter" optimizerLocks.mainBarDiameter (ToggleOptimizerLock LockMainBarDiameter)
                 , Select.select
                     [ Select.id "main-bar-diameter"
                     , Select.onChange (\diameter -> Update MainBarDiameter diameter)
@@ -298,3 +302,17 @@ mapItemFromFloatWithDefault collection itemValue =
                     [ text <| String.fromInt item ]
         )
         collection
+
+
+lockCheckbox : String -> Bool -> (Bool -> Msg) -> Html.Html Msg
+lockCheckbox elementId isLocked message =
+    div [ class "d-flex justify-content-end" ]
+        [ input
+            [ type_ "checkbox"
+            , Html.Attributes.id elementId
+            , checked isLocked
+            , onCheck message
+            ]
+            []
+        , label [ for elementId, class "ml-1 mb-0" ] [ text "Lock for optimizer" ]
+        ]
