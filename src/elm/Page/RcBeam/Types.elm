@@ -1,4 +1,4 @@
-module Page.RcBeam.Types exposing (Beam, Field(..), Model, Msg(..), StringedBeam, StringedResultBeam)
+module Page.RcBeam.Types exposing (Beam, Field(..), Model, Msg(..), OptimizationSolution, StringedBeam, StringedResultBeam)
 
 import Calculator.Types
 import Session exposing (Session)
@@ -92,4 +92,17 @@ type alias Beam =
     , linkDiameter : Float
     , mainBarDiameter : Float
     , bendingMoment : Float
+    }
+
+
+type alias OptimizationSolution =
+    { width : Int
+    , height : Int
+    , diameter : Int
+    , topBars : Int
+    , bottomBars : Int
+    , requiredAs : Int
+    , providedAs : Int
+    , utilization : Float
+    , objective : Float
     }
