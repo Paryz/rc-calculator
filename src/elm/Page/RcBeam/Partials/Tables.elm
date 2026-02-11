@@ -4,7 +4,7 @@ import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Table as Table
 import Calculator.Diameters as Diameters exposing (BarSectionsList)
-import Html exposing (Html, text)
+import Html exposing (Html, div, text)
 import Html.Attributes exposing (class)
 
 
@@ -32,33 +32,35 @@ barSectionTable reqReinforcement =
         phi =
             String.fromChar <| Char.fromCode 966
     in
-    Table.table
-        { options = [ Table.small ]
-        , thead =
-            Table.simpleThead
-                [ Table.th [] [ text phi ]
-                , Table.th [] [ text "1" ]
-                , Table.th [] [ text "2" ]
-                , Table.th [] [ text "3" ]
-                , Table.th [] [ text "4" ]
-                , Table.th [] [ text "5" ]
-                , Table.th [] [ text "6" ]
-                , Table.th [] [ text "7" ]
-                , Table.th [] [ text "8" ]
-                , Table.th [] [ text "9" ]
-                , Table.th [] [ text "10" ]
-                ]
-        , tbody =
-            Table.tbody []
-                [ tableRow .m12 Diameters.listOfBarSection "12" reqReinforcement
-                , tableRow .m16 Diameters.listOfBarSection "16" reqReinforcement
-                , tableRow .m20 Diameters.listOfBarSection "20" reqReinforcement
-                , tableRow .m25 Diameters.listOfBarSection "25" reqReinforcement
-                , tableRow .m32 Diameters.listOfBarSection "32" reqReinforcement
-                , tableRow .m40 Diameters.listOfBarSection "40" reqReinforcement
-                , tableRow .m50 Diameters.listOfBarSection "50" reqReinforcement
-                ]
-        }
+    div [ class "table-responsive rc-beam-table-wrapper" ]
+        [ Table.table
+            { options = [ Table.small ]
+            , thead =
+                Table.simpleThead
+                    [ Table.th [] [ text phi ]
+                    , Table.th [] [ text "1" ]
+                    , Table.th [] [ text "2" ]
+                    , Table.th [] [ text "3" ]
+                    , Table.th [] [ text "4" ]
+                    , Table.th [] [ text "5" ]
+                    , Table.th [] [ text "6" ]
+                    , Table.th [] [ text "7" ]
+                    , Table.th [] [ text "8" ]
+                    , Table.th [] [ text "9" ]
+                    , Table.th [] [ text "10" ]
+                    ]
+            , tbody =
+                Table.tbody []
+                    [ tableRow .m12 Diameters.listOfBarSection "12" reqReinforcement
+                    , tableRow .m16 Diameters.listOfBarSection "16" reqReinforcement
+                    , tableRow .m20 Diameters.listOfBarSection "20" reqReinforcement
+                    , tableRow .m25 Diameters.listOfBarSection "25" reqReinforcement
+                    , tableRow .m32 Diameters.listOfBarSection "32" reqReinforcement
+                    , tableRow .m40 Diameters.listOfBarSection "40" reqReinforcement
+                    , tableRow .m50 Diameters.listOfBarSection "50" reqReinforcement
+                    ]
+            }
+        ]
 
 
 tableRow : (BarSectionsList -> List Int) -> BarSectionsList -> String -> Int -> Table.Row msg

@@ -220,7 +220,7 @@ view model =
     in
     { title = model.pageTitle
     , content =
-        Grid.container []
+        Grid.container [ class "rc-beam-page" ]
             [ Grid.row []
                 [ Grid.col [ Col.lg12, Col.xl9 ]
                     [ Grid.row [ Row.centerMd ]
