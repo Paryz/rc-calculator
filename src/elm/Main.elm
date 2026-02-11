@@ -12,6 +12,7 @@ import Page.NotFound as NotFound
 import Page.RcBeam as RcBeam
 import Page.RcBeam.Types as RcBeamTypes
 import Page.RcColumn as RcColumn
+import Page.RcColumn.Types as RcColumnTypes
 import Route exposing (Route)
 import Session exposing (Session)
 import Url exposing (Url)
@@ -32,7 +33,7 @@ type Model
     | Home Home.Model
     | AboutUs AboutUs.Model
     | RcBeam RcBeamTypes.Model
-    | RcColumn RcColumn.Model
+    | RcColumn RcColumnTypes.Model
 
 
 init : Value -> Url -> Nav.Key -> ( Model, Cmd Msg )
@@ -88,7 +89,7 @@ type Msg
     | GotHomeMsg Home.Msg
     | GotAboutUsMsg AboutUs.Msg
     | GotRcBeamMsg RcBeamTypes.Msg
-    | GotRcColumnMsg RcColumn.Msg
+    | GotRcColumnMsg RcColumnTypes.Msg
 
 
 toSession : Model -> Session
