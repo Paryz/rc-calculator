@@ -177,7 +177,7 @@ sectionResistance column asTotal x =
                 strain =
                     epsilonCu * (1 - (y / x))
             in
-            clamp (-fyd) fyd (es * strain)
+            clamp -fyd fyd (es * strain)
 
         fsTop =
             asLayer * steelStress dPrime
