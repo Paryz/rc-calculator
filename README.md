@@ -2,7 +2,7 @@
 
 Open-source reinforced concrete calculator built with Elm.
 
-Live demo: https://structy-calculator.netlify.app/#/
+Live demo: https://paryz.github.io/rc-calculator/#/
 
 ## Requirements
 
